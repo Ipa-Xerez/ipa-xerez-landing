@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, MapPin, Calendar as CalendarIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Calendar as CalendarIcon, ArrowLeft } from "lucide-react";
+import { useLocation } from "wouter";
 
 interface Event {
   id: string;
@@ -17,6 +18,7 @@ interface Event {
 }
 
 export default function Calendar() {
+  const [, navigate] = useLocation();
   const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 1)); // Enero 2026
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
@@ -151,6 +153,15 @@ export default function Calendar() {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="container mx-auto px-4 py-12">
+        <div className="flex items-center justify-between mb-8">
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2 text-[#003366] hover:text-[#1A3A52] transition-colors font-semibold"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Volver a Inicio
+          </button>
+        </div>
         <h1 className="font-display text-4xl md:text-5xl text-[#003366] text-center mb-4 font-bold">Calendario de Eventos</h1>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Descubre todos los eventos de IPA Xerez e IPA Internacional. Los eventos locales aparecen en azul, los internacionales en verde.</p>
 
