@@ -221,6 +221,81 @@ export default function Home() {
       </section>
 
       {/* Ubicación mejorada */}
+      {/* Testimonios */}
+      <section className="py-16 md:py-20 bg-gradient-to-b from-[#F5F5F5] to-white border-t border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="font-display text-3xl md:text-4xl text-[#003366] mb-6 font-bold">Lo que Dicen Nuestros Miembros</h2>
+            <p className="text-lg text-gray-600">Descubre cómo IPA ha impactado la vida de policías de todo el mundo</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Testimonio 1 */}
+            <div className="bg-white rounded-lg shadow-lg p-8 border-l-4 border-[#D4AF37]">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="relative">
+                  <img src="/testimonial-carlos.jpg" alt="Carlos García" className="w-16 h-16 rounded-full object-cover" />
+                  <span className="absolute -bottom-1 -right-1 bg-[#D4AF37] text-[#003366] text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">IA</span>
+                </div>
+                <div className="text-left">
+                  <h3 className="font-heading text-lg text-[#003366] font-semibold">Carlos García</h3>
+                  <p className="text-sm text-gray-500">Policía Nacional, Xerez</p>
+                </div>
+              </div>
+              <p className="text-gray-700 italic mb-4">"Hace 5 años conocí a un policía de Tailandia en un evento de IPA. Hoy somos grandes amigos. Cuando viajé a Bangkok, él me mostró su ciudad. Eso es lo que IPA te ofrece: amigos en cualquier parte del mundo."</p>
+              <div className="flex gap-1 text-[#D4AF37]">★★★★★</div>
+            </div>
+            
+            {/* Testimonio 2 */}
+            <div className="bg-white rounded-lg shadow-lg p-8 border-l-4 border-[#D4AF37]">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="relative">
+                  <img src="/testimonial-maria.jpg" alt="María López" className="w-16 h-16 rounded-full object-cover" />
+                  <span className="absolute -bottom-1 -right-1 bg-[#D4AF37] text-[#003366] text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">IA</span>
+                </div>
+                <div className="text-left">
+                  <h3 className="font-heading text-lg text-[#003366] font-semibold">María López</h3>
+                  <p className="text-sm text-gray-500">Policía Nacional, Xerez</p>
+                </div>
+              </div>
+              <p className="text-gray-700 italic mb-4">"La camaradería en IPA es increíble. Cuando tuve un problema familiar, policías de otros países me apoyaron. Es como tener una familia extendida en 140 países."</p>
+              <div className="flex gap-1 text-[#D4AF37]">★★★★★</div>
+            </div>
+            
+            {/* Testimonio 3 */}
+            <div className="bg-white rounded-lg shadow-lg p-8 border-l-4 border-[#D4AF37]">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="relative">
+                  <img src="/testimonial-juan.jpg" alt="Juan Rodríguez" className="w-16 h-16 rounded-full object-cover" />
+                  <span className="absolute -bottom-1 -right-1 bg-[#D4AF37] text-[#003366] text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">IA</span>
+                </div>
+                <div className="text-left">
+                  <h3 className="font-heading text-lg text-[#003366] font-semibold">Juan Rodríguez</h3>
+                  <p className="text-sm text-gray-500">Policía Local, Xerez</p>
+                </div>
+              </div>
+              <p className="text-gray-700 italic mb-4">"Mis padres viajaron a Portugal hace años. Hace poco, conocí a un policía de allá en IPA. Nos hemos hecho amigos y cuando vuelva a Portugal, tendré un amigo esperándome."</p>
+              <div className="flex gap-1 text-[#D4AF37]">★★★★★</div>
+            </div>
+            
+            {/* Testimonio 4 */}
+            <div className="bg-white rounded-lg shadow-lg p-8 border-l-4 border-[#D4AF37]">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="relative">
+                  <img src="/testimonial-ana.jpg" alt="Ana Martínez" className="w-16 h-16 rounded-full object-cover" />
+                  <span className="absolute -bottom-1 -right-1 bg-[#D4AF37] text-[#003366] text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">IA</span>
+                </div>
+                <div className="text-left">
+                  <h3 className="font-heading text-lg text-[#003366] font-semibold">Ana Martínez</h3>
+                  <p className="text-sm text-gray-500">Policía Nacional, Xerez</p>
+                </div>
+              </div>
+              <p className="text-gray-700 italic mb-4">"IPA te conecta con profesionales de tu misma vocación en todo el mundo. Puedo llamar a un colega en Japón, Alemania o Brasil. Eso es hermandad real."</p>
+              <div className="flex gap-1 text-[#D4AF37]">★★★★★</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="font-display text-3xl md:text-4xl text-[#003366] text-center mb-12 font-bold">Ubicación</h2>
