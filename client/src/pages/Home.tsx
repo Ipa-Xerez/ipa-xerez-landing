@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Send, Calendar, Users, Globe, Heart, Award, Zap, C
 import { useState } from "react";
 import { useLocation } from "wouter";
 import InstagramFeed from "@/components/InstagramFeed";
+import { trpc } from "@/lib/trpc";
 
 const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EGzPdIJIBsAxVVTe.jpg";
 const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/oKUdbvDdBdpitULq.png";
@@ -37,14 +38,28 @@ export default function Home() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const createContactMutation = trpc.contact.create.useMutation();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitStatus("loading");
-    setTimeout(() => {
+    
+    try {
+      await createContactMutation.mutateAsync({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || undefined,
+        subject: formData.subject,
+        message: formData.message,
+      });
+      
       setSubmitStatus("success");
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
       setTimeout(() => setSubmitStatus("idle"), 3000);
-    }, 1000);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setSubmitStatus("idle");
+    }
   };
 
   return (

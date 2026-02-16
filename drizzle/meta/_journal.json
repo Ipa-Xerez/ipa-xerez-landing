@@ -15,6 +15,13 @@
       "when": 1771255410853,
       "tag": "0001_lazy_dexter_bennett",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1771266944041,
+      "tag": "0002_sudden_adam_warlock",
+      "breakpoints": true
     }
   ]
 }

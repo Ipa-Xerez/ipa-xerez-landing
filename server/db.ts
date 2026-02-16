@@ -1,6 +1,6 @@
 import { eq, gte, lte, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -185,6 +185,41 @@ export async function getEventsByMonth(year: number, month: number): Promise<Eve
     return result.sort((a: Event, b: Event) => a.date.getTime() - b.date.getTime());
   } catch (error) {
     console.error("[Database] Failed to get events by month:", error);
+    return [];
+  }
+}
+
+
+// Contact queries
+export async function createContact(contact: InsertContact): Promise<Contact | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create contact: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(contacts).values(contact);
+    const newContact = await db.select().from(contacts).where(eq(contacts.id, result[0].insertId as number)).limit(1);
+    return newContact.length > 0 ? newContact[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to create contact:", error);
+    throw error;
+  }
+}
+
+export async function getContacts(): Promise<Contact[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get contacts: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db.select().from(contacts).orderBy(contacts.createdAt);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get contacts:", error);
     return [];
   }
 }

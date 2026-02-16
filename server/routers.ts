@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
+import { notifyOwner } from "./_core/notification";
 
 export const appRouter = router({
   system: systemRouter,
@@ -52,6 +53,36 @@ export const appRouter = router({
     delete: protectedProcedure
       .input(z.number())
       .mutation(({ input }) => db.deleteEvent(input)),
+  }),
+
+  contact: router({
+    create: publicProcedure
+      .input(z.object({
+        name: z.string().min(1, "El nombre es requerido"),
+        email: z.string().email("Email inválido"),
+        phone: z.string().optional(),
+        subject: z.string().min(1, "El asunto es requerido"),
+        message: z.string().min(1, "El mensaje es requerido"),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const contact = await db.createContact(input);
+          
+          // Send notification email
+          if (contact) {
+            await notifyOwner({
+              title: `Nuevo mensaje de contacto: ${input.subject}`,
+              content: `De: ${input.name} (${input.email})\nTeléfono: ${input.phone || "No proporcionado"}\n\nMensaje:\n${input.message}`,
+            });
+          }
+          
+          return contact;
+        } catch (error) {
+          console.error("[Contact] Error creating contact:", error);
+          throw error;
+        }
+      }),
+    getAll: protectedProcedure.query(() => db.getContacts()),
   }),
 });
 
