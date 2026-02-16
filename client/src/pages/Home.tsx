@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send, Calendar, Gift, Bell } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Calendar, Gift, Bell, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import InstagramFeed from "@/components/InstagramFeed";
@@ -19,6 +19,16 @@ export default function Home() {
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success">("idle");
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+
+  const faqs = [
+    { q: "¿Cómo me uno a IPA Xerez?", a: "Puedes unirte completando el formulario de contacto o enviándonos un mensaje por WhatsApp. Te guiaremos en todo el proceso de membresía." },
+    { q: "¿Cuál es el costo de la membresía?", a: "Los costos de membresía varían según el tipo. Contáctanos para recibir información detallada sobre las opciones disponibles." },
+    { q: "¿Cuáles son los beneficios de ser miembro?", a: "Acceso a descuentos exclusivos, red global de 140+ países, eventos internacionales, formación continua y mucha más camaradería." },
+    { q: "¿Puedo participar en los intercambios internacionales?", a: "Sí, todos nuestros miembros pueden participar en viajes e intercambios. Organizamos eventos en Marruecos, Portugal y otros países." },
+    { q: "¿Hay eventos locales en Jerez?", a: "Sí, organizamos eventos culturales como las Zambombas, visitas a la Yeguada y reuniones mensuales de camaradería." },
+    { q: "¿Necesito ser policía en activo?", a: "No, también aceptamos policías jubilados y personal de seguridad. IPA es para todos los que compartan nuestros valores." }
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -237,6 +247,34 @@ export default function Home() {
               <p className="text-gray-700 text-lg">Jerez de la Frontera, Cádiz, España</p>
               <p className="text-gray-600 mt-2">Síguenos en nuestras redes sociales para más información</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Preguntas Frecuentes</h2>
+          <div className="max-w-2xl mx-auto space-y-3">
+            {faqs.map((faq, idx) => (
+              <Card key={idx} className="border-0 shadow-sm hover:shadow-md transition-shadow">
+                <button
+                  onClick={() => setOpenFAQ(openFAQ === idx ? null : idx)}
+                  className="w-full p-6 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                >
+                  <h3 className="font-heading text-lg text-[#003366]">{faq.q}</h3>
+                  <ChevronDown
+                    className={`w-5 h-5 text-[#D4AF37] transition-transform ${
+                      openFAQ === idx ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {openFAQ === idx && (
+                  <div className="px-6 pb-6 border-t border-gray-200 pt-4">
+                    <p className="text-gray-700">{faq.a}</p>
+                  </div>
+                )}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
