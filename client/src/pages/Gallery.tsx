@@ -95,6 +95,125 @@ const GALLERY_IMAGES: GalleryImage[] = [
     title: "Itinerario Marruecos",
     description: "Viaje a Tánger, Tetuán, Chaouen y Asilah. Experiencia completa de la cultura y tradición marroquí con IPA Xerez.",
     category: "viajes"
+  },
+  {
+    id: "13",
+    src: "/20250503_165049.jpg",
+    title: "Evento Social Mayo 2025",
+    description: "Reunión social de IPA Xerez en mayo. Momento de convivencia y camaradería entre miembros.",
+    category: "eventos"
+  },
+  {
+    id: "14",
+    src: "/IMG-20250503-WA0050.jpg",
+    title: "Actividad de Grupo Mayo",
+    description: "Actividad conjunta de miembros de IPA Xerez. Fortaleciendo los lazos de hermandad policial.",
+    category: "eventos"
+  },
+  {
+    id: "15",
+    src: "/IMG-20250503-WA0063.jpg",
+    title: "Reunión de Camaradería",
+    description: "Encuentro de miembros de IPA Xerez en evento local. Compartiendo experiencias y amistades.",
+    category: "eventos"
+  },
+  {
+    id: "16",
+    src: "/JuanDiegoyPaco.jpeg",
+    title: "Miembros Destacados",
+    description: "Retrato de miembros activos de IPA Xerez. Rostros de la hermandad policial internacional.",
+    category: "eventos"
+  },
+  {
+    id: "17",
+    src: "/340c70f3-4b69-4fbd-b93f-5817ab43809e.jpeg",
+    title: "Encuentro de Delegados",
+    description: "Reunión de delegados y miembros de IPA Xerez. Coordinación de actividades y eventos futuros.",
+    category: "eventos"
+  },
+  {
+    id: "18",
+    src: "/20250503_133349.jpg",
+    title: "Actividad Matutina Mayo",
+    description: "Actividad matutina de IPA Xerez en mayo. Comenzando el día con camaradería y profesionalismo.",
+    category: "eventos"
+  },
+  {
+    id: "19",
+    src: "/20250503_133319.jpg",
+    title: "Grupo en Evento Local",
+    description: "Miembros de IPA Xerez reunidos en evento local. Demostrando la fortaleza de nuestra comunidad.",
+    category: "eventos"
+  },
+  {
+    id: "20",
+    src: "/20250503_121413.jpg",
+    title: "Almuerzo de Camaradería",
+    description: "Almuerzo social de IPA Xerez. Compartiendo comida, conversación y hermandad.",
+    category: "eventos"
+  },
+  {
+    id: "21",
+    src: "/20250503_123716.jpg",
+    title: "Momento de Convivencia",
+    description: "Miembros disfrutando de momento de convivencia. La amistad es el corazón de IPA.",
+    category: "eventos"
+  },
+  {
+    id: "22",
+    src: "/20250503_153720.jpg",
+    title: "Actividad Vespertina",
+    description: "Actividad vespertina de IPA Xerez. Continuando con el espíritu de hermandad.",
+    category: "eventos"
+  },
+  {
+    id: "23",
+    src: "/20250503_114623.jpg",
+    title: "Grupo Matutino",
+    description: "Grupo de miembros en actividad matutina de mayo. Unidos por la profesionalidad y amistad.",
+    category: "eventos"
+  },
+  {
+    id: "24",
+    src: "/20250503_155052.jpg",
+    title: "Encuentro Vespertino",
+    description: "Encuentro vespertino de IPA Xerez. Celebrando la camaradería sin fronteras.",
+    category: "eventos"
+  },
+  {
+    id: "25",
+    src: "/20250503_114127.jpg",
+    title: "Actividad Matinal",
+    description: "Actividad matinal de miembros de IPA Xerez. Demostrando compromiso y profesionalismo.",
+    category: "eventos"
+  },
+  {
+    id: "26",
+    src: "/20250927_102334.jpg",
+    title: "Evento Septiembre 2025",
+    description: "Evento de IPA Xerez en septiembre. Continuando con nuestras actividades y celebraciones.",
+    category: "eventos"
+  },
+  {
+    id: "27",
+    src: "/20250927_105157.jpg",
+    title: "Reunión Septiembre",
+    description: "Reunión de miembros en septiembre. Reforzando los lazos de hermandad policial.",
+    category: "eventos"
+  },
+  {
+    id: "28",
+    src: "/20250927_144428.jpg",
+    title: "Actividad de Otoño",
+    description: "Actividad de otoño de IPA Xerez. Disfrutando de la camaradería en nuevas estaciones.",
+    category: "eventos"
+  },
+  {
+    id: "29",
+    src: "/20250927_103519.jpg",
+    title: "Grupo Septiembre",
+    description: "Grupo de miembros en evento de septiembre. La hermandad policial sigue adelante.",
+    category: "eventos"
   }
 ];
 
