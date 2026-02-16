@@ -12,6 +12,7 @@ const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/
 const SERVICE2 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/WQBgFGwdKVZpShDj.png";
 const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/jjIqOiRseMIWAcLH.png";
 const SERVICE4 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/kdNKnNyCPISnehMP.png";
+const POLICE_WEEK_POSTER = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/bspODVNHZxCvOkZg.PNG";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -228,6 +229,30 @@ export default function Home() {
               <Bell className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
               <h3 className="font-heading text-lg mb-2">Formación Continua</h3>
               <p className="text-gray-300 text-sm">Acceso a webinars y cursos profesionales.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="eventos" className="py-20 bg-white border-t border-gray-200">
+        <div className="container mx-auto px-4">
+          <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Próximos Eventos</h2>
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="flex flex-col items-center">
+              <img src={POLICE_WEEK_POSTER} alt="Police Week Washington" className="w-full max-w-sm rounded-lg shadow-lg mb-4" />
+              <h3 className="font-heading text-2xl text-[#003366] mb-2">Police Week 2026</h3>
+              <p className="text-gray-600 text-center mb-4">Washington D.C. | 11-17 Mayo 2026</p>
+              <p className="text-gray-700 text-center mb-6">Vive una experiencia única con IPA Málaga e IPA Xerez. Honra, hermandad y orgullo policial internacional.</p>
+              <a href="https://policeweek.org" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#D4AF37] text-[#003366] px-6 py-3 rounded font-semibold hover:bg-[#C4991F] transition-colors">Más Información</a>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <div className="bg-[#003366] text-white p-8 rounded-lg text-center w-full">
+                <h3 className="font-heading text-2xl mb-4">Puy du Fou</h3>
+                <p className="text-lg mb-2">17-19 Abril 2026</p>
+                <p className="text-gray-300 mb-6">Visita al Parque Temático Puy du Fou en Francia</p>
+                <p className="text-gray-300 mb-6">Experiencia cultural única con la hermandad de IPA</p>
+                <p className="text-sm text-gray-400">Más detalles próximamente</p>
+              </div>
             </div>
           </div>
         </div>
