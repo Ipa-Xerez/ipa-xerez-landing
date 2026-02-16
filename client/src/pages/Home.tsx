@@ -76,8 +76,8 @@ export default function Home() {
             <h1 className="font-display text-5xl md:text-6xl mb-6 leading-tight">Amistad y Profesionalidad sin Fronteras</h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-100">Unete a la mayor red mundial de policias bajo nuestro lema Servo per Amikeco</p>
             <div className="flex gap-4 justify-center flex-wrap">
-              <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F] text-lg px-8 py-6">Hazte Socio Ahora</Button>
-              <Button variant="outline" className="text-white border-white hover:bg-white/10 text-lg px-8 py-6">Mas Informacion</Button>
+              <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F] text-lg px-8 py-6" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Hazte Socio Ahora</Button>
+              <Button variant="outline" className="text-white border-white hover:bg-white/10 text-lg px-8 py-6" onClick={() => window.location.href = 'mailto:ipaagrupacionxerez@gmail.com'}>Mas Informacion</Button>
             </div>
           </div>
         </div>
@@ -174,7 +174,8 @@ export default function Home() {
                 <h3 className="font-heading text-lg text-[#003366]">Zambomba 2026</h3>
               </div>
               <p className="text-gray-600 text-sm mb-2">Diciembre 2026</p>
-              <p className="text-gray-700">Celebración tradicional de Jerez con música, gastronomía y camaradería.</p>
+              <p className="text-gray-700 mb-4">Celebración tradicional de Jerez con música, gastronomía y camaradería.</p>
+              <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
             </Card>
             <Card className="p-6 border-l-4 border-l-[#D4AF37]">
               <div className="flex items-center gap-3 mb-3">
@@ -182,7 +183,8 @@ export default function Home() {
                 <h3 className="font-heading text-lg text-[#003366]">Intercambio Marruecos</h3>
               </div>
               <p className="text-gray-600 text-sm mb-2">Primavera 2026</p>
-              <p className="text-gray-700">Viaje internacional de hermandad y cooperación policial.</p>
+              <p className="text-gray-700 mb-4">Viaje internacional de hermandad y cooperación policial.</p>
+              <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
             </Card>
             <Card className="p-6 border-l-4 border-l-[#D4AF37]">
               <div className="flex items-center gap-3 mb-3">
@@ -190,7 +192,8 @@ export default function Home() {
                 <h3 className="font-heading text-lg text-[#003366]">Visita Yeguada</h3>
               </div>
               <p className="text-gray-600 text-sm mb-2">Mayo 2026</p>
-              <p className="text-gray-700">Experiencia cultural en el patrimonio ecuestre de Jerez.</p>
+              <p className="text-gray-700 mb-4">Experiencia cultural en el patrimonio ecuestre de Jerez.</p>
+              <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
             </Card>
           </div>
         </div>
