@@ -5,6 +5,7 @@ import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { notifyOwner } from "./_core/notification";
+import { sendEmail, generateContactConfirmationEmail } from "./_core/emailService";
 
 export const appRouter = router({
   system: systemRouter,
@@ -68,11 +69,26 @@ export const appRouter = router({
         try {
           const contact = await db.createContact(input);
           
-          // Send notification email
           if (contact) {
+            const referenceId = `IPA-${contact.id.toString().padStart(6, "0")}-${new Date().getFullYear()}`;
+            
             await notifyOwner({
               title: `Nuevo mensaje de contacto: ${input.subject}`,
-              content: `De: ${input.name} (${input.email})\nTeléfono: ${input.phone || "No proporcionado"}\n\nMensaje:\n${input.message}`,
+              content: `De: ${input.name} (${input.email})\nTeléfono: ${input.phone || "No proporcionado"}\nReferencia: ${referenceId}\n\nMensaje:\n${input.message}`,
+            });
+            
+            const confirmationEmail = generateContactConfirmationEmail(
+              input.name,
+              input.email,
+              input.subject,
+              input.message,
+              referenceId
+            );
+            
+            await sendEmail({
+              to: input.email,
+              subject: `Confirmación de recepción - IPA Xerez [${referenceId}]`,
+              htmlContent: confirmationEmail,
             });
           }
           
