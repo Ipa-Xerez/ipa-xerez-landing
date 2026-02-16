@@ -116,7 +116,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h2 className="font-display text-4xl md:text-5xl text-[#003366] text-center mb-16">Nuestros Servicios</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden hover:scale-105 transform">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden hover:scale-105 transform cursor-pointer" onClick={() => window.open('https://ipa-international.org/benefits/travel', '_blank')}>
               <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE1})` }}></div>
               <div className="p-6">
                 <h3 className="font-heading text-xl text-[#003366] mb-3">Viajes e Intercambios</h3>
