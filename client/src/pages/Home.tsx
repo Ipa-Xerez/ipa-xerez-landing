@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useState } from "react";
+import { useLocation } from "wouter";
 
 const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EGzPdIJIBsAxVVTe.jpg";
 const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AUbevYGAaJTmQvTB.jpg";
@@ -12,6 +13,7 @@ const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/
 const SERVICE4 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/pwedeNkkKLNlIuoo.jpg";
 
 export default function Home() {
+  const [, navigate] = useLocation();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success">("idle");
 
@@ -43,6 +45,8 @@ export default function Home() {
           <div className="flex gap-4">
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Inicio</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })}>Servicios</Button>
+            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => navigate('/gallery')}>Galería</Button>
+            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => navigate('/blog')}>Blog</Button>
             <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Unete Ahora</Button>
           </div>
         </div>
