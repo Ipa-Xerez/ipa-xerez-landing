@@ -57,7 +57,7 @@ export default function Home() {
           </div>
           <div className="flex gap-4 items-center">
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Inicio</Button>
-            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })}>Servicios</Button>
+            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => document.getElementById('beneficios')?.scrollIntoView({ behavior: 'smooth' })}>Beneficios</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => navigate('/gallery')}>Galería</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => navigate('/blog')}>Blog</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}>FAQ</Button>
@@ -112,9 +112,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="servicios" className="py-20 bg-[#F5F5F5]">
+      <section id="beneficios" className="py-20 bg-[#F5F5F5]">
         <div className="container mx-auto px-4">
-          <h2 className="font-display text-4xl md:text-5xl text-[#003366] text-center mb-16">Nuestros Servicios</h2>
+          <h2 className="font-display text-4xl md:text-5xl text-[#003366] text-center mb-16">Nuestros Beneficios</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden hover:scale-105 transform cursor-pointer" onClick={() => window.open('https://ipa-international.org/benefits/travel', '_blank')}>
               <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE1})` }}></div>
