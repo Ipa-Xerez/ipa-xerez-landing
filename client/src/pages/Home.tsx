@@ -19,8 +19,7 @@ export default function Home() {
   const [, navigate] = useLocation();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success">("idle");
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success">("idle");
+
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [showInscriptionModal, setShowInscriptionModal] = useState(false);
 
@@ -197,21 +196,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Mantente Informado</h2>
-          <div className="max-w-md mx-auto">
-            <p className="text-center text-gray-600 mb-6">Suscríbete a nuestro boletín para recibir noticias y actualizaciones.</p>
-            <form onSubmit={(e) => { e.preventDefault(); setNewsletterStatus('success'); setTimeout(() => { setNewsletterEmail(''); setNewsletterStatus('idle'); }, 3000); }} className="flex gap-2">
-              <Input type="email" placeholder="Tu email" value={newsletterEmail} onChange={(e) => setNewsletterEmail(e.target.value)} required />
-              <Button type="submit" className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]" disabled={newsletterStatus === 'loading'}>
-                {newsletterStatus === 'loading' ? 'Enviando...' : 'Suscribirse'}
-              </Button>
-            </form>
-            {newsletterStatus === 'success' && <p className="text-center text-green-600 mt-3">¡Gracias por suscribirte!</p>}
-          </div>
-        </div>
-      </section>
+
 
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
