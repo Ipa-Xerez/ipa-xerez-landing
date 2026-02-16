@@ -9,8 +9,8 @@ import InstagramFeed from "@/components/InstagramFeed";
 
 const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EGzPdIJIBsAxVVTe.jpg";
 const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/oKUdbvDdBdpitULq.png";
-const SERVICE2 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/qCidfLJSuGzIfQKh.png";
-const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/pxJHGJxIBfjHfXPS.png";
+const SERVICE2 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/WQBgFGwdKVZpShDj.png";
+const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/jjIqOiRseMIWAcLH.png";
 const SERVICE4 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/kdNKnNyCPISnehMP.png";
 
 export default function Home() {
