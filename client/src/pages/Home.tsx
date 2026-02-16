@@ -77,7 +77,7 @@ export default function Home() {
             <p className="text-xl md:text-2xl mb-8 text-gray-100">Unete a la mayor red mundial de policias bajo nuestro lema Servo per Amikeco</p>
             <div className="flex gap-4 justify-center flex-wrap">
               <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F] text-lg px-8 py-6" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Hazte Socio Ahora</Button>
-              <Button variant="outline" className="text-white border-white hover:bg-white/10 text-lg px-8 py-6" onClick={() => window.location.href = 'mailto:ipaagrupacionxerez@gmail.com'}>Mas Informacion</Button>
+              <Button variant="outline" className="text-white border-white hover:bg-white/10 text-lg px-8 py-6" onClick={() => window.open('https://ipa-international.org/about', '_blank')}>Mas Informacion</Button>
             </div>
           </div>
         </div>
