@@ -28,7 +28,7 @@ export default function Home() {
     { q: "¿Cómo me uno a IPA Xerez?", a: "Puedes unirte completando el formulario de contacto o enviándonos un mensaje por WhatsApp. Te guiaremos en todo el proceso de membresía." },
     { q: "¿Cuál es el costo de la membresía?", a: "Los costos de membresía varían según el tipo. Contáctanos para recibir información detallada sobre las opciones disponibles." },
     { q: "¿Cuáles son los beneficios de ser miembro?", a: "Acceso a descuentos exclusivos, red global de 140+ países, eventos internacionales, formación continua y mucha más camaradería." },
-    { q: "¿Puedo participar en los intercambios internacionales?", a: "Sí, todos nuestros miembros pueden participar en viajes e intercambios. Organizamos eventos en Marruecos, Portugal y otros países." },
+    { q: "¿Puedo participar en los intercambios internacionales?", a: "Sí, todos nuestros miembros, socios y familiares pueden participar en cualquier evento de IPA. Organizamos intercambios y viajes internacionales en diferentes países." },
     { q: "¿Hay eventos locales en Jerez?", a: "Sí, organizamos eventos culturales como las Zambombas, visitas a la Yeguada y reuniones mensuales de camaradería." },
     { q: "¿Necesito ser policía en activo?", a: "No, también aceptamos policías jubilados y personal de seguridad. IPA es para todos los que compartan nuestros valores." }
   ];
