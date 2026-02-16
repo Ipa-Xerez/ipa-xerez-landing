@@ -162,7 +162,7 @@ export default function Blog() {
         <div className="container mx-auto px-4">
           {filteredArticles.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {filteredArticles.map((article) => (
+                  {filteredArticles.length > 0 && filteredArticles.map((article) => (
                 <div
                   key={article.id}
                   onClick={() => setSelectedArticle(article)}
@@ -240,7 +240,8 @@ export default function Blog() {
                 <div className="text-gray-700 leading-relaxed space-y-4">
                   {selectedArticle.content.split('\n\n').map((paragraph, idx) => {
                     if (paragraph.startsWith('#')) {
-                      const level = paragraph.match(/^#+/)[0].length;
+                      const match = paragraph.match(/^#+/);
+                      const level = match ? match[0].length : 0;
                       const text = paragraph.replace(/^#+\s/, '');
                       if (level === 1) return <h1 key={idx} className="text-3xl font-bold text-[#003366] mt-6 mb-4">{text}</h1>;
                       if (level === 2) return <h2 key={idx} className="text-2xl font-bold text-[#003366] mt-5 mb-3">{text}</h2>;
