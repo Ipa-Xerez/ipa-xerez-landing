@@ -49,10 +49,8 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-[#003366] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">IPA</span>
-            </div>
+          <div className="flex items-center gap-3">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA Xerez" className="h-12 w-auto" />
             <span className="font-heading text-[#003366] text-xl hidden sm:inline">IPA Xerez</span>
           </div>
           <div className="flex gap-4 items-center">
