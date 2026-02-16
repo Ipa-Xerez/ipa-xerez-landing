@@ -41,9 +41,9 @@ export default function Home() {
             <span className="font-heading text-[#003366] text-xl hidden sm:inline">IPA Xerez</span>
           </div>
           <div className="flex gap-4">
-            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]">Inicio</Button>
-            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]">Servicios</Button>
-            <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]">Unete Ahora</Button>
+            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Inicio</Button>
+            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5]" onClick={() => document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })}>Servicios</Button>
+            <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Unete Ahora</Button>
           </div>
         </div>
       </nav>
@@ -90,7 +90,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#F5F5F5]">
+      <section id="servicios" className="py-20 bg-[#F5F5F5]">
         <div className="container mx-auto px-4">
           <h2 className="font-display text-4xl md:text-5xl text-[#003366] text-center mb-16">Nuestros Servicios</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -142,7 +142,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#F5F5F5]">
+      <section id="contacto" className="py-20 bg-[#F5F5F5]">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <h2 className="font-display text-4xl md:text-5xl text-[#003366] text-center mb-4">Ponte en Contacto</h2>
