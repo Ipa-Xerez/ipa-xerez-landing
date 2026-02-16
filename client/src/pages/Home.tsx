@@ -228,7 +228,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section id="faq" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Preguntas Frecuentes</h2>
           <div className="max-w-2xl mx-auto space-y-3">
