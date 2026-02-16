@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Calendar, Gift, Bell } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import InstagramFeed from "@/components/InstagramFeed";
@@ -17,6 +17,8 @@ export default function Home() {
   const [, navigate] = useLocation();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success">("idle");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -144,6 +146,97 @@ export default function Home() {
               <p className="text-gray-700 mb-4 italic text-lg">Un nuevo espacio para la amistad y cooperacion.</p>
               <p className="font-heading text-[#003366]">Comunidad IPA</p>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Próximos Eventos</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="p-6 border-l-4 border-l-[#D4AF37]">
+              <div className="flex items-center gap-3 mb-3">
+                <Calendar className="w-6 h-6 text-[#D4AF37]" />
+                <h3 className="font-heading text-lg text-[#003366]">Zambomba 2026</h3>
+              </div>
+              <p className="text-gray-600 text-sm mb-2">Diciembre 2026</p>
+              <p className="text-gray-700">Celebración tradicional de Jerez con música, gastronomía y camaradería.</p>
+            </Card>
+            <Card className="p-6 border-l-4 border-l-[#D4AF37]">
+              <div className="flex items-center gap-3 mb-3">
+                <Calendar className="w-6 h-6 text-[#D4AF37]" />
+                <h3 className="font-heading text-lg text-[#003366]">Intercambio Marruecos</h3>
+              </div>
+              <p className="text-gray-600 text-sm mb-2">Primavera 2026</p>
+              <p className="text-gray-700">Viaje internacional de hermandad y cooperación policial.</p>
+            </Card>
+            <Card className="p-6 border-l-4 border-l-[#D4AF37]">
+              <div className="flex items-center gap-3 mb-3">
+                <Calendar className="w-6 h-6 text-[#D4AF37]" />
+                <h3 className="font-heading text-lg text-[#003366]">Visita Yeguada</h3>
+              </div>
+              <p className="text-gray-600 text-sm mb-2">Mayo 2026</p>
+              <p className="text-gray-700">Experiencia cultural en el patrimonio ecuestre de Jerez.</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-[#003366] text-white">
+        <div className="container mx-auto px-4">
+          <h2 className="font-heading text-4xl text-center mb-12">Beneficios de ser Miembro</h2>
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <Gift className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
+              <h3 className="font-heading text-lg mb-2">Descuentos Exclusivos</h3>
+              <p className="text-gray-300 text-sm">Acceso a ofertas especiales en eventos y servicios.</p>
+            </div>
+            <div className="text-center">
+              <Mail className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
+              <h3 className="font-heading text-lg mb-2">Red Global</h3>
+              <p className="text-gray-300 text-sm">Conecta con policías en 140+ países.</p>
+            </div>
+            <div className="text-center">
+              <Calendar className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
+              <h3 className="font-heading text-lg mb-2">Eventos Internacionales</h3>
+              <p className="text-gray-300 text-sm">Participa en viajes y actividades exclusivas.</p>
+            </div>
+            <div className="text-center">
+              <Bell className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
+              <h3 className="font-heading text-lg mb-2">Formación Continua</h3>
+              <p className="text-gray-300 text-sm">Acceso a webinars y cursos profesionales.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Mantente Informado</h2>
+          <div className="max-w-md mx-auto">
+            <p className="text-center text-gray-600 mb-6">Suscríbete a nuestro boletín para recibir noticias y actualizaciones.</p>
+            <form onSubmit={(e) => { e.preventDefault(); setNewsletterStatus('success'); setTimeout(() => { setNewsletterEmail(''); setNewsletterStatus('idle'); }, 3000); }} className="flex gap-2">
+              <Input type="email" placeholder="Tu email" value={newsletterEmail} onChange={(e) => setNewsletterEmail(e.target.value)} required />
+              <Button type="submit" className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]" disabled={newsletterStatus === 'loading'}>
+                {newsletterStatus === 'loading' ? 'Enviando...' : 'Suscribirse'}
+              </Button>
+            </form>
+            {newsletterStatus === 'success' && <p className="text-center text-green-600 mt-3">¡Gracias por suscribirte!</p>}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Ubicación</h2>
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-gray-200 rounded-lg overflow-hidden h-96 flex items-center justify-center">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3148.1234567890!2d-6.1353!3d36.7408!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7aa5e5e5e5e5e5d%3A0x1234567890abcdef!2sJerez%20de%20la%20Frontera%2C%20C%C3%A1diz!5e0!3m2!1ses!2ses!4v1234567890" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div className="mt-6 text-center">
+              <p className="text-gray-700 text-lg">Jerez de la Frontera, Cádiz, España</p>
+              <p className="text-gray-600 mt-2">Síguenos en nuestras redes sociales para más información</p>
+            </div>
           </div>
         </div>
       </section>
