@@ -214,6 +214,34 @@ const GALLERY_IMAGES: GalleryImage[] = [
     title: "Grupo Septiembre",
     description: "Grupo de miembros en evento de septiembre. La hermandad policial sigue adelante.",
     category: "eventos"
+  },
+  {
+    id: "30",
+    src: "/20251206_182636.jpg",
+    title: "Zambomba 2025 - Noche de Fuego",
+    description: "Zambomba tradicional de Jerez con fuego, música en vivo y camaradería. Evento cultural icono de IPA Xerez.",
+    category: "cultura"
+  },
+  {
+    id: "31",
+    src: "/20251206_180716.jpg",
+    title: "Zambomba con Bandera IPA",
+    description: "Miembros de IPA Xerez-Andalucía reunidos en la Zambomba 2025. Celebrando tradición y hermandad.",
+    category: "eventos"
+  },
+  {
+    id: "32",
+    src: "/20251206_180721.jpg",
+    title: "Zambomba Atardecer",
+    description: "Vista general de la Zambomba 2025 al atardecer. Luces ambientales y ambiente festivo de Jerez.",
+    category: "cultura"
+  },
+  {
+    id: "33",
+    src: "/20251206_122144.jpg",
+    title: "Corrida de Toros - Tradición Ecuestre",
+    description: "Espectáculo ecuestre tradicional de Jerez. Parte de las experiencias culturales de IPA Xerez.",
+    category: "cultura"
   }
 ];
 
