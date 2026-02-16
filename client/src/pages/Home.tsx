@@ -174,34 +174,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#003366] text-white">
-        <div className="container mx-auto px-4">
-          <h2 className="font-heading text-4xl text-center mb-12">Beneficios de ser Miembro</h2>
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <Gift className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
-              <h3 className="font-heading text-lg mb-2">Descuentos Exclusivos</h3>
-              <p className="text-gray-300 text-sm">Acceso a ofertas especiales en eventos y servicios.</p>
-            </div>
-            <div className="text-center">
-              <Mail className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
-              <h3 className="font-heading text-lg mb-2">Red Global</h3>
-              <p className="text-gray-300 text-sm">Conecta con policías en 140+ países.</p>
-            </div>
-            <div className="text-center">
-              <Calendar className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
-              <h3 className="font-heading text-lg mb-2">Eventos Internacionales</h3>
-              <p className="text-gray-300 text-sm">Participa en viajes y actividades exclusivas.</p>
-            </div>
-            <div className="text-center">
-              <Bell className="w-12 h-12 text-[#D4AF37] mx-auto mb-3" />
-              <h3 className="font-heading text-lg mb-2">Formación Continua</h3>
-              <p className="text-gray-300 text-sm">Acceso a webinars y cursos profesionales.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section id="eventos" className="py-20 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4">
           <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Próximos Eventos</h2>
