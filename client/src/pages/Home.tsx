@@ -175,7 +175,7 @@ export default function Home() {
               </div>
               <p className="text-gray-600 text-sm mb-2">Diciembre 2026</p>
               <p className="text-gray-700 mb-4">Celebración tradicional de Jerez con música, gastronomía y camaradería.</p>
-              <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
+              <a href="https://ipa-international.org/sections-area/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
             </Card>
             <Card className="p-6 border-l-4 border-l-[#D4AF37]">
               <div className="flex items-center gap-3 mb-3">
@@ -184,7 +184,7 @@ export default function Home() {
               </div>
               <p className="text-gray-600 text-sm mb-2">Primavera 2026</p>
               <p className="text-gray-700 mb-4">Viaje internacional de hermandad y cooperación policial.</p>
-              <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
+              <a href="https://ipa-international.org/sections-area/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
             </Card>
             <Card className="p-6 border-l-4 border-l-[#D4AF37]">
               <div className="flex items-center gap-3 mb-3">
@@ -193,7 +193,7 @@ export default function Home() {
               </div>
               <p className="text-gray-600 text-sm mb-2">Mayo 2026</p>
               <p className="text-gray-700 mb-4">Experiencia cultural en el patrimonio ecuestre de Jerez.</p>
-              <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
+              <a href="https://ipa-international.org/sections-area/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
             </Card>
           </div>
         </div>
