@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send, Calendar, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Calendar, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import InstagramFeed from "@/components/InstagramFeed";
@@ -21,6 +21,7 @@ export default function Home() {
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success">("idle");
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [showInscriptionModal, setShowInscriptionModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const faqs = [
     { q: "¿Cómo me uno a IPA Xerez?", a: "Puedes unirte completando el formulario de contacto o enviándonos un mensaje por WhatsApp. Te guiaremos en todo el proceso de membresía." },
@@ -55,7 +56,8 @@ export default function Home() {
             <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA Xerez" className="h-12 w-auto" />
             <span className="font-heading text-[#003366] text-xl hidden sm:inline font-bold">IPA Xerez</span>
           </div>
-          <div className="flex gap-2 md:gap-4 items-center flex-wrap justify-end">
+          {/* Desktop Menu */}
+          <div className="hidden md:flex gap-2 md:gap-4 items-center flex-wrap justify-end">
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Inicio</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => document.getElementById('beneficios')?.scrollIntoView({ behavior: 'smooth' })}>Beneficios</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/gallery')}>Galería</Button>
@@ -69,7 +71,28 @@ export default function Home() {
               <a href="https://wa.me/34675508110" target="_blank" rel="noopener noreferrer" className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2 transition-all duration-300 hover:scale-110" title="WhatsApp"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.255.949c-1.238.503-2.37 1.237-3.285 2.152-1.81 1.81-2.834 4.158-2.834 6.664 0 2.506 1.023 4.854 2.834 6.664 1.81 1.81 4.158 2.834 6.664 2.834 2.506 0 4.854-1.023 6.664-2.834 1.81-1.81 2.834-4.158 2.834-6.664 0-2.506-1.023-4.854-2.834-6.664-1.81-1.81-4.158-2.834-6.664-2.834z" /></svg></a>
             </div>
           </div>
+          {/* Mobile Menu Button */}
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden text-[#003366] p-2">
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-gray-200 px-4 py-4 space-y-2">
+            <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setMobileMenuOpen(false); }}>Inicio</Button>
+            <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { document.getElementById('beneficios')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>Beneficios</Button>
+            <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/gallery'); setMobileMenuOpen(false); }}>Galería</Button>
+            <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/blog'); setMobileMenuOpen(false); }}>Blog</Button>
+            <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/calendar'); setMobileMenuOpen(false); }}>Calendario</Button>
+            <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>FAQ</Button>
+            <Button className="w-full bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-sm font-bold" onClick={() => { document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>Únete</Button>
+            <div className="flex gap-2 pt-2">
+              <a href="https://www.facebook.com/profile.php?id=61572445883496" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 transition-all duration-300" title="Facebook"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+              <a href="https://instagram.com/ipa_xerez" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-white rounded-full p-2 transition-all duration-300" title="Instagram"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg></a>
+              <a href="https://wa.me/34675508110" target="_blank" rel="noopener noreferrer" className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2 transition-all duration-300" title="WhatsApp"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.255.949c-1.238.503-2.37 1.237-3.285 2.152-1.81 1.81-2.834 4.158-2.834 6.664 0 2.506 1.023 4.854 2.834 6.664 1.81 1.81 4.158 2.834 6.664 2.834 2.506 0 4.854-1.023 6.664-2.834 1.81-1.81 2.834-4.158 2.834-6.664 0-2.506-1.023-4.854-2.834-6.664-1.81-1.81-4.158-2.834-6.664-2.834z" /></svg></a>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero mejorado */}
