@@ -69,15 +69,20 @@ export default function Home() {
 
       <section className="relative h-[600px] overflow-hidden">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_IMAGE})` }}>
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/70"></div>
         </div>
         <div className="relative h-full flex items-center justify-center text-center text-white">
-          <div className="max-w-2xl mx-auto px-4">
-            <h1 className="font-display text-5xl md:text-6xl mb-6 leading-tight">Amistad y Profesionalidad sin Fronteras</h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-100">Unete a la mayor red mundial de policias bajo nuestro lema Servo per Amikeco</p>
+          <div className="max-w-3xl mx-auto px-4">
+            <div className="mb-6 inline-block">
+              <div className="bg-[#D4AF37]/20 border border-[#D4AF37] rounded-full px-6 py-2 text-[#D4AF37] text-sm font-semibold backdrop-blur-sm">
+                ✨ Desde 1950 | 140+ Países | Servo per Amikeco
+              </div>
+            </div>
+            <h1 className="font-display text-5xl md:text-7xl mb-6 leading-tight font-bold drop-shadow-lg">Amistad y Profesionalidad sin Fronteras</h1>
+            <p className="text-xl md:text-2xl mb-10 text-gray-50 drop-shadow-md">Únete a la mayor red mundial de policías bajo nuestro lema de hermandad internacional</p>
             <div className="flex gap-4 justify-center flex-wrap">
-              <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F] text-lg px-8 py-6" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Hazte Socio Ahora</Button>
-              <Button variant="outline" className="text-white border-white hover:bg-white/10 text-lg px-8 py-6" onClick={() => window.open('https://ipa-international.org/about', '_blank')}>Mas Informacion</Button>
+              <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-lg px-10 py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Hazte Socio Ahora</Button>
+              <Button variant="outline" className="text-white border-2 border-white hover:bg-white/20 text-lg px-10 py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm" onClick={() => window.open('https://ipa-international.org/about', '_blank')}>Más Información</Button>
             </div>
           </div>
         </div>
