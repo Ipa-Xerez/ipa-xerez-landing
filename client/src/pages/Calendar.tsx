@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, MapPin, Calendar as CalendarIcon, ArrowLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Calendar as CalendarIcon } from "lucide-react";
 import { useLocation } from "wouter";
+import BackButton from "@/components/BackButton";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Event {
   id: string;
@@ -153,14 +155,11 @@ export default function Calendar() {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="container mx-auto px-4 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-[#003366] hover:text-[#1A3A52] transition-colors font-semibold"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Volver a Inicio
-          </button>
+        <div className="mb-6">
+          <BackButton />
+        </div>
+        <div className="mb-6">
+          <Breadcrumbs items={[{ label: "Calendario", href: "/calendar" }]} />
         </div>
         <h1 className="font-display text-4xl md:text-5xl text-[#003366] text-center mb-4 font-bold">Calendario de Eventos</h1>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Descubre todos los eventos de IPA Xerez e IPA Internacional. Los eventos locales aparecen en azul, los internacionales en verde.</p>

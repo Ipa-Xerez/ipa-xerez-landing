@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X, ChevronLeft, ChevronRight, Share2 } from "lucide-react";
 import { useLocation } from "wouter";
+import BackButton from "@/components/BackButton";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface GalleryImage {
   id: string;
@@ -288,11 +290,23 @@ export default function Gallery() {
         </div>
       </nav>
 
+      {/* Breadcrumbs */}
+      <div className="bg-gray-50 border-b border-gray-200">
+        <div className="container mx-auto px-4 py-3">
+          <Breadcrumbs items={[{ label: "Galería", href: "/gallery" }]} />
+        </div>
+      </div>
+
       {/* Header */}
       <section className="bg-gradient-to-r from-[#003366] to-[#004d99] text-white py-12 md:py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="font-display text-4xl md:text-5xl mb-4 font-bold">Galería de Fotos</h1>
-          <p className="text-lg md:text-xl text-gray-100 max-w-2xl mx-auto">Momentos especiales de IPA Xerez: viajes internacionales, eventos y experiencias culturales que fortalecen nuestra hermandad.</p>
+        <div className="container mx-auto px-4">
+          <div className="mb-6">
+            <BackButton />
+          </div>
+          <div className="text-center">
+            <h1 className="font-display text-4xl md:text-5xl mb-4 font-bold">Galería de Fotos</h1>
+            <p className="text-lg md:text-xl text-gray-100 max-w-2xl mx-auto">Momentos especiales de IPA Xerez: viajes internacionales, eventos y experiencias culturales que fortalecen nuestra hermandad.</p>
+          </div>
         </div>
       </section>
 
