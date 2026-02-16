@@ -174,41 +174,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="font-heading text-4xl text-[#003366] text-center mb-12">Próximos Eventos</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card className="p-6 border-l-4 border-l-[#D4AF37]">
-              <div className="flex items-center gap-3 mb-3">
-                <Calendar className="w-6 h-6 text-[#D4AF37]" />
-                <h3 className="font-heading text-lg text-[#003366]">Zambomba 2026</h3>
-              </div>
-              <p className="text-gray-600 text-sm mb-2">Diciembre 2026</p>
-              <p className="text-gray-700 mb-4">Celebración tradicional de Jerez con música, gastronomía y camaradería.</p>
-              <a href="https://ipa-international.org/sections-area/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
-            </Card>
-            <Card className="p-6 border-l-4 border-l-[#D4AF37]">
-              <div className="flex items-center gap-3 mb-3">
-                <Calendar className="w-6 h-6 text-[#D4AF37]" />
-                <h3 className="font-heading text-lg text-[#003366]">Intercambio Marruecos</h3>
-              </div>
-              <p className="text-gray-600 text-sm mb-2">Primavera 2026</p>
-              <p className="text-gray-700 mb-4">Viaje internacional de hermandad y cooperación policial.</p>
-              <a href="https://ipa-international.org/sections-area/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
-            </Card>
-            <Card className="p-6 border-l-4 border-l-[#D4AF37]">
-              <div className="flex items-center gap-3 mb-3">
-                <Calendar className="w-6 h-6 text-[#D4AF37]" />
-                <h3 className="font-heading text-lg text-[#003366]">Visita Yeguada</h3>
-              </div>
-              <p className="text-gray-600 text-sm mb-2">Mayo 2026</p>
-              <p className="text-gray-700 mb-4">Experiencia cultural en el patrimonio ecuestre de Jerez.</p>
-              <a href="https://ipa-international.org/sections-area/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003366] text-white px-4 py-2 rounded hover:bg-[#1A3A52] transition-colors text-sm">Más Información</a>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       <section className="py-20 bg-[#003366] text-white">
         <div className="container mx-auto px-4">
           <h2 className="font-heading text-4xl text-center mb-12">Beneficios de ser Miembro</h2>
