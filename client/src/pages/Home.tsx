@@ -122,8 +122,8 @@ export default function Home() {
                 ✨ Desde 1950 | 140+ Países | Servo per Amikeco
               </div>
             </div>
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl mb-6 leading-tight font-bold drop-shadow-lg">Amistad y Profesionalidad sin Fronteras</h1>
-            <p className="text-lg md:text-2xl mb-10 text-gray-100 drop-shadow-md max-w-2xl mx-auto">Únete a la mayor red mundial de policías bajo nuestro lema de hermandad internacional</p>
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl mb-6 leading-tight font-bold drop-shadow-lg">Hermandad Policial Internacional sin Fronteras</h1>
+            <p className="text-lg md:text-2xl mb-10 text-gray-100 drop-shadow-md max-w-2xl mx-auto">Únete a IPA Xerez: la mayor red mundial de policías. Amistad, profesionalidad y hermandad internacional en 140+ países</p>
             <div className="flex gap-4 justify-center flex-wrap">
               <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2" onClick={() => setShowInscriptionModal(true)}>
                 Hazte Socio Ahora <ArrowRight className="w-5 h-5" />
@@ -137,27 +137,27 @@ export default function Home() {
       {/* Sección de Valores mejorada */}
       <section className="py-16 md:py-20 bg-gradient-to-r from-[#003366] to-[#004d99] text-white">
         <div className="container mx-auto px-4">
-          <h2 className="font-display text-3xl md:text-4xl text-center mb-12 font-bold">¿Por qué unirse a IPA Xerez?</h2>
+          <h2 className="font-display text-3xl md:text-4xl text-center mb-12 font-bold">¿Por qué unirse a IPA Xerez? Beneficios de la Hermandad Policial</h2>
           <div className="grid md:grid-cols-4 gap-6">
             <div className="text-center p-6 bg-white/10 rounded-lg backdrop-blur-sm">
               <Globe className="w-12 h-12 mx-auto mb-4 text-[#D4AF37]" />
-              <h3 className="font-heading text-xl mb-2 font-bold">Red Global</h3>
-              <p className="text-gray-100 text-sm">Conecta con policías en 140+ países</p>
+              <h3 className="font-heading text-xl mb-2 font-bold">Red Global de Policías</h3>
+              <p className="text-gray-100 text-sm">Conecta con policías internacionales en 140+ países. Hermandad policial sin fronteras</p>
             </div>
             <div className="text-center p-6 bg-white/10 rounded-lg backdrop-blur-sm">
               <Heart className="w-12 h-12 mx-auto mb-4 text-[#D4AF37]" />
-              <h3 className="font-heading text-xl mb-2 font-bold">Hermandad</h3>
-              <p className="text-gray-100 text-sm">Amistad y solidaridad profesional</p>
+              <h3 className="font-heading text-xl mb-2 font-bold">Hermandad Policial</h3>
+              <p className="text-gray-100 text-sm">Amistad, solidaridad y camaradería profesional entre policías</p>
             </div>
             <div className="text-center p-6 bg-white/10 rounded-lg backdrop-blur-sm">
               <Award className="w-12 h-12 mx-auto mb-4 text-[#D4AF37]" />
-              <h3 className="font-heading text-xl mb-2 font-bold">Beneficios</h3>
-              <p className="text-gray-100 text-sm">Descuentos y eventos exclusivos</p>
+              <h3 className="font-heading text-xl mb-2 font-bold">Beneficios Exclusivos</h3>
+              <p className="text-gray-100 text-sm">Descuentos, viajes internacionales y eventos policiales exclusivos</p>
             </div>
             <div className="text-center p-6 bg-white/10 rounded-lg backdrop-blur-sm">
               <Zap className="w-12 h-12 mx-auto mb-4 text-[#D4AF37]" />
-              <h3 className="font-heading text-xl mb-2 font-bold">Desarrollo</h3>
-              <p className="text-gray-100 text-sm">Formación y crecimiento continuo</p>
+              <h3 className="font-heading text-xl mb-2 font-bold">Desarrollo Profesional</h3>
+              <p className="text-gray-100 text-sm">Formación continua y crecimiento profesional en seguridad</p>
             </div>
           </div>
         </div>
