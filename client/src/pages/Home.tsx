@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
+import InstagramFeed from "@/components/InstagramFeed";
 
 const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EGzPdIJIBsAxVVTe.jpg";
 const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AUbevYGAaJTmQvTB.jpg";
@@ -199,6 +200,20 @@ export default function Home() {
                 <p className="font-heading text-[#003366] mb-1">Ubicacion</p>
                 <p className="text-gray-600">Jerez de la Frontera, Cadiz</p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-gray-50 py-12 border-t border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="mb-8">
+            <h2 className="font-heading text-3xl text-[#003366] mb-2">Síguenos en Instagram</h2>
+            <p className="text-gray-600">Descubre nuestras últimas actividades y eventos</p>
+          </div>
+          <div className="flex justify-center">
+            <div className="w-full max-w-md">
+              <InstagramFeed username="ipa_xerez" />
             </div>
           </div>
         </div>
