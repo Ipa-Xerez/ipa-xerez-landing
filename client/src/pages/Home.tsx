@@ -137,7 +137,7 @@ export default function Home() {
                 <p className="text-gray-600">Zambombas y visitas culturales de Jerez.</p>
               </div>
             </Card>
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden hover:scale-105 transform">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden hover:scale-105 transform cursor-pointer" onClick={() => window.open('https://ipa-international.org/benefits/discounts-and-offers/', '_blank')}>
               <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE4})` }}></div>
               <div className="p-6">
                 <h3 className="font-heading text-xl text-[#003366] mb-3">Beneficios Exclusivos</h3>
