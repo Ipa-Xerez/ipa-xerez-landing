@@ -8,10 +8,10 @@ import { useLocation } from "wouter";
 import InstagramFeed from "@/components/InstagramFeed";
 
 const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EGzPdIJIBsAxVVTe.jpg";
-const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AUbevYGAaJTmQvTB.jpg";
-const SERVICE2 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/sqOPmaIMatHTqxfg.jpg";
-const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/pwedeNkkKLNlIuoo.jpg";
-const SERVICE4 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/pwedeNkkKLNlIuoo.jpg";
+const SERVICE1 = "https://private-us-east-1.manuscdn.com/sessionFile/dHTe3bnnAERCDrPAc6Tnw4/sandbox/ezYBw6s0FkNk8vVveg481L-img-1_1771250909000_na1fn_aXBhLXhlcmV6LXRyYXZlbC1iZW5lZml0cw.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80";
+const SERVICE2 = "https://private-us-east-1.manuscdn.com/sessionFile/dHTe3bnnAERCDrPAc6Tnw4/sandbox/ezYBw6s0FkNk8vVveg481L-img-2_1771250907000_na1fn_aXBhLXhlcmV6LXRyYWluaW5nLWJlbmVmaXRz.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80";
+const SERVICE3 = "https://private-us-east-1.manuscdn.com/sessionFile/dHTe3bnnAERCDrPAc6Tnw4/sandbox/ezYBw6s0FkNk8vVveg481L-img-3_1771250918000_na1fn_aXBhLXhlcmV6LWV2ZW50cy1jdWx0dXJl.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80";
+const SERVICE4 = "https://private-us-east-1.manuscdn.com/sessionFile/dHTe3bnnAERCDrPAc6Tnw4/sandbox/ezYBw6s0FkNk8vVveg481L-img-4_1771250907000_na1fn_aXBhLXhlcmV6LWV4Y2x1c2l2ZS1iZW5lZml0cw.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80";
 
 export default function Home() {
   const [, navigate] = useLocation();
