@@ -88,6 +88,9 @@ export default function Home() {
             <h2 className="font-display text-4xl md:text-5xl text-[#003366] mb-6">Nuestra Historia</h2>
             <p className="text-lg text-gray-700 leading-relaxed">La International Police Association (IPA) es una organizacion mundial que conecta a miembros de las fuerzas y cuerpos de seguridad de todo el planeta. En IPA Xerez, fomentamos la amistad, la cooperacion internacional y el desarrollo profesional.</p>
           </div>
+          <div className="flex justify-center mb-8">
+            <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="bg-[#003366] text-white px-6 py-3 rounded-lg hover:bg-[#002244] transition-colors">Ver IPA España</a>
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="text-5xl mb-4">🌍</div>
@@ -364,6 +367,7 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-gray-300">
                 <li><a href="#" className="hover:text-[#D4AF37]">Inicio</a></li>
                 <li><a href="#" className="hover:text-[#D4AF37]">Servicios</a></li>
+                <li><a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="hover:text-[#D4AF37]">IPA España</a></li>
               </ul>
             </div>
             <div>
