@@ -185,14 +185,13 @@ export default function Home() {
               <p className="text-gray-700 text-center mb-6">Vive una experiencia única con IPA Málaga e IPA Xerez. Honra, hermandad y orgullo policial internacional.</p>
               <a href="https://policeweek.org" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#D4AF37] text-[#003366] px-6 py-3 rounded font-semibold hover:bg-[#C4991F] transition-colors">Más Información</a>
             </div>
-            <div className="flex flex-col items-center justify-center">
-              <div className="bg-[#003366] text-white p-8 rounded-lg text-center w-full">
-                <h3 className="font-heading text-2xl mb-4">Puy du Fou</h3>
-                <p className="text-lg mb-2">17-19 Abril 2026</p>
-                <p className="text-gray-300 mb-6">Visita al Parque Temático Puy du Fou en Francia</p>
-                <p className="text-gray-300 mb-6">Experiencia cultural única con la hermandad de IPA</p>
-                <p className="text-sm text-gray-400">Más detalles próximamente</p>
-              </div>
+            <div className="flex flex-col items-center">
+              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/DFdPVZtekfyedXRf.jpeg" alt="Puy du Fou IPA" className="w-full max-w-sm rounded-lg shadow-lg mb-4" />
+              <h3 className="font-heading text-2xl text-[#003366] mb-2">Puy du Fou</h3>
+              <p className="text-gray-600 text-center mb-4">Francia | 17-19 Abril 2026</p>
+              <p className="text-gray-700 text-center mb-2"><strong>360 EUR por persona</strong></p>
+              <p className="text-gray-700 text-center mb-6">3 dias / 2 noches con entrada al Sueno de Toledo, autocar, hotel y todas las excursiones incluidas</p>
+              <a href="https://selmaviajes.com/17-04-26-puy-du-fou-especial-ipa/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#D4AF37] text-[#003366] px-6 py-3 rounded font-semibold hover:bg-[#C4991F] transition-colors">Reservar Ahora</a>
             </div>
           </div>
         </div>
