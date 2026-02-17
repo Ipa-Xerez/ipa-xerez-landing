@@ -92,3 +92,9 @@
 - [x] Crear componente de carrusel de eventos
 - [x] Agregar sección de próximos eventos en Home.tsx
 - [x] Crear tests para carrusel (8 tests pasados)
+
+
+## Social Media Reorganization (Completado)
+
+- [x] Mover sección de Facebook después de Instagram
+- [x] Agregar botón "Síguenos en Redes" en el hero
