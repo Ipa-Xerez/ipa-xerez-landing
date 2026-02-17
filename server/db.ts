@@ -1,6 +1,6 @@
 import { eq, gte, lte, and, count, desc, or, like } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -644,6 +644,79 @@ export async function searchBlogPosts(query: string) {
     return posts;
   } catch (error) {
     console.error("[Blog] Error searching posts:", error);
+    throw error;
+  }
+}
+
+
+// Administrator functions
+export async function isUserAdmin(email: string): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  try {
+    const admin = await db
+      .select()
+      .from(administrators)
+      .where(eq(administrators.email, email))
+      .limit(1);
+    return admin.length > 0;
+  } catch (error) {
+    console.error("[Admin] Error checking admin status:", error);
+    return false;
+  }
+}
+
+export async function getAdministrator(email: string): Promise<Administrator | null> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    const admin = await db
+      .select()
+      .from(administrators)
+      .where(eq(administrators.email, email))
+      .limit(1);
+    return admin[0] || null;
+  } catch (error) {
+    console.error("[Admin] Error getting administrator:", error);
+    throw error;
+  }
+}
+
+export async function addAdministrator(data: InsertAdministrator): Promise<Administrator> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    const result = await db.insert(administrators).values(data);
+    const admin = await db
+      .select()
+      .from(administrators)
+      .where(eq(administrators.id, result[0].insertId as any))
+      .limit(1);
+    return admin[0];
+  } catch (error) {
+    console.error("[Admin] Error adding administrator:", error);
+    throw error;
+  }
+}
+
+export async function getAllAdministrators(): Promise<Administrator[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    return await db.select().from(administrators);
+  } catch (error) {
+    console.error("[Admin] Error getting administrators:", error);
+    throw error;
+  }
+}
+
+export async function removeAdministrator(email: string): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    await db.delete(administrators).where(eq(administrators.email, email));
+  } catch (error) {
+    console.error("[Admin] Error removing administrator:", error);
     throw error;
   }
 }

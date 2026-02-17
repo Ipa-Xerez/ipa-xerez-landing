@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,23 @@ import { toast } from "sonner";
 export default function BlogAdmin() {
   const [, navigate] = useLocation();
   const { user, isAuthenticated } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isCheckingAdmin, setIsCheckingAdmin] = useState(true);
+  const checkAdminMutation = trpc.admin.isAdmin.useMutation();
+
+  useEffect(() => {
+    if (isAuthenticated && user?.email) {
+      checkAdminMutation.mutateAsync({ email: user.email }).then(result => {
+        setIsAdmin(result);
+        setIsCheckingAdmin(false);
+      }).catch(() => {
+        setIsAdmin(false);
+        setIsCheckingAdmin(false);
+      });
+    } else {
+      setIsCheckingAdmin(false);
+    }
+  }, [isAuthenticated, user?.email]);
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 

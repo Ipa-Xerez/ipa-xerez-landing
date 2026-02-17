@@ -182,3 +182,19 @@ export const blogPosts = mysqlTable("blog_posts", {
 
 export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = typeof blogPosts.$inferInsert;
+
+// Administrators table for access control
+export const administrators = mysqlTable("administrators", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull().unique(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  name: varchar("name", { length: 255 }),
+  permissions: varchar("permissions", { length: 255 }).default("blog,newsletter,events").notNull(), // comma-separated permissions
+  addedBy: int("added_by"), // user ID of the admin who added this admin
+  addedAt: timestamp("added_at").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Administrator = typeof administrators.$inferSelect;
+export type InsertAdministrator = typeof administrators.$inferInsert;

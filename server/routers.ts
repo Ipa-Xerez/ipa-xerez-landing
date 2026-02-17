@@ -350,5 +350,38 @@ export const appRouter = router({
         }
       }),
   }),
+
+  admin: router({
+    isAdmin: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(({ input }) => db.isUserAdmin(input.email)),
+    getAll: protectedProcedure.query(() => db.getAllAdministrators()),
+    add: protectedProcedure
+      .input(z.object({
+        email: z.string().email(),
+        name: z.string().optional(),
+        permissions: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (!ctx.user?.email || !ctx.user?.id) throw new Error("Not authenticated");
+        const isAdmin = await db.isUserAdmin(ctx.user.email);
+        if (!isAdmin) throw new Error("Not authorized");
+        return db.addAdministrator({
+          email: input.email,
+          userId: ctx.user.id,
+          name: input.name,
+          permissions: input.permissions || "blog,newsletter,events",
+          addedBy: ctx.user.id,
+        });
+      }),
+    remove: protectedProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input, ctx }) => {
+        if (!ctx.user?.email) throw new Error("Not authenticated");
+        const isAdmin = await db.isUserAdmin(ctx.user.email);
+        if (!isAdmin) throw new Error("Not authorized");
+        return db.removeAdministrator(input.email);
+      }),
+  }),
 })
 export type AppRouter = typeof appRouter;
