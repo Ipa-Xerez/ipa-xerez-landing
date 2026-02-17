@@ -75,3 +75,13 @@
 - [x] Agregar campos de configuración en formulario de blog
 - [x] Actualizar panel de admin con estado de compartición
 - [x] Crear tests para validar programación automática (8 tests pasados)
+
+
+## Facebook Webhooks & Real-time Sync (Completado)
+
+- [x] Crear tabla de métricas de engagement en base de datos
+- [x] Configurar endpoint webhook en Express
+- [x] Implementar procesamiento de eventos de Facebook
+- [x] Crear procedimientos tRPC para obtener métricas
+- [x] Actualizar panel de admin con estadísticas en vivo
+- [x] Crear tests para webhooks (8 tests pasados)

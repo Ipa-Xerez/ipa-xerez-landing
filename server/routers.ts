@@ -500,6 +500,53 @@ export const appRouter = router({
           throw error;
         }
       }),
+    
+    getEngagementMetrics: publicProcedure
+      .input(z.object({ facebookPostId: z.string() }))
+      .query(async ({ input }) => {
+        try {
+          const metrics = await db.getEngagementMetrics(input.facebookPostId);
+          
+          if (!metrics) {
+            return {
+              likes: 0,
+              comments: 0,
+              shares: 0,
+              reactions: {},
+            };
+          }
+          
+          return {
+            likes: metrics.likes,
+            comments: metrics.comments,
+            shares: metrics.shares,
+            reactions: metrics.reactions ? JSON.parse(metrics.reactions) : {},
+            lastUpdated: metrics.lastUpdated,
+          };
+        } catch (error) {
+          console.error("[Facebook] Error getting engagement metrics:", error);
+          throw error;
+        }
+      }),
+    
+    getAllEngagementMetrics: publicProcedure
+      .query(async () => {
+        try {
+          const metrics = await db.getAllEngagementMetrics();
+          
+          return metrics.map((m) => ({
+            facebookPostId: m.facebookPostId,
+            likes: m.likes,
+            comments: m.comments,
+            shares: m.shares,
+            reactions: m.reactions ? JSON.parse(m.reactions) : {},
+            lastUpdated: m.lastUpdated,
+          }));
+        } catch (error) {
+          console.error("[Facebook] Error getting all engagement metrics:", error);
+          throw error;
+        }
+      }),
   }),
 
   admin: router({

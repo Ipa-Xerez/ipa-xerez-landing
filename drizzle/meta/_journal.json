@@ -78,6 +78,13 @@
       "when": 1771358391179,
       "tag": "0010_watery_victor_mancha",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1771358945401,
+      "tag": "0011_woozy_weapon_omega",
+      "breakpoints": true
     }
   ]
 }
