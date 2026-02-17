@@ -186,7 +186,7 @@ export type InsertBlogPost = typeof blogPosts.$inferInsert;
 // Administrators table for access control
 export const administrators = mysqlTable("administrators", {
   id: int("id").autoincrement().primaryKey(),
-  userId: int("user_id").notNull().unique(),
+  userId: int("user_id").unique(),
   email: varchar("email", { length: 320 }).notNull().unique(),
   name: varchar("name", { length: 255 }),
   permissions: varchar("permissions", { length: 255 }).default("blog,newsletter,events").notNull(), // comma-separated permissions

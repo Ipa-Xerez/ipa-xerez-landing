@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO administrators (email, name, permissions) VALUES ('mariluzjerez@gmail.com', 'Mariluz', 'blog,newsletter,events');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute INSERT INTO administrators (email, name, permissions) VALUES ('mariluzjerez@gmail.com', 'Mariluz', 'blog,newsletter,events');",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 371
+}

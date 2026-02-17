@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO administrators (email, name, permissions) VALUES ('mariluzjerez@gmail.com', 'Mariluz', 'blog,newsletter,events') ON DUPLICATE KEY UPDATE permissions = 'blog,newsletter,events';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute INSERT INTO administrators (email, name, permissions) VALUES ('mariluzjerez@gmail.com', 'Mariluz', 'blog,newsletter,events') ON DUPLICATE KEY UPDATE permissions = 'blog,newsletter,events';",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1364 (HY000) at line 1: Field 'user_id' doesn't have a default value"
+  ]
+}

@@ -85,9 +85,7 @@ export default function Blog() {
               >
                 📧 Enviar Historia
               </Button>
-              {!isAuthenticated && (
-                <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={() => window.location.href = getLoginUrl()}><LogIn className="h-4 w-4 mr-2" />Login Admin</Button>
-              )}
+              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={() => window.location.href = getLoginUrl('/admin/blog')}><LogIn className="h-4 w-4 mr-2" />Login Admin</Button>
             </div>
           </div>
           <h1 className="text-5xl font-bold mb-4">📰 Blog IPA Xerez</h1>
