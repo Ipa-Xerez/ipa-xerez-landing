@@ -98,3 +98,14 @@
 
 - [x] Mover sección de Facebook después de Instagram
 - [x] Agregar botón "Síguenos en Redes" en el hero
+
+## Facebook Integration Removal (Completado)
+
+- [x] Eliminada toda la funcionalidad de integración de Facebook
+- [x] Removidos componentes (FacebookFeed, FacebookEngagementStats)
+- [x] Removidos servicios (facebookScheduler, facebookWebhookService)
+- [x] Removidos procedimientos tRPC de Facebook
+- [x] Removidos endpoints webhook de Facebook
+- [x] Removidas tablas y funciones de base de datos de Facebook
+- [x] Removidas referencias en BlogAdmin.tsx
+- [x] Mantenidos solo los enlaces directos a redes sociales

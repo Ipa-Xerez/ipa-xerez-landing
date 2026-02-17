@@ -7,7 +7,6 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import { processFacebookWebhookEvent, verifyWebhookSignature } from "../services/facebookWebhookService";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -37,43 +36,7 @@ async function startServer() {
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
-  // Facebook Webhook endpoint
-  app.post("/api/webhooks/facebook", express.json(), async (req, res) => {
-    try {
-      const signature = req.headers["x-hub-signature-256"] as string;
-      const appSecret = process.env.FACEBOOK_APP_SECRET;
 
-      if (appSecret && signature) {
-        const body = JSON.stringify(req.body);
-        const isValid = verifyWebhookSignature(body, signature, appSecret);
-        if (!isValid) {
-          console.warn("[Facebook Webhook] Invalid signature");
-          return res.status(403).json({ error: "Invalid signature" });
-        }
-      }
-
-      await processFacebookWebhookEvent(req.body);
-      res.status(200).json({ success: true });
-    } catch (error) {
-      console.error("[Facebook Webhook] Error:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  });
-
-  app.get("/api/webhooks/facebook", (req, res) => {
-    const mode = req.query["hub.mode"];
-    const token = req.query["hub.verify_token"];
-    const challenge = req.query["hub.challenge"];
-    const verifyToken = process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN;
-
-    if (mode === "subscribe" && token === verifyToken) {
-      console.log("[Facebook Webhook] Verified");
-      res.status(200).send(challenge);
-    } else {
-      console.warn("[Facebook Webhook] Verification failed");
-      res.status(403).json({ error: "Forbidden" });
-    }
-  });
 
   // tRPC API
   app.use(

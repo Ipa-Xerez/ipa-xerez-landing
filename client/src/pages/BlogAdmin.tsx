@@ -57,9 +57,7 @@ export default function BlogAdmin() {
   const updateMutation = trpc.blog.update.useMutation();
   const deleteMutation = trpc.blog.delete.useMutation();
   const uploadImageMutation = trpc.blog.uploadImage.useMutation();
-  const shareToFacebookMutation = trpc.facebook.sharePost.useMutation();
-  const configureAutoShareMutation = trpc.facebook.configureAutoShare.useMutation();
-  const getShareStatusQuery = trpc.facebook.getShareStatus.useQuery({ blogPostId: editingId || 0 }, { enabled: !!editingId });
+
 
   // Show loading while checking authentication
   if (isCheckingAdmin) {
@@ -273,22 +271,7 @@ export default function BlogAdmin() {
     setEditingId(null);
   };
 
-  // Handle share to Facebook
-  const handleShareToFacebook = async (post: any) => {
-    try {
-      await shareToFacebookMutation.mutateAsync({
-        postId: post.id,
-        title: post.title,
-        excerpt: post.excerpt || post.content.substring(0, 200),
-        image: post.image,
-        slug: post.slug,
-      });
-      toast.success("Articulo compartido en Facebook");
-    } catch (error) {
-      toast.error("Error al compartir en Facebook");
-      console.error(error);
-    }
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -675,14 +658,7 @@ export default function BlogAdmin() {
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
-                          <button
-                            onClick={() => handleShareToFacebook(post)}
-                            disabled={shareToFacebookMutation.isPending}
-                            className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
-                            title="Compartir en Facebook"
-                          >
-                            <Share2 className="h-4 w-4" />
-                          </button>
+
                           <a
                             href={`/blog?search=${encodeURIComponent(post.title)}`}
                             target="_blank"
