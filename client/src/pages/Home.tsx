@@ -177,6 +177,21 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Sección Descripción SEO */}
+      <section className="py-12 md:py-16 bg-white border-b border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-display text-2xl md:text-3xl text-[#003366] mb-4 font-bold">Sobre IPA Xerez</h2>
+            <p className="text-gray-700 text-lg leading-relaxed mb-4">
+              <strong>IPA Xerez es la agrupación local de la International Police Association en Jerez de la Frontera</strong>, dedicada a promover la amistad entre policías, la formación profesional continua y las actividades culturales y profesionales. Como parte de una red global de más de 370.000 miembros en 140+ países, IPA Xerez representa los valores de hermandad, solidaridad y cooperación internacional sin fronteras.
+            </p>
+            <p className="text-gray-700 text-lg leading-relaxed">
+              Nuestra misión es fortalecer los lazos de camaradería entre profesionales de la seguridad, facilitar intercambios internacionales, ofrecer formación especializada y crear oportunidades de desarrollo profesional. Bajo el lema "Servo per Amikeco" (Servir por la Amistad), trabajamos para construir una comunidad policial global basada en valores compartidos de profesionalidad, integridad y hermandad.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Sección Mantente Informado */}
       <section className="py-12 md:py-16 bg-gradient-to-r from-[#D4AF37] to-[#FFD700]">
         <div className="container mx-auto px-4">
