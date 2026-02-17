@@ -4,6 +4,9 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { PWAInstallButton } from "./components/PWAInstallButton";
+import { PWAUpdateNotification } from "./components/PWAUpdateNotification";
+import { PWAOfflineIndicator } from "./components/PWAOfflineIndicator";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
@@ -44,6 +47,8 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
+          <PWAOfflineIndicator />
+          <PWAUpdateNotification />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

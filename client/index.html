@@ -16,6 +16,7 @@
     <link rel="apple-touch-icon" href="/favicon-192.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="manifest" href="/manifest.json" />
     <meta property="og:title" content="IPA Xerez | Agrupación Local de la International Police Association" />
     <meta property="og:description" content="IPA Xerez es la agrupación local de la International Police Association en Jerez de la Frontera, dedicada a promover la amistad entre policías, formación profesional y actividades culturales." />
     <meta property="og:type" content="website" />
@@ -38,6 +39,15 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(err => {
+            console.warn('Service Worker registration failed:', err);
+          });
+        });
+      }
+    </script>
     <script
       defer
       src="%VITE_ANALYTICS_ENDPOINT%/umami"

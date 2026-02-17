@@ -116,3 +116,17 @@
 - [x] Eliminar sección "Síguenos en Redes" del final
 - [x] Eliminar sección de Instagram Feed
 - [x] Mantener solo iconos en la parte superior
+
+
+## Progressive Web App (PWA) Implementation
+
+- [x] Crear manifest.json con metadatos de la aplicación
+- [x] Configurar iconos PWA en múltiples tamaños
+- [x] Implementar service worker para funcionalidad offline
+- [x] Configurar estrategia de caché (Network-first, Cache-first, Stale-while-revalidate)
+- [x] Agregar soporte de instalación en dispositivos
+- [x] Implementar sincronización en segundo plano
+- [x] Agregar notificaciones push
+- [x] Crear tests para PWA (service worker, manifest, instalación)
+- [x] Verificar funcionalidad offline
+- [x] Optimizar performance de carga
