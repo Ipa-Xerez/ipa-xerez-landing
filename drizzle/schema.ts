@@ -80,6 +80,8 @@ export const newsletterCampaigns = mysqlTable("newsletter_campaigns", {
   status: mysqlEnum("status", ["draft", "scheduled", "sent", "failed"]).default("draft").notNull(),
   sentAt: timestamp("sentAt"),
   recipientCount: int("recipientCount").default(0),
+  openCount: int("openCount").default(0),
+  clickCount: int("clickCount").default(0),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -98,3 +100,25 @@ export const unsubscribeTokens = mysqlTable("unsubscribe_tokens", {
 
 export type UnsubscribeToken = typeof unsubscribeTokens.$inferSelect;
 export type InsertUnsubscribeToken = typeof unsubscribeTokens.$inferInsert;
+
+// Newsletter opens tracking table
+export const newsletterOpens = mysqlTable("newsletter_opens", {
+  id: int("id").autoincrement().primaryKey(),
+  campaignId: int("campaign_id").notNull(),
+  subscriberId: int("subscriber_id").notNull(),
+  openedAt: timestamp("openedAt").defaultNow().notNull(),
+});
+
+export type NewsletterOpen = typeof newsletterOpens.$inferSelect;
+export type InsertNewsletterOpen = typeof newsletterOpens.$inferInsert;
+
+// Newsletter clicks tracking table
+export const newsletterClicks = mysqlTable("newsletter_clicks", {
+  id: int("id").autoincrement().primaryKey(),
+  campaignId: int("campaign_id").notNull(),
+  subscriberId: int("subscriber_id").notNull(),
+  clickedAt: timestamp("clickedAt").defaultNow().notNull(),
+});
+
+export type NewsletterClick = typeof newsletterClicks.$inferSelect;
+export type InsertNewsletterClick = typeof newsletterClicks.$inferInsert;

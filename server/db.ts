@@ -1,6 +1,6 @@
-import { eq, gte, lte, and } from "drizzle-orm";
+import { eq, gte, lte, and, count } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -396,5 +396,98 @@ export async function unsubscribeFromNewsletterById(subscriberId: number): Promi
   } catch (error) {
     console.error("[Database] Failed to unsubscribe:", error);
     return false;
+  }
+}
+
+// Newsletter Statistics queries
+export async function getNewsletterStats() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get newsletter stats: database not available");
+    return null;
+  }
+
+  try {
+    const totalSubscribers = await db.select({ count: count() }).from(newsletterSubscribers).where(eq(newsletterSubscribers.status, "subscribed"));
+    const totalCampaigns = await db.select({ count: count() }).from(newsletterCampaigns).where(eq(newsletterCampaigns.status, "sent"));
+    const totalOpens = await db.select({ count: count() }).from(newsletterOpens);
+    const totalClicks = await db.select({ count: count() }).from(newsletterClicks);
+
+    return {
+      totalSubscribers: totalSubscribers[0]?.count || 0,
+      totalCampaigns: totalCampaigns[0]?.count || 0,
+      totalOpens: totalOpens[0]?.count || 0,
+      totalClicks: totalClicks[0]?.count || 0,
+    };
+  } catch (error) {
+    console.error("[Database] Failed to get newsletter stats:", error);
+    return null;
+  }
+}
+
+export async function getCampaignStats(campaignId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get campaign stats: database not available");
+    return null;
+  }
+
+  try {
+    const campaign = await db.select().from(newsletterCampaigns).where(eq(newsletterCampaigns.id, campaignId)).limit(1);
+    if (campaign.length === 0) return null;
+
+    const opens = await db.select({ count: count() }).from(newsletterOpens).where(eq(newsletterOpens.campaignId, campaignId));
+    const clicks = await db.select({ count: count() }).from(newsletterClicks).where(eq(newsletterClicks.campaignId, campaignId));
+
+    const recipientCount = campaign[0].recipientCount || 0;
+    const openRate = recipientCount > 0 ? (opens[0]?.count || 0) / recipientCount * 100 : 0;
+    const clickRate = recipientCount > 0 ? (clicks[0]?.count || 0) / recipientCount * 100 : 0;
+
+    return {
+      ...campaign[0],
+      openCount: opens[0]?.count || 0,
+      clickCount: clicks[0]?.count || 0,
+      openRate: parseFloat(openRate.toFixed(2)),
+      clickRate: parseFloat(clickRate.toFixed(2)),
+    };
+  } catch (error) {
+    console.error("[Database] Failed to get campaign stats:", error);
+    return null;
+  }
+}
+
+export async function getAllCampaignsStats() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get campaigns stats: database not available");
+    return [];
+  }
+
+  try {
+    const campaigns = await db.select().from(newsletterCampaigns).where(eq(newsletterCampaigns.status, "sent")).orderBy(newsletterCampaigns.sentAt);
+    
+    const campaignsWithStats = await Promise.all(
+      campaigns.map(async (campaign) => {
+        const opens = await db.select({ count: count() }).from(newsletterOpens).where(eq(newsletterOpens.campaignId, campaign.id));
+        const clicks = await db.select({ count: count() }).from(newsletterClicks).where(eq(newsletterClicks.campaignId, campaign.id));
+
+        const recipientCount = campaign.recipientCount || 0;
+        const openRate = recipientCount > 0 ? (opens[0]?.count || 0) / recipientCount * 100 : 0;
+        const clickRate = recipientCount > 0 ? (clicks[0]?.count || 0) / recipientCount * 100 : 0;
+
+        return {
+          ...campaign,
+          openCount: opens[0]?.count || 0,
+          clickCount: clicks[0]?.count || 0,
+          openRate: parseFloat(openRate.toFixed(2)),
+          clickRate: parseFloat(clickRate.toFixed(2)),
+        };
+      })
+    );
+
+    return campaignsWithStats;
+  } catch (error) {
+    console.error("[Database] Failed to get campaigns stats:", error);
+    return [];
   }
 }

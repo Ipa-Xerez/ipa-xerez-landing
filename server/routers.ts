@@ -260,6 +260,14 @@ export const appRouter = router({
           throw error;
         }
       }),
+
+    getStats: protectedProcedure.query(() => db.getNewsletterStats()),
+
+    getCampaignStats: protectedProcedure
+      .input(z.object({ campaignId: z.number() }))
+      .query(({ input }) => db.getCampaignStats(input.campaignId)),
+
+    getAllCampaignsStats: protectedProcedure.query(() => db.getAllCampaignsStats()),
   }),
 })
 
