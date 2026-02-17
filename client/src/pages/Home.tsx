@@ -174,6 +174,46 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Sección Mantente Informado */}
+      <section className="py-12 md:py-16 bg-gradient-to-r from-[#D4AF37] to-[#FFD700]">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-display text-3xl md:text-4xl text-[#003366] mb-4 font-bold">Mantente Informado</h2>
+            <p className="text-[#003366] mb-8 text-lg">Suscríbete a nuestro newsletter para recibir actualizaciones sobre eventos, noticias y oportunidades exclusivas de IPA Xerez</p>
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col md:flex-row gap-3 max-w-md mx-auto">
+              <Input
+                type="text"
+                placeholder="Tu nombre (opcional)"
+                value={newsletterName}
+                onChange={(e) => setNewsletterName(e.target.value)}
+                className="flex-1 bg-white text-[#003366] placeholder-gray-500 border-0"
+              />
+              <Input
+                type="email"
+                placeholder="Tu email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                required
+                className="flex-1 bg-white text-[#003366] placeholder-gray-500 border-0"
+              />
+              <Button
+                type="submit"
+                disabled={newsletterStatus === "loading"}
+                className="bg-[#003366] text-white hover:bg-[#002244] font-bold px-6 md:px-8"
+              >
+                {newsletterStatus === "loading" ? "Suscribiendo..." : "Suscribirse"}
+              </Button>
+            </form>
+            {newsletterStatus === "success" && (
+              <p className="text-green-700 mt-4 font-semibold">{newsletterMessage}</p>
+            )}
+            {newsletterStatus === "error" && (
+              <p className="text-red-700 mt-4 font-semibold">{newsletterMessage}</p>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* Sección de Valores mejorada */}
       <section className="py-16 md:py-20 bg-gradient-to-r from-[#003366] to-[#004d99] text-white">
         <div className="container mx-auto px-4">

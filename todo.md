@@ -46,3 +46,10 @@
 - [x] Crear página pública de desuscripción
 - [x] Generar tokens únicos para cada suscriptor
 - [x] Tokens válidos por 30 días
+
+
+## Newsletter Accessibility (Completado)
+
+- [x] Agregar sección "Mantente Informado" en la parte superior
+- [x] Ubicada después del hero para fácil acceso
+- [x] Diseño responsive con colores corporativos
