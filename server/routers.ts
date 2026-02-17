@@ -7,6 +7,7 @@ import * as db from "./db";
 import { notifyOwner } from "./_core/notification";
 import { sendEmail, generateContactConfirmationEmail } from "./_core/emailService";
 import { sendSubscriptionConfirmationEmail, sendNewsletterCampaign, generateUnsubscribeToken } from "./services/newsletterService";
+import { storagePut } from "./storage";
 
 export const appRouter = router({
   system: systemRouter,
@@ -316,10 +317,38 @@ export const appRouter = router({
         const { id, ...data } = input;
         return db.updateBlogPost(id, data);
       }),
-    delete: protectedProcedure
+     delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteBlogPost(input.id)),
+    uploadImage: protectedProcedure
+      .input(z.object({
+        fileName: z.string(),
+        fileData: z.string(), // base64 encoded
+        mimeType: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          // Convert base64 to buffer
+          const buffer = Buffer.from(input.fileData, 'base64');
+          
+          // Generate unique file key
+          const timestamp = Date.now();
+          const random = Math.random().toString(36).substring(7);
+          const fileKey = `blog-images/${timestamp}-${random}-${input.fileName}`;
+          
+          // Upload to S3
+          const result = await storagePut(fileKey, buffer, input.mimeType);
+          
+          return {
+            success: true,
+            url: result.url,
+            key: result.key,
+          };
+        } catch (error) {
+          console.error("[Blog] Error uploading image:", error);
+          throw error;
+        }
+      }),
   }),
 })
-
 export type AppRouter = typeof appRouter;

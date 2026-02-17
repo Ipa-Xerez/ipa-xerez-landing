@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
+import BlogAdmin from "./pages/BlogAdmin";
 import Calendar from "./pages/Calendar";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 import Unsubscribe from "./pages/Unsubscribe";
@@ -18,6 +19,7 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/gallery"} component={Gallery} />
       <Route path={"/blog"} component={Blog} />
+      <Route path={"/admin/blog"} component={BlogAdmin} />
       <Route path={"/calendar"} component={Calendar} />
       <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
