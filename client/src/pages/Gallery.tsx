@@ -17,233 +17,233 @@ const GALLERY_IMAGES: GalleryImage[] = [
   {
     id: "1",
     src: "/20251011_095840~2.jpg",
-    title: "Embarque en Nueva York",
-    description: "Miembros de IPA Xerez embarcando en el viaje a Nueva York. Momento de camaradería antes de la aventura internacional.",
-    category: "viajes"
+    title: "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "2",
     src: "/20251011_102657(1).jpg",
-    title: "Paseo en Bote por Nueva York",
-    description: "Experiencia inolvidable navegando por Nueva York con el Puente de Brooklyn de fondo. Hermandad internacional en acción.",
-    category: "viajes"
+    title: "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "3",
     src: "/20251010_104741.jpg",
-    title: "Presentación Educativa",
-    description: "Evento educativo con presentación de seguridad en institución académica. Compartiendo conocimiento profesional.",
+    title: "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "4",
     src: "/20251010_103523.jpg",
-    title: "Visita Estación NYPD",
-    description: "Grupo de IPA Xerez visitando la estación de policía de Nueva York. Intercambio profesional y cooperación internacional.",
+    title: "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "5",
     src: "/20251010_125254.jpg",
-    title: "Encuentro en Times Square",
-    description: "Miembros de IPA reunidos en Times Square, Nueva York. Momento de convivencia en la ciudad que nunca duerme.",
-    category: "viajes"
+    title: "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "6",
     src: "/20251008_150017.jpg",
-    title: "Grupo en Aeropuerto Internacional",
-    description: "Grupo completo en aeropuerto con banderas de USA y España. Símbolo de la hermandad policial sin fronteras.",
+    title: "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "7",
     src: "/20251008_150027(0).jpg",
-    title: "Delegación IPA Xerez",
-    description: "Delegación oficial de IPA Xerez con bandera de Madrid. Representando a España en el escenario internacional.",
+    title: "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "8",
     src: "/IMG-20250913-WA0033.jpg",
-    title: "Paseos en Camello en Marruecos",
-    description: "Actividad cultural en playas de Marruecos. Experiencias compartidas que crean lazos de amistad duraderos.",
-    category: "cultura"
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "9",
     src: "/IMG-20250915-WA0054.jpg",
-    title: "Medina Azul de Chefchaouen",
-    description: "Visita a la icónica medina azul de Chefchaouen, Marruecos. Descubriendo la belleza cultural del norte africano.",
-    category: "cultura"
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "10",
     src: "/IMG-20250913-WA0013.jpg",
-    title: "Grupo en Alcazaba de Almería",
-    description: "Miembros de IPA en la histórica Alcazaba de Almería. Explorando el patrimonio cultural español juntos.",
-    category: "cultura"
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "11",
     src: "/IMG-20250915-WA0027.jpg",
-    title: "Artesanía Tradicional Marroquí",
-    description: "Cestas y artículos tradicionales de Marruecos. Apoyo a la artesanía local durante nuestros viajes internacionales.",
-    category: "cultura"
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "12",
     src: "/IMG-20250703-WA0022.jpg",
-    title: "Itinerario Marruecos",
-    description: "Viaje a Tánger, Tetuán, Chaouen y Asilah. Experiencia completa de la cultura y tradición marroquí con IPA Xerez.",
-    category: "viajes"
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "13",
     src: "/20250503_165049.jpg",
-    title: "Evento Social Mayo 2025",
-    description: "Reunión social de IPA Xerez en mayo. Momento de convivencia y camaradería entre miembros.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "14",
     src: "/IMG-20250503-WA0050.jpg",
-    title: "Actividad de Grupo Mayo",
-    description: "Actividad conjunta de miembros de IPA Xerez. Fortaleciendo los lazos de hermandad policial.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "15",
     src: "/IMG-20250503-WA0063.jpg",
-    title: "Reunión de Camaradería",
-    description: "Encuentro de miembros de IPA Xerez en evento local. Compartiendo experiencias y amistades.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "16",
     src: "/JuanDiegoyPaco.jpeg",
-    title: "Miembros Destacados",
-    description: "Retrato de miembros activos de IPA Xerez. Rostros de la hermandad policial internacional.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "17",
     src: "/340c70f3-4b69-4fbd-b93f-5817ab43809e.jpeg",
-    title: "Encuentro de Delegados",
-    description: "Reunión de delegados y miembros de IPA Xerez. Coordinación de actividades y eventos futuros.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "18",
     src: "/20250503_133349.jpg",
-    title: "Actividad Matutina Mayo",
-    description: "Actividad matutina de IPA Xerez en mayo. Comenzando el día con camaradería y profesionalismo.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "19",
     src: "/20250503_133319.jpg",
-    title: "Grupo en Evento Local",
-    description: "Miembros de IPA Xerez reunidos en evento local. Demostrando la fortaleza de nuestra comunidad.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "20",
     src: "/20250503_121413.jpg",
-    title: "Almuerzo de Camaradería",
-    description: "Almuerzo social de IPA Xerez. Compartiendo comida, conversación y hermandad.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "21",
     src: "/20250503_123716.jpg",
-    title: "Momento de Convivencia",
-    description: "Miembros disfrutando de momento de convivencia. La amistad es el corazón de IPA.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "22",
     src: "/20250503_153720.jpg",
-    title: "Actividad Vespertina",
-    description: "Actividad vespertina de IPA Xerez. Continuando con el espíritu de hermandad.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "23",
     src: "/20250503_114623.jpg",
-    title: "Grupo Matutino",
-    description: "Grupo de miembros en actividad matutina de mayo. Unidos por la profesionalidad y amistad.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "24",
     src: "/20250503_155052.jpg",
-    title: "Encuentro Vespertino",
-    description: "Encuentro vespertino de IPA Xerez. Celebrando la camaradería sin fronteras.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "25",
     src: "/20250503_114127.jpg",
-    title: "Actividad Matinal",
-    description: "Actividad matinal de miembros de IPA Xerez. Demostrando compromiso y profesionalismo.",
+    title: "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "26",
     src: "/20250927_102334.jpg",
-    title: "Evento Septiembre 2025",
-    description: "Evento de IPA Xerez en septiembre. Continuando con nuestras actividades y celebraciones.",
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "27",
     src: "/20250927_105157.jpg",
-    title: "Reunión Septiembre",
-    description: "Reunión de miembros en septiembre. Reforzando los lazos de hermandad policial.",
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "28",
     src: "/20250927_144428.jpg",
-    title: "Actividad de Otoño",
-    description: "Actividad de otoño de IPA Xerez. Disfrutando de la camaradería en nuevas estaciones.",
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "29",
     src: "/20250927_103519.jpg",
-    title: "Grupo Septiembre",
-    description: "Grupo de miembros en evento de septiembre. La hermandad policial sigue adelante.",
+    title: "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "30",
     src: "/20251206_182636.jpg",
-    title: "Zambomba 2025 - Noche de Fuego",
-    description: "Zambomba tradicional de Jerez con fuego, música en vivo y camaradería. Evento cultural icono de IPA Xerez.",
-    category: "cultura"
+    title: "Actividad IPA Xerez-Málaga - Diciembre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "31",
     src: "/20251206_180716.jpg",
-    title: "Zambomba con Bandera IPA",
-    description: "Miembros de IPA Xerez-Andalucía reunidos en la Zambomba 2025. Celebrando tradición y hermandad.",
+    title: "Actividad IPA Xerez-Málaga - Diciembre 2025",
+    description: "",
     category: "eventos"
   },
   {
     id: "32",
     src: "/20251206_180721.jpg",
-    title: "Zambomba Atardecer",
-    description: "Vista general de la Zambomba 2025 al atardecer. Luces ambientales y ambiente festivo de Jerez.",
-    category: "cultura"
+    title: "Actividad IPA Xerez-Málaga - Diciembre 2025",
+    description: "",
+    category: "eventos"
   },
   {
     id: "33",
     src: "/20251206_122144.jpg",
-    title: "Corrida de Toros - Tradición Ecuestre",
-    description: "Espectáculo ecuestre tradicional de Jerez. Parte de las experiencias culturales de IPA Xerez.",
-    category: "cultura"
+    title: "Actividad IPA Xerez-Málaga - Diciembre 2025",
+    description: "",
+    category: "eventos"
   }
 ];
 
