@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, title, image, isPublished FROM blog_posts ORDER BY createdAt DESC LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, image, isPublished FROM blog_posts ORDER BY createdAt DESC LIMIT 5",
+  "rows": [
+    {
+      "id": "1",
+      "title": "Police Week Washington 2024",
+      "image": "",
+      "isPublished": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\timage\tisPublished\n1\tPolice Week Washington 2024\t\t1\n",
+  "stderr": "",
+  "execution_time_ms": 350
+}
