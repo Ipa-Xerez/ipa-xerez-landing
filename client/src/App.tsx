@@ -8,6 +8,7 @@ import { PWAInstallButton } from "./components/PWAInstallButton";
 import { PWAUpdateNotification } from "./components/PWAUpdateNotification";
 import { PWAOfflineIndicator } from "./components/PWAOfflineIndicator";
 import { PWAAndroidInstall } from "./components/PWAAndroidInstall";
+import { PWAInstallPrompt } from "./components/PWAInstallPrompt";
 import Home from "./pages/Home";
 import InstallGuide from "./pages/InstallGuide";
 import Gallery from "./pages/Gallery";
@@ -53,6 +54,7 @@ function App() {
           <PWAOfflineIndicator />
           <PWAUpdateNotification />
           <PWAAndroidInstall />
+          <PWAInstallPrompt />
           <Router />
         </TooltipProvider>
       </ThemeProvider>
