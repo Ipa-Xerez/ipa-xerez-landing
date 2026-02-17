@@ -122,7 +122,9 @@ export default function Home() {
                 ✨ Desde 1950 | 140+ Países | Servo per Amikeco
               </div>
             </div>
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl mb-6 leading-tight font-bold drop-shadow-lg">Hermandad Policial Internacional sin Fronteras</h1>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mb-2 leading-tight font-bold drop-shadow-lg">INTERNATIONAL POLICE</h1>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight font-bold drop-shadow-lg">ASSOCIATION</h1>
+            <p className="text-2xl md:text-3xl mb-6 text-[#D4AF37] drop-shadow-md font-semibold">AGRUPACIÓN XEREZ</p>
             <p className="text-lg md:text-2xl mb-10 text-gray-100 drop-shadow-md max-w-2xl mx-auto">Únete a IPA Xerez: la mayor red mundial de policías. Amistad, profesionalidad y hermandad internacional en 140+ países</p>
             <div className="flex gap-4 justify-center flex-wrap">
               <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2" onClick={() => setShowInscriptionModal(true)}>
