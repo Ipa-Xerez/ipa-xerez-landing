@@ -7,7 +7,9 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { PWAInstallButton } from "./components/PWAInstallButton";
 import { PWAUpdateNotification } from "./components/PWAUpdateNotification";
 import { PWAOfflineIndicator } from "./components/PWAOfflineIndicator";
+import { PWAAndroidInstall } from "./components/PWAAndroidInstall";
 import Home from "./pages/Home";
+import InstallGuide from "./pages/InstallGuide";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
 import BlogAdmin from "./pages/BlogAdmin";
@@ -26,6 +28,7 @@ function Router() {
       <Route path={"/calendar"} component={Calendar} />
       <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
+      <Route path={"/install"} component={InstallGuide} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
@@ -49,6 +52,7 @@ function App() {
           <Toaster />
           <PWAOfflineIndicator />
           <PWAUpdateNotification />
+          <PWAAndroidInstall />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

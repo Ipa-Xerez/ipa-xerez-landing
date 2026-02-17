@@ -29,7 +29,9 @@ export function usePWA(): UsePWAReturn {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && 
                     (document.referrer === '' || document.referrer.includes('apple.com'));
-      return isStandalone || isIOS;
+      const isAndroidStandalone = window.matchMedia('(display-mode: standalone)').matches && 
+                                 /Android/.test(navigator.userAgent);
+      return isStandalone || isIOS || isAndroidStandalone;
     };
 
     setIsInstalled(isInstalledCheck());

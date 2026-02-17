@@ -130,3 +130,12 @@
 - [x] Crear tests para PWA (service worker, manifest, instalación)
 - [x] Verificar funcionalidad offline
 - [x] Optimizar performance de carga
+
+
+## Corrección de PWA para Android
+
+- [x] Mejorar manifest.json para compatibilidad Android
+- [x] Agregar detección mejorada de instalabilidad en Android
+- [x] Crear componente PWAAndroidInstall con instrucciones
+- [x] Crear página de guía de instalación (/install)
+- [x] Agregar fallback y alternativas de instalación
