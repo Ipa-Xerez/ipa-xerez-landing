@@ -53,3 +53,16 @@
 - [x] Agregar sección "Mantente Informado" en la parte superior
 - [x] Ubicada después del hero para fácil acceso
 - [x] Diseño responsive con colores corporativos
+
+
+## Facebook Integration (Completado)
+
+- [x] Guardar credenciales de Facebook (FACEBOOK_PAGE_ACCESS_TOKEN, FACEBOOK_PAGE_ID)
+- [x] Crear router de Facebook con dos endpoints:
+  - [x] facebook.sharePost - Compartir artículos de blog en Facebook
+  - [x] facebook.getFeed - Obtener feed de la página de Facebook
+- [x] Agregar botón "Compartir en Facebook" en panel de admin del blog
+- [x] Crear componente FacebookFeed para mostrar posts en la página de inicio
+- [x] Agregar sección de "Últimas Noticias en Facebook" en Home.tsx
+- [x] Escribir y ejecutar tests de Facebook (4 tests pasados)
+- [x] Integración completa con Facebook API Graph v18.0

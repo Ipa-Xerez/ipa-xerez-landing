@@ -351,6 +351,95 @@ export const appRouter = router({
       }),
   }),
 
+  facebook: router({
+    sharePost: protectedProcedure
+      .input(z.object({
+        postId: z.number(),
+        title: z.string(),
+        excerpt: z.string(),
+        image: z.string().optional(),
+        slug: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const pageAccessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
+          const pageId = process.env.FACEBOOK_PAGE_ID;
+          
+          if (!pageAccessToken || !pageId) {
+            throw new Error("Facebook credentials not configured");
+          }
+          
+          const postUrl = `https://ipaxerez.es/blog/${input.slug}`;
+          const message = `${input.title}\n\n${input.excerpt}\n\n${postUrl}`;
+          
+          const response = await fetch(
+            `https://graph.facebook.com/v18.0/${pageId}/feed`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                message: message,
+                link: postUrl,
+                picture: input.image,
+                access_token: pageAccessToken,
+              }),
+            }
+          );
+          
+          if (!response.ok) {
+            throw new Error(`Facebook API error: ${response.statusText}`);
+          }
+          
+          const result = await response.json();
+          
+          return {
+            success: true,
+            facebookPostId: result.id,
+            message: 'Articulo compartido en Facebook exitosamente',
+          };
+        } catch (error) {
+          console.error("[Facebook] Error sharing to Facebook:", error);
+          throw error;
+        }
+      }),
+    
+    getFeed: publicProcedure
+      .query(async () => {
+        try {
+          const pageAccessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
+          const pageId = process.env.FACEBOOK_PAGE_ID;
+          
+          if (!pageAccessToken || !pageId) {
+            throw new Error("Facebook credentials not configured");
+          }
+          
+          const response = await fetch(
+            `https://graph.facebook.com/v18.0/${pageId}/posts?fields=id,message,created_time,picture,link,story&limit=10&access_token=${pageAccessToken}`
+          );
+          
+          if (!response.ok) {
+            throw new Error(`Facebook API error: ${response.statusText}`);
+          }
+          
+          const data = await response.json();
+          
+          return {
+            success: true,
+            posts: data.data || [],
+          };
+        } catch (error) {
+          console.error("[Facebook] Error fetching feed:", error);
+          return {
+            success: false,
+            posts: [],
+            error: error instanceof Error ? error.message : 'Unknown error',
+          };
+        }
+      }),
+  }),
+
   admin: router({
     isAdmin: publicProcedure
       .input(z.object({ email: z.string().email() }))
