@@ -1,6 +1,6 @@
 import { eq, gte, lte, and, count, desc, or, like } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator, facebookShares, FacebookShare, InsertFacebookShare } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -717,6 +717,94 @@ export async function removeAdministrator(email: string): Promise<void> {
     await db.delete(administrators).where(eq(administrators.email, email));
   } catch (error) {
     console.error("[Admin] Error removing administrator:", error);
+    throw error;
+  }
+}
+
+
+// Facebook share tracking functions
+export async function createFacebookShare(data: InsertFacebookShare): Promise<FacebookShare> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    const result = await db.insert(facebookShares).values(data);
+    const share = await db
+      .select()
+      .from(facebookShares)
+      .where(eq(facebookShares.id, result[0].insertId as any))
+      .limit(1);
+    return share[0];
+  } catch (error) {
+    console.error("[Facebook] Error creating share record:", error);
+    throw error;
+  }
+}
+
+export async function updateFacebookShare(id: number, data: Partial<InsertFacebookShare>): Promise<FacebookShare> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    await db.update(facebookShares).set(data).where(eq(facebookShares.id, id));
+    const share = await db
+      .select()
+      .from(facebookShares)
+      .where(eq(facebookShares.id, id))
+      .limit(1);
+    return share[0];
+  } catch (error) {
+    console.error("[Facebook] Error updating share record:", error);
+    throw error;
+  }
+}
+
+export async function getFacebookShareByPostId(blogPostId: number): Promise<FacebookShare | null> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    const share = await db
+      .select()
+      .from(facebookShares)
+      .where(eq(facebookShares.blogPostId, blogPostId))
+      .limit(1);
+    return share[0] || null;
+  } catch (error) {
+    console.error("[Facebook] Error getting share record:", error);
+    throw error;
+  }
+}
+
+export async function getScheduledFacebookShares(): Promise<FacebookShare[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    const now = new Date();
+    const shares = await db
+      .select()
+      .from(facebookShares)
+      .where(
+        and(
+          eq(facebookShares.shareStatus, "scheduled"),
+          lte(facebookShares.scheduledFor, now)
+        )
+      );
+    return shares;
+  } catch (error) {
+    console.error("[Facebook] Error getting scheduled shares:", error);
+    throw error;
+  }
+}
+
+export async function getPendingFacebookShares(): Promise<FacebookShare[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    const shares = await db
+      .select()
+      .from(facebookShares)
+      .where(eq(facebookShares.shareStatus, "pending"));
+    return shares;
+  } catch (error) {
+    console.error("[Facebook] Error getting pending shares:", error);
     throw error;
   }
 }

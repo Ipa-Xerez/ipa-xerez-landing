@@ -42,6 +42,8 @@ export default function BlogAdmin() {
     category: "",
     tags: "",
     isPublished: 1,
+    autoShareFacebook: false,
+    facebookDelayMinutes: 0,
   });
 
   // File upload state
@@ -56,6 +58,8 @@ export default function BlogAdmin() {
   const deleteMutation = trpc.blog.delete.useMutation();
   const uploadImageMutation = trpc.blog.uploadImage.useMutation();
   const shareToFacebookMutation = trpc.facebook.sharePost.useMutation();
+  const configureAutoShareMutation = trpc.facebook.configureAutoShare.useMutation();
+  const getShareStatusQuery = trpc.facebook.getShareStatus.useQuery({ blogPostId: editingId || 0 }, { enabled: !!editingId });
 
   // Show loading while checking authentication
   if (isCheckingAdmin) {
@@ -198,6 +202,8 @@ export default function BlogAdmin() {
         category: "",
         tags: "",
         isPublished: 1,
+        autoShareFacebook: false,
+        facebookDelayMinutes: 0,
       });
       setImageFile(null);
       setImagePreview("");
@@ -224,6 +230,8 @@ export default function BlogAdmin() {
       category: post.category || "",
       tags: post.tags ? JSON.parse(post.tags).join(", ") : "",
       isPublished: post.isPublished || 1,
+      autoShareFacebook: false,
+      facebookDelayMinutes: 0,
     });
     setImagePreview(post.image || "");
     setEditingId(post.id);
@@ -256,6 +264,8 @@ export default function BlogAdmin() {
       category: "",
       tags: "",
       isPublished: 1,
+      autoShareFacebook: false,
+      facebookDelayMinutes: 0,
     });
     setImageFile(null);
     setImagePreview("");
@@ -496,6 +506,53 @@ export default function BlogAdmin() {
                 </label>
               </div>
 
+              {/* Facebook Auto-Share */}
+              <div className="border-t pt-6 mt-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Compartir en Facebook</h3>
+                
+                <label className="flex items-center gap-2 cursor-pointer mb-4">
+                  <input
+                    type="checkbox"
+                    checked={formData.autoShareFacebook}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        autoShareFacebook: e.target.checked,
+                      })
+                    }
+                    className="w-4 h-4 rounded"
+                  />
+                  <span className="text-sm font-semibold text-gray-700">
+                    Compartir automaticamente en Facebook
+                  </span>
+                </label>
+
+                {formData.autoShareFacebook && (
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Retraso antes de compartir (minutos)
+                    </label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="1440"
+                      value={formData.facebookDelayMinutes}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          facebookDelayMinutes: parseInt(e.target.value) || 0,
+                        })
+                      }
+                      placeholder="0 para compartir inmediatamente"
+                      className="w-full"
+                    />
+                    <p className="text-xs text-gray-600 mt-2">
+                      Ingresa 0 para compartir inmediatamente, o un numero de minutos para programar el compartir mas tarde
+                    </p>
+                  </div>
+                )}
+              </div>
+
               {/* Submit Buttons */}
               <div className="flex gap-4 pt-6 border-t border-gray-200">
                 <Button
@@ -564,6 +621,9 @@ export default function BlogAdmin() {
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
                       Fecha
                     </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                      Facebook
+                    </th>
                     <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">
                       Acciones
                     </th>
@@ -593,6 +653,11 @@ export default function BlogAdmin() {
                         {new Date(
                           post.publishedAt || post.createdAt
                         ).toLocaleDateString("es-ES")}
+                      </td>
+                      <td className="px-6 py-4 text-sm">
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">
+                          No compartido
+                        </span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">

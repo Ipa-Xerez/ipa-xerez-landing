@@ -438,6 +438,68 @@ export const appRouter = router({
           };
         }
       }),
+    
+    configureAutoShare: protectedProcedure
+      .input(z.object({
+        blogPostId: z.number(),
+        autoShare: z.boolean(),
+        delayMinutes: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const { autoShareBlogPost } = await import("./services/facebookScheduler");
+          const post = await db.getBlogPostById(input.blogPostId);
+          
+          if (!post) {
+            throw new Error("Blog post not found");
+          }
+          
+          if (input.autoShare) {
+            await autoShareBlogPost(
+              input.blogPostId,
+              post.title,
+              post.excerpt || post.content.substring(0, 200),
+              post.image || undefined,
+              post.slug,
+              input.delayMinutes || 0
+            );
+          }
+          
+          return {
+            success: true,
+            message: input.autoShare ? "Auto-share configured" : "Auto-share disabled",
+          };
+        } catch (error) {
+          console.error("[Facebook] Error configuring auto-share:", error);
+          throw error;
+        }
+      }),
+    
+    getShareStatus: publicProcedure
+      .input(z.object({ blogPostId: z.number() }))
+      .query(async ({ input }) => {
+        try {
+          const share = await db.getFacebookShareByPostId(input.blogPostId);
+          
+          if (!share) {
+            return {
+              status: "not_shared",
+              message: "This post has not been shared yet",
+            };
+          }
+          
+          return {
+            status: share.shareStatus,
+            facebookPostId: share.facebookPostId,
+            sharedAt: share.sharedAt,
+            scheduledFor: share.scheduledFor,
+            errorMessage: share.errorMessage,
+          };
+        } catch (error) {
+          console.error("[Facebook] Error getting share status:", error);
+          throw error;
+        }
+      }),
   }),
 
   admin: router({

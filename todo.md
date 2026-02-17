@@ -66,3 +66,12 @@
 - [x] Agregar sección de "Últimas Noticias en Facebook" en Home.tsx
 - [x] Escribir y ejecutar tests de Facebook (4 tests pasados)
 - [x] Integración completa con Facebook API Graph v18.0
+
+
+## Facebook Auto-Share Scheduling (Completado)
+
+- [x] Crear tabla de rastreo de comparticiones en Facebook
+- [x] Implementar scheduler para compartir artículos automáticamente
+- [x] Agregar campos de configuración en formulario de blog
+- [x] Actualizar panel de admin con estado de compartición
+- [x] Crear tests para validar programación automática (8 tests pasados)

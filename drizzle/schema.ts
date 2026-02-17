@@ -198,3 +198,20 @@ export const administrators = mysqlTable("administrators", {
 
 export type Administrator = typeof administrators.$inferSelect;
 export type InsertAdministrator = typeof administrators.$inferInsert;
+
+// Facebook share tracking table
+export const facebookShares = mysqlTable("facebook_shares", {
+  id: int("id").autoincrement().primaryKey(),
+  blogPostId: int("blog_post_id").notNull(),
+  facebookPostId: varchar("facebook_post_id", { length: 255 }),
+  shareStatus: mysqlEnum("share_status", ["pending", "scheduled", "shared", "failed"]).default("pending").notNull(),
+  scheduledFor: timestamp("scheduled_for"), // When to share the post
+  sharedAt: timestamp("shared_at"), // When it was actually shared
+  errorMessage: text("error_message"), // Error details if sharing failed
+  autoShare: tinyint("auto_share").default(1).notNull(), // Whether to auto-share this post
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type FacebookShare = typeof facebookShares.$inferSelect;
+export type InsertFacebookShare = typeof facebookShares.$inferInsert;
