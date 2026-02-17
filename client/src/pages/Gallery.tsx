@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { X, ChevronLeft, ChevronRight, Share2 } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Share2, ZoomIn } from "lucide-react";
 import { useLocation } from "wouter";
 import BackButton from "@/components/BackButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -251,6 +251,7 @@ export default function Gallery() {
   const [, navigate] = useLocation();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<"all" | "viajes" | "eventos" | "cultura">("all");
+  const [isZoomed, setIsZoomed] = useState(false);
 
   const filteredImages = selectedCategory === "all" 
     ? GALLERY_IMAGES 
@@ -264,6 +265,7 @@ export default function Gallery() {
     } else {
       setSelectedImage(GALLERY_IMAGES[GALLERY_IMAGES.length - 1]);
     }
+    setIsZoomed(false);
   };
 
   const goToNext = () => {
@@ -272,7 +274,29 @@ export default function Gallery() {
     } else {
       setSelectedImage(GALLERY_IMAGES[0]);
     }
+    setIsZoomed(false);
   };
+
+  // Navegación por teclado
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedImage) return;
+      
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goToPrevious();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goToNext();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImage, currentIndex]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -378,23 +402,50 @@ export default function Gallery() {
 
       {/* Lightbox Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-4xl">
+        <div 
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setSelectedImage(null)}
+        >
+          <style>{`
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            .animate-fade-in {
+              animation: fadeIn 0.2s ease-in-out;
+            }
+          `}</style>
+          <div 
+            className="relative w-full max-w-4xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close Button */}
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+              title="Cerrar (ESC)"
             >
               <X className="w-8 h-8" />
             </button>
 
             {/* Image Container */}
-            <div className="relative bg-black rounded-lg overflow-hidden">
+            <div className="relative bg-black rounded-lg overflow-hidden group">
               <img 
                 src={selectedImage.src} 
                 alt={selectedImage.title}
-                className="w-full h-auto max-h-[70vh] object-contain"
+                className={`w-full h-auto max-h-[70vh] object-contain transition-transform duration-300 cursor-zoom-in ${
+                  isZoomed ? "scale-150" : "scale-100"
+                }`}
+                onClick={() => setIsZoomed(!isZoomed)}
               />
+              {/* Zoom Indicator */}
+              <button
+                onClick={() => setIsZoomed(!isZoomed)}
+                className="absolute bottom-4 right-4 bg-black/70 hover:bg-black/90 text-white p-2 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100"
+                title={isZoomed ? "Deshacer zoom" : "Ampliar imagen"}
+              >
+                <ZoomIn className="w-5 h-5" />
+              </button>
             </div>
 
             {/* Info */}
@@ -485,16 +536,23 @@ export default function Gallery() {
             {/* Navigation Arrows */}
             <button
               onClick={goToPrevious}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 text-white hover:text-gray-300 transition-colors"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 text-white hover:text-gray-300 hover:scale-125 transition-all duration-300"
+              title="Anterior (← Flecha izquierda)"
             >
               <ChevronLeft className="w-10 h-10" />
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 text-white hover:text-gray-300 transition-colors"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 text-white hover:text-gray-300 hover:scale-125 transition-all duration-300"
+              title="Siguiente (→ Flecha derecha)"
             >
               <ChevronRight className="w-10 h-10" />
             </button>
+
+            {/* Keyboard Hints */}
+            <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-white/60 text-xs text-center whitespace-nowrap">
+              <p>Usa ← → para navegar • ESC para cerrar • Click para ampliar</p>
+            </div>
           </div>
         </div>
       )}
