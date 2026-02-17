@@ -1,6 +1,6 @@
 import { eq, gte, lte, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -221,5 +221,106 @@ export async function getContacts(): Promise<Contact[]> {
   } catch (error) {
     console.error("[Database] Failed to get contacts:", error);
     return [];
+  }
+}
+
+// Newsletter Subscribers queries
+export async function subscribeToNewsletter(subscriber: InsertNewsletterSubscriber): Promise<NewsletterSubscriber | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot subscribe to newsletter: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(newsletterSubscribers).values(subscriber);
+    const newSubscriber = await db.select().from(newsletterSubscribers).where(eq(newsletterSubscribers.id, result[0].insertId as number)).limit(1);
+    return newSubscriber.length > 0 ? newSubscriber[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to subscribe to newsletter:", error);
+    throw error;
+  }
+}
+
+export async function getNewsletterSubscribers(status: string = "subscribed"): Promise<NewsletterSubscriber[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get newsletter subscribers: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db.select().from(newsletterSubscribers).where(eq(newsletterSubscribers.status, status as any)).orderBy(newsletterSubscribers.subscribedAt);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get newsletter subscribers:", error);
+    return [];
+  }
+}
+
+export async function unsubscribeFromNewsletter(email: string): Promise<boolean> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot unsubscribe from newsletter: database not available");
+    return false;
+  }
+
+  try {
+    await db.update(newsletterSubscribers).set({ status: "unsubscribed", unsubscribedAt: new Date() }).where(eq(newsletterSubscribers.email, email));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to unsubscribe from newsletter:", error);
+    return false;
+  }
+}
+
+// Newsletter Campaigns queries
+export async function createNewsletterCampaign(campaign: InsertNewsletterCampaign): Promise<NewsletterCampaign | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create newsletter campaign: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(newsletterCampaigns).values(campaign);
+    const newCampaign = await db.select().from(newsletterCampaigns).where(eq(newsletterCampaigns.id, result[0].insertId as number)).limit(1);
+    return newCampaign.length > 0 ? newCampaign[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to create newsletter campaign:", error);
+    throw error;
+  }
+}
+
+export async function getNewsletterCampaigns(): Promise<NewsletterCampaign[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get newsletter campaigns: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db.select().from(newsletterCampaigns).orderBy(newsletterCampaigns.createdAt);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get newsletter campaigns:", error);
+    return [];
+  }
+}
+
+export async function updateNewsletterCampaign(id: number, campaign: Partial<InsertNewsletterCampaign>): Promise<NewsletterCampaign | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update newsletter campaign: database not available");
+    return null;
+  }
+
+  try {
+    await db.update(newsletterCampaigns).set(campaign).where(eq(newsletterCampaigns.id, id));
+    const result = await db.select().from(newsletterCampaigns).where(eq(newsletterCampaigns.id, id)).limit(1);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to update newsletter campaign:", error);
+    return null;
   }
 }

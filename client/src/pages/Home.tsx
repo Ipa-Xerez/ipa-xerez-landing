@@ -39,6 +39,42 @@ export default function Home() {
   };
 
   const createContactMutation = trpc.contact.create.useMutation();
+  const subscribeNewsletter = trpc.newsletter.subscribe.useMutation();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterName, setNewsletterName] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNewsletterStatus("loading");
+
+    try {
+      const result = await subscribeNewsletter.mutateAsync({
+        email: newsletterEmail,
+        name: newsletterName || undefined,
+      });
+
+      if (result.success) {
+        setNewsletterStatus("success");
+        setNewsletterMessage(result.message);
+        setNewsletterEmail("");
+        setNewsletterName("");
+        setTimeout(() => {
+          setNewsletterStatus("idle");
+          setNewsletterMessage("");
+        }, 5000);
+      } else {
+        setNewsletterStatus("error");
+        setNewsletterMessage(result.message);
+        setTimeout(() => setNewsletterStatus("idle"), 5000);
+      }
+    } catch (error: any) {
+      setNewsletterStatus("error");
+      setNewsletterMessage(error.message || "Error al suscribirse. Inténtalo de nuevo.");
+      setTimeout(() => setNewsletterStatus("idle"), 5000);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -498,6 +534,55 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Newsletter Section */}
+      <section className="py-16 md:py-20 bg-gradient-to-r from-[#003366] to-[#004d99]">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-display text-3xl md:text-4xl text-white mb-4 font-bold">Mantente Informado</h2>
+            <p className="text-gray-100 mb-8">Suscríbete a nuestro newsletter y recibe información sobre eventos, noticias y oportunidades de IPA Xerez directamente en tu correo.</p>
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+              <Input
+                type="text"
+                placeholder="Tu nombre (opcional)"
+                value={newsletterName}
+                onChange={(e) => setNewsletterName(e.target.value)}
+                className="bg-white/20 border-white/30 text-white placeholder:text-gray-200 max-w-xs"
+              />
+              <Input
+                type="email"
+                placeholder="Tu correo electrónico"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                required
+                className="bg-white/20 border-white/30 text-white placeholder:text-gray-200 max-w-xs"
+              />
+              <button
+                type="submit"
+                disabled={newsletterStatus === "loading"}
+                className="bg-[#D4AF37] text-[#003366] px-6 py-2 rounded-lg font-bold hover:bg-[#FFD700] transition-colors disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap"
+              >
+                {newsletterStatus === "loading" ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-[#003366] border-t-transparent rounded-full animate-spin"></div>
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-4 h-4" />
+                    Suscribirse
+                  </>
+                )}
+              </button>
+            </form>
+            {newsletterMessage && (
+              <p className={`text-sm ${newsletterStatus === "success" ? "text-green-200" : "text-red-200"}`}>
+                {newsletterMessage}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
 
       {/* Footer mejorado */}
       <footer className="bg-[#003366] text-white py-12">
