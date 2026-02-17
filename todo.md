@@ -85,3 +85,10 @@
 - [x] Crear procedimientos tRPC para obtener métricas
 - [x] Actualizar panel de admin con estadísticas en vivo
 - [x] Crear tests para webhooks (8 tests pasados)
+
+
+## Upcoming Events Carousel (Completado)
+
+- [x] Crear componente de carrusel de eventos
+- [x] Agregar sección de próximos eventos en Home.tsx
+- [x] Crear tests para carrusel (8 tests pasados)

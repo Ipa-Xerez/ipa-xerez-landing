@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import InstagramFeed from "@/components/InstagramFeed";
 import FacebookFeed from "@/components/FacebookFeed";
+import EventsCarousel from "@/components/EventsCarousel";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
@@ -345,31 +346,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Próximos Eventos mejorado */}
+      {/* Próximos Eventos con Carrusel */}
       <section id="eventos" className="py-16 md:py-20 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4">
           <h2 className="font-display text-3xl md:text-4xl text-[#003366] text-center mb-12 font-bold">Próximos Eventos</h2>
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="flex flex-col items-center">
-              <img src={POLICE_WEEK_POSTER} alt="Police Week Washington" className="w-full max-w-sm rounded-lg shadow-lg mb-4" />
-              <h3 className="font-heading text-2xl text-[#003366] mb-2 font-bold">Police Week 2026</h3>
-              <p className="text-gray-600 text-center mb-4">Washington D.C. | 11-17 Mayo 2026</p>
-              <p className="text-gray-700 text-center mb-6">Vive una experiencia única con IPA Málaga e IPA Xerez. Honra, hermandad y orgullo policial internacional.</p>
-              <a href="https://policeweek.org" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#D4AF37] text-[#003366] px-6 py-3 rounded font-semibold hover:bg-[#C4991F] transition-colors">
-                Más Información <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-            <div className="flex flex-col items-center">
-              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/DFdPVZtekfyedXRf.jpeg" alt="Puy du Fou IPA" className="w-full max-w-sm rounded-lg shadow-lg mb-4" />
-              <h3 className="font-heading text-2xl text-[#003366] mb-2 font-bold">Puy du Fou</h3>
-              <p className="text-gray-600 text-center mb-4">Francia | 17-19 Abril 2026</p>
-              <p className="text-gray-700 text-center mb-2"><strong>360 EUR por persona</strong></p>
-              <p className="text-gray-700 text-center mb-6 text-sm">3 días / 2 noches con entrada al Sueño de Toledo, autocar, hotel y todas las excursiones incluidas</p>
-              <a href="https://selmaviajes.com/17-04-26-puy-du-fou-especial-ipa/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#D4AF37] text-[#003366] px-6 py-3 rounded font-semibold hover:bg-[#C4991F] transition-colors">
-                Reservar Ahora <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
+          <EventsCarousel />
         </div>
       </section>
 

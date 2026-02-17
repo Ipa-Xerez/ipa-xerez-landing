@@ -989,3 +989,28 @@ export async function getWebhookEventsByPostId(facebookPostId: string): Promise<
     throw error;
   }
 }
+
+
+export async function getUpcomingEvents(limit: number = 10): Promise<Event[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get upcoming events: database not available");
+    return [];
+  }
+
+  try {
+    const now = new Date();
+    
+    const result = await db
+      .select()
+      .from(events)
+      .where(gte(events.date, now))
+      .orderBy(events.date)
+      .limit(limit);
+    
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get upcoming events:", error);
+    return [];
+  }
+}
