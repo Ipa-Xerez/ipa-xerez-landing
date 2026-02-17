@@ -464,6 +464,19 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Facebook Feed */}
+      <section className="bg-white py-12 border-t border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="mb-8">
+            <h2 className="font-heading text-3xl text-[#003366] mb-2 font-bold">Últimas Noticias en Facebook</h2>
+            <p className="text-gray-600">Mantente actualizado con nuestras últimas publicaciones</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            <FacebookFeed />
+          </div>
+        </div>
+      </section>
+
       {/* FAQ mejorado */}
       <section id="faq" className="py-16 md:py-20 bg-[#F5F5F5]">
         <div className="container mx-auto px-4">
@@ -547,19 +560,6 @@ export default function Home() {
                 <p className="text-gray-600 text-sm">Jerez de la Frontera, Cádiz</p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Facebook Feed */}
-      <section className="bg-white py-12 border-t border-gray-200">
-        <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="font-heading text-3xl text-[#003366] mb-2 font-bold">Últimas Noticias en Facebook</h2>
-            <p className="text-gray-600">Mantente actualizado con nuestras últimas publicaciones</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <FacebookFeed />
           </div>
         </div>
       </section>
