@@ -269,6 +269,57 @@ export const appRouter = router({
 
     getAllCampaignsStats: protectedProcedure.query(() => db.getAllCampaignsStats()),
   }),
+
+  blog: router({
+    getAll: publicProcedure.query(() => db.getBlogPosts()),
+    getRecent: publicProcedure
+      .input(z.object({ limit: z.number().default(5) }))
+      .query(({ input }) => db.getRecentBlogPosts(input.limit)),
+    getBySlug: publicProcedure
+      .input(z.object({ slug: z.string() }))
+      .query(({ input }) => db.getBlogPostBySlug(input.slug)),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(({ input }) => db.getBlogPostById(input.id)),
+    search: publicProcedure
+      .input(z.object({ query: z.string() }))
+      .query(({ input }) => db.searchBlogPosts(input.query)),
+    create: protectedProcedure
+      .input(z.object({
+        title: z.string(),
+        slug: z.string().optional(),
+        excerpt: z.string().optional(),
+        content: z.string(),
+        author: z.string().optional(),
+        image: z.string().optional(),
+        category: z.string().optional(),
+        tags: z.array(z.string()).optional(),
+        isPublished: z.number().optional(),
+        publishedAt: z.date().optional(),
+      }))
+      .mutation(({ input }) => db.createBlogPost(input)),
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        slug: z.string().optional(),
+        excerpt: z.string().optional(),
+        content: z.string().optional(),
+        author: z.string().optional(),
+        image: z.string().optional(),
+        category: z.string().optional(),
+        tags: z.array(z.string()).optional(),
+        isPublished: z.number().optional(),
+        publishedAt: z.date().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateBlogPost(id, data);
+      }),
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteBlogPost(input.id)),
+  }),
 })
 
 export type AppRouter = typeof appRouter;

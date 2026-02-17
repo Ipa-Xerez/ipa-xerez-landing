@@ -1,6 +1,6 @@
 import { getDb } from "../db";
-import { events, contacts } from "../../drizzle/schema";
-import { eq, gte, lte, desc } from "drizzle-orm";
+import { events, blogPosts } from "../../drizzle/schema";
+import { eq, gte, desc, and } from "drizzle-orm";
 
 /**
  * Interfaz para contenido generado
@@ -13,7 +13,7 @@ export interface GeneratedContent {
 
 /**
  * Genera contenido automático para newsletters
- * Incluye eventos recientes, fotos de galería y actualizaciones
+ * Incluye eventos recientes y posts de blog
  */
 export async function generateNewsletterContent(
   daysBack: number = 15
@@ -36,6 +36,19 @@ export async function generateNewsletterContent(
     .orderBy(desc(events.date))
     .limit(5);
 
+  // Obtener posts de blog recientes
+  const recentBlogPosts = await db
+    .select()
+    .from(blogPosts)
+    .where(
+      and(
+        eq(blogPosts.isPublished, 1),
+        gte(blogPosts.publishedAt, startDate)
+      )
+    )
+    .orderBy(desc(blogPosts.publishedAt))
+    .limit(3);
+
   // Generar asunto dinámico
   const subject = `IPA Xerez Newsletter - ${now.toLocaleDateString("es-ES", {
     month: "long",
@@ -43,10 +56,10 @@ export async function generateNewsletterContent(
   })}`;
 
   // Generar contenido HTML
-  const htmlContent = generateHtmlContent(recentEvents);
+  const htmlContent = generateHtmlContent(recentEvents, recentBlogPosts);
 
   // Generar texto plano
-  const plainText = generatePlainText(recentEvents);
+  const plainText = generatePlainText(recentEvents, recentBlogPosts);
 
   return {
     subject,
@@ -58,7 +71,7 @@ export async function generateNewsletterContent(
 /**
  * Genera contenido HTML para el newsletter
  */
-function generateHtmlContent(recentEvents: any[]): string {
+function generateHtmlContent(recentEvents: any[], recentBlogPosts: any[]): string {
   const eventsHtml = recentEvents
     .map(
       (event) => `
@@ -75,6 +88,27 @@ function generateHtmlContent(recentEvents: any[]): string {
         ${event.location ? ` | 📍 ${event.location}` : ""}
       </p>
       ${event.registrationUrl ? `<a href="${event.registrationUrl}" style="color: #D4AF37; text-decoration: none; font-weight: bold;">Ver más →</a>` : ""}
+    </div>
+  `
+    )
+    .join("");
+
+  const blogHtml = recentBlogPosts
+    .map(
+      (post) => `
+    <div style="margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #D4AF37; border-radius: 3px;">
+      ${post.image ? `<img src="${post.image}" alt="${post.title}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 3px; margin-bottom: 10px;">` : ""}
+      <h3 style="margin-top: 0; color: #003366;">${post.title}</h3>
+      ${post.excerpt ? `<p style="color: #666; margin: 10px 0;">${post.excerpt}</p>` : ""}
+      <p style="margin: 10px 0; color: #999; font-size: 14px;">
+        📝 ${post.author || "IPA Xerez"} | 📅 ${new Date(post.publishedAt || post.createdAt).toLocaleDateString("es-ES", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+        ${post.category ? ` | 🏷️ ${post.category}` : ""}
+      </p>
+      <a href="#" style="color: #D4AF37; text-decoration: none; font-weight: bold;">Leer más →</a>
     </div>
   `
     )
@@ -120,6 +154,13 @@ function generateHtmlContent(recentEvents: any[]): string {
             </div>
             `}
 
+            ${recentBlogPosts.length > 0 ? `
+            <div class="section">
+              <h2>📰 Últimas Publicaciones del Blog</h2>
+              ${blogHtml}
+            </div>
+            ` : ""}
+
             <div class="section">
               <h2>🤝 Nuestro Lema</h2>
               <p style="text-align: center; font-size: 18px; color: #D4AF37; font-weight: bold;">
@@ -161,7 +202,7 @@ function generateHtmlContent(recentEvents: any[]): string {
 /**
  * Genera contenido en texto plano para el newsletter
  */
-function generatePlainText(recentEvents: any[]): string {
+function generatePlainText(recentEvents: any[], recentBlogPosts: any[]): string {
   const eventsText = recentEvents
     .map(
       (event) => `
@@ -179,6 +220,23 @@ ${event.description ? `Descripción: ${event.description}` : ""}
     )
     .join("\n");
 
+  const blogText = recentBlogPosts
+    .map(
+      (post) => `
+📰 ${post.title}
+Autor: ${post.author || "IPA Xerez"}
+Fecha: ${new Date(post.publishedAt || post.createdAt).toLocaleDateString("es-ES", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })}
+${post.category ? `Categoría: ${post.category}` : ""}
+${post.excerpt ? `\n${post.excerpt}` : ""}
+---
+`
+    )
+    .join("\n");
+
   return `
 IPA XEREZ NEWSLETTER
 
@@ -188,6 +246,9 @@ Te traemos las últimas noticias y eventos de IPA Xerez.
 
 PRÓXIMOS EVENTOS:
 ${recentEvents.length > 0 ? eventsText : "No hay eventos programados en este período."}
+
+ÚLTIMAS PUBLICACIONES DEL BLOG:
+${recentBlogPosts.length > 0 ? blogText : "No hay publicaciones recientes."}
 
 NUESTRO LEMA:
 Servo per Amikeco

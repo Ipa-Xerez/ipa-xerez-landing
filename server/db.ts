@@ -1,6 +1,6 @@
-import { eq, gte, lte, and, count } from "drizzle-orm";
+import { eq, gte, lte, and, count, desc, or, like } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -489,5 +489,161 @@ export async function getAllCampaignsStats() {
   } catch (error) {
     console.error("[Database] Failed to get campaigns stats:", error);
     return [];
+  }
+}
+
+
+// ============ BLOG POSTS ============
+
+export async function createBlogPost(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const result = await db.insert(blogPosts).values({
+      title: data.title,
+      slug: data.slug || data.title.toLowerCase().replace(/\s+/g, "-"),
+      excerpt: data.excerpt,
+      content: data.content,
+      author: data.author,
+      image: data.image,
+      category: data.category,
+      tags: data.tags ? JSON.stringify(data.tags) : null,
+      isPublished: data.isPublished ?? 1,
+      publishedAt: data.publishedAt || new Date(),
+    });
+    return result;
+  } catch (error) {
+    console.error("[Blog] Error creating post:", error);
+    throw error;
+  }
+}
+
+export async function updateBlogPost(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const updateData: any = {};
+    if (data.title) updateData.title = data.title;
+    if (data.slug) updateData.slug = data.slug;
+    if (data.excerpt !== undefined) updateData.excerpt = data.excerpt;
+    if (data.content) updateData.content = data.content;
+    if (data.author !== undefined) updateData.author = data.author;
+    if (data.image !== undefined) updateData.image = data.image;
+    if (data.category !== undefined) updateData.category = data.category;
+    if (data.tags) updateData.tags = JSON.stringify(data.tags);
+    if (data.isPublished !== undefined) updateData.isPublished = data.isPublished;
+    if (data.publishedAt) updateData.publishedAt = data.publishedAt;
+
+    const result = await db.update(blogPosts).set(updateData).where(eq(blogPosts.id, id));
+    return result;
+  } catch (error) {
+    console.error("[Blog] Error updating post:", error);
+    throw error;
+  }
+}
+
+export async function deleteBlogPost(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const result = await db.delete(blogPosts).where(eq(blogPosts.id, id));
+    return result;
+  } catch (error) {
+    console.error("[Blog] Error deleting post:", error);
+    throw error;
+  }
+}
+
+export async function getBlogPosts() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const posts = await db
+      .select()
+      .from(blogPosts)
+      .where(eq(blogPosts.isPublished, 1))
+      .orderBy(desc(blogPosts.publishedAt));
+    return posts;
+  } catch (error) {
+    console.error("[Blog] Error getting posts:", error);
+    throw error;
+  }
+}
+
+export async function getBlogPostBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const post = await db
+      .select()
+      .from(blogPosts)
+      .where(and(eq(blogPosts.slug, slug), eq(blogPosts.isPublished, 1)))
+      .limit(1);
+    return post[0] || null;
+  } catch (error) {
+    console.error("[Blog] Error getting post by slug:", error);
+    throw error;
+  }
+}
+
+export async function getBlogPostById(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const post = await db.select().from(blogPosts).where(eq(blogPosts.id, id)).limit(1);
+    return post[0] || null;
+  } catch (error) {
+    console.error("[Blog] Error getting post by id:", error);
+    throw error;
+  }
+}
+
+export async function getRecentBlogPosts(limit: number = 5) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const posts = await db
+      .select()
+      .from(blogPosts)
+      .where(eq(blogPosts.isPublished, 1))
+      .orderBy(desc(blogPosts.publishedAt))
+      .limit(limit);
+    return posts;
+  } catch (error) {
+    console.error("[Blog] Error getting recent posts:", error);
+    throw error;
+  }
+}
+
+export async function searchBlogPosts(query: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const posts = await db
+      .select()
+      .from(blogPosts)
+      .where(
+        and(
+          eq(blogPosts.isPublished, 1),
+          or(
+            like(blogPosts.title, `%${query}%`),
+            like(blogPosts.excerpt, `%${query}%`),
+            like(blogPosts.content, `%${query}%`)
+          )
+        )
+      )
+      .orderBy(desc(blogPosts.publishedAt));
+    return posts;
+  } catch (error) {
+    console.error("[Blog] Error searching posts:", error);
+    throw error;
   }
 }

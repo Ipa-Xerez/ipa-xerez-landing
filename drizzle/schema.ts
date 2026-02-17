@@ -161,3 +161,24 @@ export const newsletterTemplates = mysqlTable("newsletter_templates", {
 
 export type NewsletterTemplate = typeof newsletterTemplates.$inferSelect;
 export type InsertNewsletterTemplate = typeof newsletterTemplates.$inferInsert;
+
+
+// Blog posts table
+export const blogPosts = mysqlTable("blog_posts", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  excerpt: text("excerpt"),
+  content: text("content").notNull(),
+  author: varchar("author", { length: 255 }),
+  image: text("image"), // URL to featured image
+  category: varchar("category", { length: 100 }),
+  tags: text("tags"), // JSON array of tags
+  isPublished: tinyint("isPublished").default(1).notNull(),
+  publishedAt: timestamp("publishedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type InsertBlogPost = typeof blogPosts.$inferInsert;
