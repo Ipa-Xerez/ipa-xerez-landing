@@ -170,12 +170,28 @@ export default function Home() {
       {/* Historia mejorada */}
       <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="font-display text-3xl md:text-4xl text-[#003366] mb-6 font-bold">Nuestra Historia</h2>
-            <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-6">La International Police Association (IPA) es una organización mundial que conecta a miembros de las fuerzas y cuerpos de seguridad de todo el planeta. En IPA Xerez, fomentamos la amistad, la cooperación internacional y el desarrollo profesional desde hace décadas.</p>
-            <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#003366] text-white px-6 py-3 rounded-lg hover:bg-[#002244] transition-colors font-semibold">
-              Ver IPA España <ArrowRight className="w-4 h-4" />
-            </a>
+          <div className="max-w-4xl mx-auto mb-12">
+            <h2 className="font-display text-3xl md:text-4xl text-[#003366] mb-8 font-bold text-center">Nuestra Historia</h2>
+            
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div className="bg-gradient-to-br from-[#003366]/5 to-[#D4AF37]/5 p-6 rounded-lg border-l-4 border-[#D4AF37]">
+                <h3 className="font-heading text-xl text-[#003366] mb-4 font-bold">Fundación de IPA (1950)</h3>
+                <p className="text-gray-700 leading-relaxed mb-3">La International Police Association fue fundada en 1950 en el Reino Unido por Arthur Troop, sargento de policía de Lincolnshire. Su visión fue fomentar la amistad entre policías de distintos países tras la Segunda Guerra Mundial, construyendo puentes de hermandad internacional.</p>
+                <p className="text-gray-700 leading-relaxed">La primera sección nacional fue la del Reino Unido, y poco después comenzaron a incorporarse otros países europeos, expandiendo la red global de la organización.</p>
+              </div>
+              
+              <div className="bg-gradient-to-br from-[#D4AF37]/5 to-[#003366]/5 p-6 rounded-lg border-l-4 border-[#003366]">
+                <h3 className="font-heading text-xl text-[#003366] mb-4 font-bold">IPA Hoy</h3>
+                <p className="text-gray-700 leading-relaxed mb-3">Hoy, la International Police Association es la mayor asociación policial del mundo con más de 370.000 miembros en más de 60 países. En IPA Xerez, continuamos con la misión original: fomentar la amistad, la cooperación internacional y el desarrollo profesional.</p>
+                <p className="text-gray-700 leading-relaxed">Nuestro lema "Servo per Amikeco" (Servir por la Amistad) refleja los valores fundamentales de hermandad, solidaridad y profesionalismo que nos unen.</p>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <a href="https://ipa-spain.org" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#003366] text-white px-6 py-3 rounded-lg hover:bg-[#002244] transition-colors font-semibold">
+                Ver IPA España <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
