@@ -2,10 +2,13 @@ import { useState, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Calendar, User, Tag, ChevronRight } from "lucide-react";
+import { Search, Filter, Calendar, User, Tag, ChevronRight, LogIn } from "lucide-react";
 import { useLocation } from "wouter";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { getLoginUrl } from "@/const";
 
 export default function Blog() {
+  const { isAuthenticated } = useAuth();
   const [, navigate] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -75,6 +78,9 @@ export default function Blog() {
             >
               ← Volver
             </Button>
+            {!isAuthenticated && (
+              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={() => window.location.href = getLoginUrl()}><LogIn className="h-4 w-4 mr-2" />Login Admin</Button>
+            )}
           </div>
           <h1 className="text-5xl font-bold mb-4">📰 Blog IPA Xerez</h1>
           <p className="text-xl text-blue-100">
