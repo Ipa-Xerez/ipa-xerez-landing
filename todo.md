@@ -109,3 +109,10 @@
 - [x] Removidas tablas y funciones de base de datos de Facebook
 - [x] Removidas referencias en BlogAdmin.tsx
 - [x] Mantenidos solo los enlaces directos a redes sociales
+
+
+## Social Media Cleanup (Completado)
+
+- [x] Eliminar sección "Síguenos en Redes" del final
+- [x] Eliminar sección de Instagram Feed
+- [x] Mantener solo iconos en la parte superior

@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, Calendar, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight, Menu, X, LogIn } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
-import InstagramFeed from "@/components/InstagramFeed";
+
 import EventsCarousel from "@/components/EventsCarousel";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
@@ -173,7 +173,7 @@ export default function Home() {
                 Hazte Socio Ahora <ArrowRight className="w-5 h-5" />
               </Button>
               <Button variant="outline" className="text-white border-2 border-white hover:bg-white/20 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm" onClick={() => window.open('https://ipa-international.org/about', '_blank')}>Más Información</Button>
-              <Button variant="outline" className="text-white border-2 border-white hover:bg-white/20 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm" onClick={() => document.getElementById('instagram')?.scrollIntoView({ behavior: 'smooth' })}>Síguenos en Redes</Button>
+
             </div>
           </div>
         </div>
@@ -532,20 +532,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Instagram Feed */}
-      <section id="instagram" className="bg-gray-50 py-12 border-t border-gray-200">
-        <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="font-heading text-3xl text-[#003366] mb-2 font-bold">Síguenos en Instagram</h2>
-            <p className="text-gray-600">Descubre nuestras últimas actividades y eventos</p>
-          </div>
-          <div className="flex justify-center">
-            <div className="w-full max-w-md">
-              <InstagramFeed username="ipa_xerez" />
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Botónes flotantes */}
       <a href="https://instagram.com/ipa_xerez" target="_blank" rel="noopener noreferrer" className="fixed bottom-20 right-6 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110 z-40" title="Síguenos en Instagram"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg></a>
