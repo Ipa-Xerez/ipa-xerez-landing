@@ -78,9 +78,17 @@ export default function Blog() {
             >
               ← Volver
             </Button>
-            {!isAuthenticated && (
-              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={() => window.location.href = getLoginUrl()}><LogIn className="h-4 w-4 mr-2" />Login Admin</Button>
-            )}
+            <div className="flex gap-3">
+              <Button 
+                className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 font-bold"
+                onClick={() => window.location.href = "mailto:ipaagrupacionxerez@gmail.com"}
+              >
+                📧 Enviar Historia
+              </Button>
+              {!isAuthenticated && (
+                <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={() => window.location.href = getLoginUrl()}><LogIn className="h-4 w-4 mr-2" />Login Admin</Button>
+              )}
+            </div>
           </div>
           <h1 className="text-5xl font-bold mb-4">📰 Blog IPA Xerez</h1>
           <p className="text-xl text-blue-100">
@@ -296,19 +304,7 @@ export default function Blog() {
       </div>
 
       {/* Footer Info */}
-      <div className="bg-gray-50 border-t border-gray-200 py-8 mt-16">
-        <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>
-            ¿Tienes una historia que compartir? Contáctanos en{" "}
-            <a
-              href="mailto:ipaagrupacionxerez@gmail.com"
-              className="text-blue-600 hover:underline font-semibold"
-            >
-              ipaagrupacionxerez@gmail.com
-            </a>
-          </p>
-        </div>
-      </div>
+
 
       {/* Post Modal */}
       {selectedPost && (
