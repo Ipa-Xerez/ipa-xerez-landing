@@ -164,8 +164,8 @@ export default function Home() {
                 ✨ 370.000+ Miembros | Más de 60 Países | Servo per Amikeco
               </div>
             </div>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mb-2 leading-tight font-bold drop-shadow-lg">INTERNATIONAL POLICE</h1>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight font-bold drop-shadow-lg">ASSOCIATION</h1>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mb-2 leading-tight font-bold drop-shadow-lg">ASOCIACIÓN INTERNACIONAL</h1>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight font-bold drop-shadow-lg">DE POLICÍAS</h1>
             <p className="text-2xl md:text-3xl mb-6 text-[#D4AF37] drop-shadow-md font-semibold">AGRUPACIÓN XEREZ</p>
             <p className="text-lg md:text-2xl mb-10 text-gray-100 drop-shadow-md max-w-2xl mx-auto">Únete a IPA Xerez: la mayor asociación policial del mundo con 370.000+ miembros. Amistad, profesionalidad y hermandad internacional en más de 60 países</p>
             <div className="flex gap-4 justify-center flex-wrap">
