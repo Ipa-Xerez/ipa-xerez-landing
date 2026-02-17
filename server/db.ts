@@ -1,6 +1,6 @@
 import { eq, gte, lte, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -322,5 +322,79 @@ export async function updateNewsletterCampaign(id: number, campaign: Partial<Ins
   } catch (error) {
     console.error("[Database] Failed to update newsletter campaign:", error);
     return null;
+  }
+}
+
+// Unsubscribe tokens queries
+export async function createUnsubscribeToken(subscriberId: number, token: string): Promise<UnsubscribeToken | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create unsubscribe token: database not available");
+    return null;
+  }
+
+  try {
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 30); // Token válido por 30 días
+
+    const result = await db.insert(unsubscribeTokens).values({
+      subscriberId,
+      token,
+      expiresAt,
+    });
+
+    const newToken = await db.select().from(unsubscribeTokens).where(eq(unsubscribeTokens.id, result[0].insertId as number)).limit(1);
+    return newToken.length > 0 ? newToken[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to create unsubscribe token:", error);
+    throw error;
+  }
+}
+
+export async function getUnsubscribeToken(token: string): Promise<UnsubscribeToken | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get unsubscribe token: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.select().from(unsubscribeTokens).where(eq(unsubscribeTokens.token, token)).limit(1);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to get unsubscribe token:", error);
+    return null;
+  }
+}
+
+export async function deleteUnsubscribeToken(token: string): Promise<boolean> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete unsubscribe token: database not available");
+    return false;
+  }
+
+  try {
+    await db.delete(unsubscribeTokens).where(eq(unsubscribeTokens.token, token));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to delete unsubscribe token:", error);
+    return false;
+  }
+}
+
+export async function unsubscribeFromNewsletterById(subscriberId: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot unsubscribe: database not available");
+    return false;
+  }
+
+  try {
+    await db.update(newsletterSubscribers).set({ status: "unsubscribed" }).where(eq(newsletterSubscribers.id, subscriberId));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to unsubscribe:", error);
+    return false;
   }
 }

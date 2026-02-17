@@ -36,3 +36,13 @@
 - [ ] Agregar plantillas de email personalizables
 - [ ] Implementar programación de envíos
 - [ ] Agregar segmentación de suscriptores
+
+
+## Unsubscribe Feature (Completado)
+
+- [x] Agregar tabla de tokens de desuscripción
+- [x] Crear procedimiento tRPC para desuscripción
+- [x] Actualizar servicio de email con links de baja
+- [x] Crear página pública de desuscripción
+- [x] Generar tokens únicos para cada suscriptor
+- [x] Tokens válidos por 30 días

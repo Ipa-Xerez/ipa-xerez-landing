@@ -6,7 +6,7 @@ import { z } from "zod";
 import * as db from "./db";
 import { notifyOwner } from "./_core/notification";
 import { sendEmail, generateContactConfirmationEmail } from "./_core/emailService";
-import { sendSubscriptionConfirmationEmail, sendNewsletterCampaign } from "./services/newsletterService";
+import { sendSubscriptionConfirmationEmail, sendNewsletterCampaign, generateUnsubscribeToken } from "./services/newsletterService";
 
 export const appRouter = router({
   system: systemRouter,
@@ -146,7 +146,7 @@ export const appRouter = router({
 
     getSubscribers: protectedProcedure.query(() => db.getNewsletterSubscribers("subscribed")),
 
-    unsubscribe: publicProcedure
+    unsubscribeByEmail: publicProcedure
       .input(z.object({ email: z.string().email() }))
       .mutation(({ input }) => db.unsubscribeFromNewsletter(input.email)),
 
@@ -183,27 +183,41 @@ export const appRouter = router({
           }
 
           const subscribers = await db.getNewsletterSubscribers("subscribed");
-          const emails = subscribers.map(s => s.email);
 
-          if (emails.length === 0) {
+          if (subscribers.length === 0) {
             return {
               success: false,
               message: "No hay suscriptores para enviar el newsletter.",
             };
           }
 
+          // Generar tokens de desuscripción para cada suscriptor
+          const recipientsWithUnsubscribe = await Promise.all(
+            subscribers.map(async (subscriber) => {
+              const token = generateUnsubscribeToken();
+              await db.createUnsubscribeToken(subscriber.id, token);
+              const unsubscribeLink = `${process.env.VITE_FRONTEND_URL || "http://localhost:3000"}/unsubscribe?token=${token}`;
+              return {
+                email: subscriber.email,
+                unsubscribeLink,
+              };
+            })
+          );
+
           const result = await sendNewsletterCampaign(
             targetCampaign.subject,
             targetCampaign.content,
-            emails
+            recipientsWithUnsubscribe
           );
 
           // Actualizar el estado de la campaña
-          await db.updateNewsletterCampaign(input.campaignId, {
-            status: "sent",
-            sentAt: new Date(),
-            recipientCount: result.success,
-          });
+          if (result.success > 0) {
+            await db.updateNewsletterCampaign(input.campaignId, {
+              status: "sent",
+              sentAt: new Date(),
+              recipientCount: result.success,
+            });
+          }
 
           return {
             success: true,
@@ -216,7 +230,37 @@ export const appRouter = router({
           throw error;
         }
       }),
+    unsubscribe: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ input }) => {
+        try {
+          const unsubscribeToken = await db.getUnsubscribeToken(input.token);
+
+          if (!unsubscribeToken) {
+            throw new Error("Token de desuscripción inválido o expirado");
+          }
+
+          // Verificar si el token ha expirado
+          if (new Date() > unsubscribeToken.expiresAt) {
+            throw new Error("El token de desuscripción ha expirado");
+          }
+
+          // Desuscribir al usuario
+          await db.unsubscribeFromNewsletterById(unsubscribeToken.subscriberId);
+
+          // Eliminar el token
+          await db.deleteUnsubscribeToken(input.token);
+
+          return {
+            success: true,
+            message: "Te has desuscrito exitosamente del newsletter.",
+          };
+        } catch (error) {
+          console.error("[Newsletter] Error unsubscribing:", error);
+          throw error;
+        }
+      }),
   }),
-});
+})
 
 export type AppRouter = typeof appRouter;

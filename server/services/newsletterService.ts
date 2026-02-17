@@ -1,5 +1,11 @@
 import nodemailer from "nodemailer";
-import { ENV } from "../_core/env";
+import { ENV } from "../\_core/env";
+import { randomBytes } from "crypto";
+
+// Generar token único para desuscripción
+export function generateUnsubscribeToken(): string {
+  return randomBytes(32).toString("hex");
+}
 
 // Crear transporte de correo usando Gmail
 const transporter = nodemailer.createTransport({
@@ -15,7 +21,8 @@ const transporter = nodemailer.createTransport({
  */
 export async function sendSubscriptionConfirmationEmail(
   email: string,
-  name?: string
+  name?: string,
+  unsubscribeLink?: string
 ): Promise<boolean> {
   try {
     const htmlContent = `
@@ -50,11 +57,10 @@ export async function sendSubscriptionConfirmationEmail(
                 <li>🎉 Invitaciones exclusivas a eventos especiales</li>
               </ul>
               <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.</p>
-              <p><strong>Nuestro lema:</strong> <span class="highlight">Servo per Amikeco</span> (Servir por la Amistad)</p>
-              <p>Saludos cordiales,<br><strong>El equipo de IPA Xerez</strong></p>
+              <p><strong>Nuestro lema:</strong> <span class="highlight">Servo per Amikeco</span> (Servir por la Amistad)</p>              <p>Saludos cordiales,<br><strong>El equipo de IPA Xerez</strong></p>
+              ${unsubscribeLink ? `<p style="margin-top: 20px; font-size: 12px; color: #999;"><a href="${unsubscribeLink}" style="color: #D4AF37; text-decoration: none;">Desuscribirse de este newsletter</a></p>` : ""}
             </div>
-            <div class="footer">
-              <p>International Police Association - Agrupación Xerez</p>
+            <div className="footer">            <p>International Police Association - Agrupación Xerez</p>
               <p>Hermandad Policial Internacional | Amistad sin Fronteras</p>
             </div>
           </div>
@@ -83,7 +89,7 @@ export async function sendSubscriptionConfirmationEmail(
 export async function sendNewsletterCampaign(
   subject: string,
   content: string,
-  recipients: string[]
+  recipients: Array<{ email: string; unsubscribeLink: string }>
 ): Promise<{ success: number; failed: number }> {
   let success = 0;
   let failed = 0;
@@ -95,7 +101,7 @@ export async function sendNewsletterCampaign(
 
   try {
     // Enviar a todos los suscriptores
-    for (const email of recipients) {
+    for (const recipient of recipients) {
       try {
         const htmlContent = `
           <!DOCTYPE html>
@@ -108,6 +114,8 @@ export async function sendNewsletterCampaign(
                 .header { background: linear-gradient(135deg, #003366 0%, #004d99 100%); color: white; padding: 30px; text-align: center; border-radius: 5px 5px 0 0; }
                 .content { background-color: white; padding: 30px; border-radius: 0 0 5px 5px; }
                 .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+                .unsubscribe { margin-top: 20px; font-size: 12px; color: #999; }
+                .unsubscribe a { color: #D4AF37; text-decoration: none; }
                 h1 { margin: 0; font-size: 28px; color: #D4AF37; }
                 .highlight { color: #D4AF37; }
               </style>
@@ -119,6 +127,9 @@ export async function sendNewsletterCampaign(
                 </div>
                 <div class="content">
                   ${content}
+                  <div class="unsubscribe">
+                    <p><a href="${recipient.unsubscribeLink}">Desuscribirse de este newsletter</a></p>
+                  </div>
                 </div>
                 <div class="footer">
                   <p>International Police Association - Agrupación Xerez</p>
@@ -131,14 +142,14 @@ export async function sendNewsletterCampaign(
 
         await transporter.sendMail({
           from: process.env.GMAIL_USER,
-          to: email,
+          to: recipient.email,
           subject: subject,
           html: htmlContent,
         });
 
         success++;
       } catch (error) {
-        console.error(`[Newsletter] Failed to send to ${email}:`, error);
+        console.error(`[Newsletter] Failed to send to ${recipient.email}:`, error);
         failed++;
       }
     }

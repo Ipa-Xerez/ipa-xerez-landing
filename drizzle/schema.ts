@@ -86,3 +86,15 @@ export const newsletterCampaigns = mysqlTable("newsletter_campaigns", {
 
 export type NewsletterCampaign = typeof newsletterCampaigns.$inferSelect;
 export type InsertNewsletterCampaign = typeof newsletterCampaigns.$inferInsert;
+
+// Unsubscribe tokens table
+export const unsubscribeTokens = mysqlTable("unsubscribe_tokens", {
+  id: int("id").autoincrement().primaryKey(),
+  subscriberId: int("subscriber_id").notNull(),
+  token: varchar("token", { length: 255 }).notNull().unique(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+});
+
+export type UnsubscribeToken = typeof unsubscribeTokens.$inferSelect;
+export type InsertUnsubscribeToken = typeof unsubscribeTokens.$inferInsert;
