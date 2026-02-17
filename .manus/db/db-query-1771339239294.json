@@ -1,0 +1,21 @@
+{
+  "query": "SELECT * FROM administrators WHERE email = 'mariluzjerez@gmail.com';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT * FROM administrators WHERE email = 'mariluzjerez@gmail.com';",
+  "rows": [
+    {
+      "id": "1",
+      "user_id": "NULL",
+      "email": "mariluzjerez@gmail.com",
+      "name": "Mariluz",
+      "permissions": "blog,newsletter,events",
+      "added_by": "NULL",
+      "added_at": "2026-02-17 14:20:37",
+      "createdAt": "2026-02-17 14:20:37",
+      "updatedAt": "2026-02-17 14:20:37"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuser_id\temail\tname\tpermissions\tadded_by\tadded_at\tcreatedAt\tupdatedAt\n1\tNULL\tmariluzjerez@gmail.com\tMariluz\tblog,newsletter,events\tNULL\t2026-02-17 14:20:37\t2026-02-17 14:20:37\t2026-02-17 14:20:37\n",
+  "stderr": "",
+  "execution_time_ms": 359
+}

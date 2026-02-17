@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, email, name, permissions FROM administrators;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, email, name, permissions FROM administrators;",
+  "rows": [
+    {
+      "id": "1",
+      "email": "mariluzjerez@gmail.com",
+      "name": "Mariluz",
+      "permissions": "blog,newsletter,events"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tname\tpermissions\n1\tmariluzjerez@gmail.com\tMariluz\tblog,newsletter,events\n",
+  "stderr": "",
+  "execution_time_ms": 356
+}
