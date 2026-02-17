@@ -2,11 +2,15 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import { initializeNewsletterSchedules } from "./services/newsletterSchedulerService";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function startServer() {
+  // Inicializar newsletter schedules
+  await initializeNewsletterSchedules();
+
   const app = express();
   const server = createServer(app);
 

@@ -43,6 +43,13 @@
       "when": 1771331544400,
       "tag": "0005_rare_spacker_dave",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1771332513905,
+      "tag": "0006_optimal_blob",
+      "breakpoints": true
     }
   ]
 }

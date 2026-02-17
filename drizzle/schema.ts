@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, tinyint, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -122,3 +122,42 @@ export const newsletterClicks = mysqlTable("newsletter_clicks", {
 
 export type NewsletterClick = typeof newsletterClicks.$inferSelect;
 export type InsertNewsletterClick = typeof newsletterClicks.$inferInsert;
+
+
+// Newsletter schedule table for automated recurring newsletters
+export const newsletterSchedules = mysqlTable("newsletter_schedules", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  frequency: mysqlEnum("frequency", ["daily", "weekly", "biweekly", "monthly"]).notNull(), // biweekly = every 15 days
+  dayOfWeek: int("dayOfWeek"), // 0-6 (0=Sunday, 5=Friday)
+  hour: int("hour").notNull(), // 0-23
+  minute: int("minute").default(0), // 0-59
+  timezone: varchar("timezone", { length: 50 }).default("Europe/Madrid").notNull(),
+  isActive: tinyint("isActive").default(1).notNull(),
+  lastSentAt: timestamp("lastSentAt"),
+  nextSendAt: timestamp("nextSendAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type NewsletterSchedule = typeof newsletterSchedules.$inferSelect;
+export type InsertNewsletterSchedule = typeof newsletterSchedules.$inferInsert;
+
+// Newsletter template table for automated content generation
+export const newsletterTemplates = mysqlTable("newsletter_templates", {
+  id: int("id").autoincrement().primaryKey(),
+  scheduleId: int("schedule_id").notNull(),
+  subject: varchar("subject", { length: 255 }).notNull(),
+  includeEvents: tinyint("includeEvents").default(1).notNull(),
+  includePhotos: tinyint("includePhotos").default(1).notNull(),
+  includeBlog: tinyint("includeBlog").default(1).notNull(),
+  maxEvents: int("maxEvents").default(5),
+  maxPhotos: int("maxPhotos").default(10),
+  maxBlogPosts: int("maxBlogPosts").default(3),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type NewsletterTemplate = typeof newsletterTemplates.$inferSelect;
+export type InsertNewsletterTemplate = typeof newsletterTemplates.$inferInsert;
