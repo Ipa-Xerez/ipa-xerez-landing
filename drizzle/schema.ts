@@ -199,52 +199,6 @@ export const administrators = mysqlTable("administrators", {
 export type Administrator = typeof administrators.$inferSelect;
 export type InsertAdministrator = typeof administrators.$inferInsert;
 
-// Facebook share tracking table
-export const facebookShares = mysqlTable("facebook_shares", {
-  id: int("id").autoincrement().primaryKey(),
-  blogPostId: int("blog_post_id").notNull(),
-  facebookPostId: varchar("facebook_post_id", { length: 255 }),
-  shareStatus: mysqlEnum("share_status", ["pending", "scheduled", "shared", "failed"]).default("pending").notNull(),
-  scheduledFor: timestamp("scheduled_for"), // When to share the post
-  sharedAt: timestamp("shared_at"), // When it was actually shared
-  errorMessage: text("error_message"), // Error details if sharing failed
-  autoShare: tinyint("auto_share").default(1).notNull(), // Whether to auto-share this post
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type FacebookShare = typeof facebookShares.$inferSelect;
-export type InsertFacebookShare = typeof facebookShares.$inferInsert;
-
-// Facebook engagement metrics table
-export const facebookEngagementMetrics = mysqlTable("facebook_engagement_metrics", {
-  id: int("id").autoincrement().primaryKey(),
-  facebookShareId: int("facebook_share_id").notNull(),
-  facebookPostId: varchar("facebook_post_id", { length: 255 }).notNull(),
-  likes: int("likes").default(0).notNull(),
-  comments: int("comments").default(0).notNull(),
-  shares: int("shares").default(0).notNull(),
-  reactions: text("reactions"), // JSON string with reaction counts: {"LIKE": 10, "LOVE": 5, ...}
-  lastUpdated: timestamp("last_updated").defaultNow().onUpdateNow().notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
-
-export type FacebookEngagementMetrics = typeof facebookEngagementMetrics.$inferSelect;
-export type InsertFacebookEngagementMetrics = typeof facebookEngagementMetrics.$inferInsert;
-
-// Facebook webhook events log (for debugging and audit trail)
-export const facebookWebhookEvents = mysqlTable("facebook_webhook_events", {
-  id: int("id").autoincrement().primaryKey(),
-  eventType: varchar("event_type", { length: 100 }).notNull(), // 'comment', 'reaction', 'share', etc.
-  facebookPostId: varchar("facebook_post_id", { length: 255 }).notNull(),
-  eventData: text("event_data").notNull(), // Full JSON payload from Facebook
-  processed: tinyint("processed").default(0).notNull(),
-  errorMessage: text("error_message"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
-
-export type FacebookWebhookEvent = typeof facebookWebhookEvents.$inferSelect;
-export type InsertFacebookWebhookEvent = typeof facebookWebhookEvents.$inferInsert;
 
 
 // Event registrations table for event inscriptions
