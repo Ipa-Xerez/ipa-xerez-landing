@@ -385,5 +385,52 @@ export const appRouter = router({
         return db.removeAdministrator(input.email);
       }),
   }),
+
+  eventRegistrations: router({
+    register: publicProcedure
+      .input(z.object({
+        eventId: z.number(),
+        name: z.string().min(1, "El nombre es requerido"),
+        email: z.string().email("Email inválido"),
+        phone: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const registration = await db.createEventRegistration(input);
+          
+          if (registration) {
+            const confirmationEmail = `
+              <h2>¡Inscripción confirmada!</h2>
+              <p>Hola ${input.name},</p>
+              <p>Tu inscripción al evento ha sido registrada exitosamente.</p>
+              <p>Recibirás más detalles sobre el evento próximamente.</p>
+            `;
+            
+            await sendEmail({
+              to: input.email,
+              subject: "Confirmación de inscripción - IPA Xerez",
+              htmlContent: confirmationEmail,
+            });
+          }
+          
+          return registration;
+        } catch (error) {
+          console.error("[EventRegistrations] Error registering:", error);
+          throw error;
+        }
+      }),
+    
+    getByEvent: publicProcedure
+      .input(z.object({ eventId: z.number() }))
+      .query(({ input }) => db.getEventRegistrations(input.eventId)),
+    
+    getByEmail: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .query(({ input }) => db.getEventRegistrationsByEmail(input.email)),
+    
+    cancel: publicProcedure
+      .input(z.object({ registrationId: z.number() }))
+      .mutation(({ input }) => db.cancelEventRegistration(input.registrationId)),
+  }),
 })
 export type AppRouter = typeof appRouter;

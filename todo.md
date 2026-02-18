@@ -139,3 +139,14 @@
 - [x] Crear componente PWAAndroidInstall con instrucciones
 - [x] Crear página de guía de instalación (/install)
 - [x] Agregar fallback y alternativas de instalación
+
+
+## Sistema de Gestión de Eventos Avanzado
+
+- [x] Crear tabla de registros de inscripción en base de datos
+- [x] Implementar procedimientos tRPC para registros de eventos
+- [x] Crear componente EventRegistrationForm para inscripción
+- [x] Crear componente EventCalendarExport para exportación a Google Calendar, Outlook e iCal
+- [x] Crear componente EventFiltersAndSearch para filtros y búsqueda
+- [ ] Integrar componentes en página de eventos
+- [ ] Probar funcionalidad completa

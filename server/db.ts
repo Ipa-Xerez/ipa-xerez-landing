@@ -1,7 +1,8 @@
 import { eq, gte, lte, and, count, desc, or, like, inArray, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator, eventRegistrations, InsertEventRegistration, EventRegistration } from "../drizzle/schema";
 import { ENV } from './_core/env';
+
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -745,5 +746,73 @@ export async function getUpcomingEvents(limit: number = 10): Promise<Event[]> {
   } catch (error) {
     console.error("[Database] Failed to get upcoming events:", error);
     return [];
+  }
+}
+
+
+// Event Registrations functions
+
+export async function createEventRegistration(data: InsertEventRegistration): Promise<EventRegistration | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create event registration: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(eventRegistrations).values(data);
+    const registration = await db.select().from(eventRegistrations).where(eq(eventRegistrations.id, result[0].insertId as number)).limit(1);
+    return registration.length > 0 ? registration[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to create event registration:", error);
+    throw error;
+  }
+}
+
+export async function getEventRegistrations(eventId: number): Promise<EventRegistration[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get event registrations: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db.select().from(eventRegistrations).where(eq(eventRegistrations.eventId, eventId)).orderBy(eventRegistrations.registeredAt);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get event registrations:", error);
+    return [];
+  }
+}
+
+export async function getEventRegistrationsByEmail(email: string): Promise<EventRegistration[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get event registrations by email: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db.select().from(eventRegistrations).where(eq(eventRegistrations.email, email)).orderBy(eventRegistrations.registeredAt);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get event registrations by email:", error);
+    return [];
+  }
+}
+
+export async function cancelEventRegistration(registrationId: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot cancel event registration: database not available");
+    return false;
+  }
+
+  try {
+    await db.update(eventRegistrations).set({ status: "cancelled", cancelledAt: new Date() }).where(eq(eventRegistrations.id, registrationId));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to cancel event registration:", error);
+    throw error;
   }
 }

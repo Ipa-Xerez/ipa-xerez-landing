@@ -245,3 +245,23 @@ export const facebookWebhookEvents = mysqlTable("facebook_webhook_events", {
 
 export type FacebookWebhookEvent = typeof facebookWebhookEvents.$inferSelect;
 export type InsertFacebookWebhookEvent = typeof facebookWebhookEvents.$inferInsert;
+
+
+// Event registrations table for event inscriptions
+export const eventRegistrations = mysqlTable("event_registrations", {
+  id: int("id").autoincrement().primaryKey(),
+  eventId: int("event_id").notNull(),
+  userId: int("user_id"),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  phone: varchar("phone", { length: 20 }),
+  status: mysqlEnum("status", ["registered", "confirmed", "cancelled", "attended"]).default("registered").notNull(),
+  registeredAt: timestamp("registered_at").defaultNow().notNull(),
+  confirmedAt: timestamp("confirmed_at"),
+  cancelledAt: timestamp("cancelled_at"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type EventRegistration = typeof eventRegistrations.$inferSelect;
+export type InsertEventRegistration = typeof eventRegistrations.$inferInsert;

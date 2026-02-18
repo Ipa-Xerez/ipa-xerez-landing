@@ -85,6 +85,13 @@
       "when": 1771358945401,
       "tag": "0011_woozy_weapon_omega",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1771447053913,
+      "tag": "0012_even_silverclaw",
+      "breakpoints": true
     }
   ]
 }
