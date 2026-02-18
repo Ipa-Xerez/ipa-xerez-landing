@@ -327,6 +327,22 @@ export default function Home() {
                 <p className="text-gray-600 text-sm">Descuentos y acceso a eventos internacionales</p>
               </div>
             </Card>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden cursor-pointer">
+              <div className="aspect-square bg-gradient-to-br from-[#003366] to-[#D4AF37] flex items-center justify-center">
+                <div className="text-center text-white">
+                  <div className="text-4xl mb-2">🏠</div>
+                  <p className="font-bold">Casas IPA</p>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Casas IPA</h3>
+                <p className="text-gray-600 text-sm">Alojamiento exclusivo para miembros en todo el mundo</p>
+                <div className="flex gap-2 mt-4">
+                  <Button className="flex-1 bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F] text-xs" onClick={() => window.open('https://ipa-international.org/ipa-houses/', '_blank')}>Más Info</Button>
+                  <Button className="flex-1 bg-[#003366] text-white hover:bg-[#002244] text-xs" onClick={() => window.open('https://ipa-international.org/wp-content/uploads/2025/12/IPAHOS1.pdf', '_blank')}>PDF</Button>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </section>
