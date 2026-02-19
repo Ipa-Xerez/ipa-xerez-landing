@@ -121,7 +121,7 @@ export default function Home() {
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/calendar')}>Calendario</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}>FAQ</Button>
             {isAuthenticated && <button onClick={() => navigate('/admin/documents')} className="hover:opacity-80 transition-opacity" title="Panel de Administración"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="Panel Admin" className="h-8 w-auto" /></button>}
-            <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-sm md:text-base font-bold" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Únete</Button>
+
             <PWAInstallButton />
             <div className="flex gap-2">
               <a href="https://www.facebook.com/profile.php?id=61572445883496" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 transition-all duration-300 hover:scale-110" title="Facebook"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
@@ -176,11 +176,12 @@ export default function Home() {
               <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2" onClick={() => setShowInscriptionModal(true)}>
                 Hazte Socio Ahora <ArrowRight className="w-5 h-5" />
               </Button>
+              <Button className="bg-red-600 text-white hover:bg-red-700 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" onClick={() => window.open('https://ipa-international.org/about', '_blank')}>
+                Más Información
+              </Button>
               <Button className="bg-white/20 text-white hover:bg-white/30 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 border-2 border-white backdrop-blur-sm" onClick={() => navigate('/socios')}>
                 <LogIn className="w-5 h-5" /> Acceso Socios
               </Button>
-              <Button variant="outline" className="text-white border-2 border-white hover:bg-white/20 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm" onClick={() => window.open('https://ipa-international.org/about', '_blank')}>Más Información</Button>
-
             </div>
           </div>
         </div>
