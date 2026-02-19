@@ -21,7 +21,7 @@ interface Event {
 
 export default function Calendar() {
   const [, navigate] = useLocation();
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 1)); // Enero 2026
+  const [currentDate, setCurrentDate] = useState(new Date()); // Fecha actual
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
