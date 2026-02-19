@@ -197,53 +197,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Próxima Actividad Block */}
+      {/* Próxima Actividad Widget - Posicionado en el hero */}
       {nextEvent && (
-      <section className="py-8 md:py-12 bg-gradient-to-r from-[#003366] via-[#004d99] to-[#003366]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-2xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
-              <div className="grid md:grid-cols-2 gap-0">
-                {/* Imagen del evento */}
-                <div className="relative h-64 md:h-full min-h-64 bg-cover bg-center" style={{ backgroundImage: `url(${nextEvent.image || POLICE_WEEK_POSTER})` }}>
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
-                </div>
-                {/* Detalles del evento */}
-                <div className="p-6 md:p-8 flex flex-col justify-between">
-                  <div>
-                    <div className="inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-                      🔹 Próxima Actividad
-                    </div>
-                    <h3 className="font-display text-2xl md:text-3xl text-[#003366] font-bold mb-4">{nextEvent.title}</h3>
-                    <div className="space-y-3 text-gray-700">
-                      <div className="flex items-center gap-3">
-                        <Calendar className="w-5 h-5 text-[#D4AF37]" />
-                        <span className="font-semibold">{new Date(nextEvent.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                      </div>
-                      {nextEvent.time && (
-                      <div className="flex items-center gap-3">
-                        <Timer className="w-5 h-5 text-[#D4AF37]" />
-                        <span className="font-semibold">{nextEvent.time}</span>
-                      </div>
-                      )}
-                      <div className="flex items-center gap-3">
-                        <MapPin className="w-5 h-5 text-[#D4AF37]" />
-                        <span className="font-semibold">{nextEvent.location || 'Por confirmar'}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 mt-6">
-                    <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-6 py-3 flex items-center gap-2 flex-1" onClick={() => window.open('https://wa.me/34675508110', '_blank')}>
-                      📞 Contactar Actividades
-                    </Button>
-                  </div>
-                </div>
+      <div className="fixed left-4 top-32 md:top-40 z-40 w-80 md:w-96">
+        <div className="bg-white rounded-lg shadow-2xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
+          <div className="bg-red-600 text-white px-4 py-3 flex items-center gap-2">
+            <span className="text-lg">🔹</span>
+            <span className="font-bold text-sm">Próxima Actividad</span>
+          </div>
+          <div className="p-4">
+            <h3 className="font-bold text-[#003366] mb-3 text-sm line-clamp-2">{nextEvent.title}</h3>
+            <div className="space-y-2 text-xs text-gray-700">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
+                <span className="font-semibold">{new Date(nextEvent.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
+              </div>
+              {nextEvent.time && (
+              <div className="flex items-center gap-2">
+                <Timer className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
+                <span className="font-semibold text-xs">{nextEvent.time}</span>
+              </div>
+              )}
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
+                <span className="font-semibold text-xs line-clamp-1">{nextEvent.location || 'Por confirmar'}</span>
               </div>
             </div>
+            <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-3 py-2 text-xs w-full mt-3" onClick={() => window.open('https://wa.me/34675508110', '_blank')}>
+              📞 Contactar
+            </Button>
           </div>
         </div>
-      </section>
+      </div>
       )}
+      
+      {/* Espaciador para que el contenido no se superponga con el widget fijo */}
+      <div className="hidden md:block h-0"></div>
 
       {/* Sección Descripción SEO */}
       <section className="py-12 md:py-16 bg-white border-b border-gray-200">
