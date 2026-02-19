@@ -38,32 +38,46 @@ function EstatutosSection() {
   );
 }
 
-function DocumentosPrivadosSection() {
-  const documentsQuery = trpc.documents.getByType.useQuery({ documentType: "estatutos" });
+function DocumentTypeSection({ type, label }: { type: string; label: string }) {
+  const documentsQuery = trpc.documents.getByType.useQuery({ documentType: type });
 
   if (documentsQuery.isLoading) {
     return (
-      <div className="mt-12 text-center py-12">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#003366] mb-4"></div>
-        <p className="text-gray-600">Cargando documentos...</p>
+      <div className="mt-8 text-center py-8">
+        <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-[#003366] mb-2"></div>
+        <p className="text-gray-600 text-sm">Cargando {label}...</p>
       </div>
     );
   }
 
+  if (!documentsQuery.data || documentsQuery.data.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="mt-8">
+      <h3 className="text-2xl font-bold text-[#003366] mb-6">{label}</h3>
+      <DocumentsTable documents={documentsQuery.data} isAdmin={false} />
+    </div>
+  );
+}
+
+function DocumentosPrivadosSection() {
+  const documentTypes = [
+    { type: "actas", label: "Actas de Reuniones" },
+    { type: "comunicados", label: "Comunicados Internos" },
+    { type: "guias", label: "Guías y Manuales" },
+    { type: "otros", label: "Otros Documentos" },
+  ];
+
   return (
     <div id="documents-section" className="mt-12 scroll-mt-24">
       <h2 className="text-3xl font-bold text-[#003366] mb-8">Documentos Disponibles</h2>
-      {documentsQuery.data && documentsQuery.data.length > 0 ? (
-        <DocumentsTable documents={documentsQuery.data} isAdmin={false} />
-      ) : (
-        <Card className="border-0 shadow-lg">
-          <div className="p-8 text-center">
-            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 mb-2">No hay documentos disponibles en este momento</p>
-            <p className="text-sm text-gray-500">Los administradores pueden subir documentos en el panel de control</p>
-          </div>
-        </Card>
-      )}
+      <div className="space-y-8">
+        {documentTypes.map((docType) => (
+          <DocumentTypeSection key={docType.type} type={docType.type} label={docType.label} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -91,9 +105,8 @@ export default function MembersArea() {
       if (result.success && result.member) {
         setCurrentMember(result.member);
         setIsLoggedIn(true);
-        setMemberNumber("");
       } else {
-        setLoginError(result.message || "Número de socio no válido");
+        setLoginError(result.message || "Número de socio no encontrado. Por favor verifica tu número.");
       }
     } catch (error: any) {
       setLoginError(error.message || "Error al validar el número de socio");
@@ -112,64 +125,60 @@ export default function MembersArea() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#003366] to-[#001a33] flex items-center justify-center px-4 py-20">
-        <div className="w-full max-w-md">
+      <div className="min-h-screen bg-gradient-to-br from-[#F5F5F5] to-white flex items-center justify-center pt-24 pb-12">
+        <div className="w-full max-w-md px-4">
           <Card className="border-0 shadow-2xl">
             <div className="p-8">
               <div className="text-center mb-8">
-                <div className="inline-block p-4 bg-[#D4AF37]/10 rounded-full mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/20 mb-4">
                   <Lock className="w-8 h-8 text-[#D4AF37]" />
                 </div>
                 <h1 className="text-3xl font-bold text-[#003366] mb-2">Zona de Socios</h1>
                 <p className="text-gray-600">Acceso exclusivo para miembros de IPA Xerez</p>
               </div>
 
-              <form onSubmit={handleLogin} className="space-y-4">
+              <form onSubmit={handleLogin} className="space-y-6">
                 <div>
                   <label className="block text-sm font-semibold text-[#003366] mb-2">
                     Número de Socio
                   </label>
                   <Input
                     type="text"
-                    placeholder="Ej: 12345"
+                    placeholder="Ej: 31907"
                     value={memberNumber}
-                    onChange={(e) => {
-                      setMemberNumber(e.target.value);
-                      setLoginError("");
-                    }}
-                    className="border-2 border-gray-300 focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20"
-                    disabled={isLoading}
+                    onChange={(e) => setMemberNumber(e.target.value)}
+                    className="border-2 border-[#D4AF37] focus:border-[#003366]"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-gray-600 mt-2">
                     Puedes encontrar tu número de socio en tu carnet de IPA
                   </p>
                 </div>
 
                 {loginError && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-sm text-red-700">{loginError}</p>
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-700 text-sm font-medium">{loginError}</p>
                   </div>
                 )}
 
                 <Button
                   type="submit"
-                  className="w-full bg-[#003366] text-white hover:bg-[#002244] py-6 text-base font-semibold"
-                  disabled={isLoading || !memberNumber.trim()}
+                  disabled={isLoading}
+                  className="w-full bg-[#003366] hover:bg-[#001a33] text-white font-bold py-3 text-lg"
                 >
-                  {isLoading ? "Verificando..." : "Acceder"}
+                  {isLoading ? "Validando..." : "Acceder"}
                 </Button>
               </form>
 
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <p className="text-xs text-gray-600 text-center mb-4">
+              <div className="mt-8 pt-8 border-t border-gray-200 text-center">
+                <p className="text-gray-600 text-sm mb-4">
                   ¿Problemas para acceder? Contacta con la administración de IPA Xerez
                 </p>
                 <Button
-                  variant="outline"
-                  className="w-full border-2 border-[#003366] text-[#003366] hover:bg-[#003366]/10"
+                  variant="ghost"
+                  className="text-[#003366] hover:text-[#D4AF37]"
                   onClick={() => navigate("/")}
                 >
-                  Volver a Inicio
+                  Volver al Inicio
                 </Button>
               </div>
             </div>
