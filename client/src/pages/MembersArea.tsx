@@ -64,10 +64,10 @@ function DocumentTypeSection({ type, label }: { type: string; label: string }) {
 
 function DocumentosPrivadosSection() {
   const documentTypes = [
-    { type: "actas", label: "Actas de Reuniones" },
-    { type: "comunicados", label: "Comunicados Internos" },
-    { type: "guias", label: "Guías y Manuales" },
-    { type: "otros", label: "Otros Documentos" },
+    { type: "actas_reuniones", label: "Actas de Reuniones" },
+    { type: "comunicados_internos", label: "Comunicados Internos" },
+    { type: "guias_manuales", label: "Guías y Manuales" },
+    { type: "otros_documentos", label: "Otros Documentos" },
   ];
 
   return (
@@ -209,60 +209,7 @@ export default function MembersArea() {
           </Button>
         </div>
 
-        {/* Tabs/Sections */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {/* Estatutos */}
-          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-            <div className="p-6 bg-gradient-to-br from-[#003366] to-[#001a33] text-white">
-              <FileText className="w-8 h-8 mb-3" />
-              <h3 className="text-xl font-bold mb-2">Estatutos</h3>
-              <p className="text-sm text-gray-200 mb-4">
-                Reglamentos y normas de funcionamiento de IPA Xerez
-              </p>
-              <Button
-                className="w-full bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]"
-                onClick={() => document.getElementById("estatutos-section")?.scrollIntoView({ behavior: "smooth" })}
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Descargar PDF
-              </Button>
-            </div>
-          </Card>
 
-          {/* Documentos */}
-          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-            <div className="p-6 bg-gradient-to-br from-[#D4AF37] to-[#B8860B] text-white">
-              <FileText className="w-8 h-8 mb-3" />
-              <h3 className="text-xl font-bold mb-2">Documentos Privados</h3>
-              <p className="text-sm text-gray-100 mb-4">
-                Acceso a documentos exclusivos para socios
-              </p>
-              <Button
-                className="w-full bg-white text-[#D4AF37] hover:bg-gray-100 font-semibold"
-                onClick={() => document.getElementById("documents-section")?.scrollIntoView({ behavior: "smooth" })}
-              >
-                Ver Documentos
-              </Button>
-            </div>
-          </Card>
-
-          {/* Directorio */}
-          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-            <div className="p-6 bg-gradient-to-br from-[#003366]/80 to-[#D4AF37]/80 text-white">
-              <Users className="w-8 h-8 mb-3" />
-              <h3 className="text-xl font-bold mb-2">Directorio de Socios</h3>
-              <p className="text-sm text-gray-100 mb-4">
-                Conecta con otros miembros de IPA Xerez
-              </p>
-              <Button
-                className="w-full bg-white text-[#003366] hover:bg-gray-100 font-semibold"
-                disabled
-              >
-                Próximamente
-              </Button>
-            </div>
-          </Card>
-        </div>
 
         {/* Información de Miembro */}
         <Card className="border-0 shadow-lg">

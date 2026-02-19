@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, title, document_type FROM private_documents ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, document_type FROM private_documents ORDER BY id;",
+  "rows": [
+    {
+      "id": "20",
+      "title": "Estatutos Ipa Xerez 2025",
+      "document_type": "estatutos"
+    },
+    {
+      "id": "21",
+      "title": "Reglamento Disciplinario Ipa España 2025",
+      "document_type": "otros"
+    },
+    {
+      "id": "22",
+      "title": "Reglamento de Organizacion Territorial 2025",
+      "document_type": "otros"
+    },
+    {
+      "id": "23",
+      "title": "Reglamento del Consejo de Garantias Estatutarias 2025",
+      "document_type": "otros"
+    },
+    {
+      "id": "24",
+      "title": "Reglamento de Organizacion Economico Financiera 2025",
+      "document_type": "otros"
+    },
+    {
+      "id": "25",
+      "title": "Reglamento de Asociacion y Regimen de los Asociados",
+      "document_type": "otros"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tdocument_type\n20\tEstatutos Ipa Xerez 2025\testatutos\n21\tReglamento Disciplinario Ipa España 2025\totros\n22\tReglamento de Organizacion Territorial 2025\totros\n23\tReglamento del Consejo de Garantias Estatutarias 2025\totros\n24\tReglamento de Organizacion Economico Financiera 2025\totros\n25\tReglamento de Asociacion y Regimen de los Asociados\totros\n",
+  "stderr": "",
+  "execution_time_ms": 349
+}

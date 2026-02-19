@@ -12,10 +12,10 @@ interface DocumentUploadProps {
 
 const DOCUMENT_TYPES = [
   { value: "estatutos", label: "Estatutos" },
-  { value: "actas", label: "Actas de Reuniones" },
-  { value: "comunicados", label: "Comunicados Internos" },
-  { value: "guias", label: "Guías y Manuales" },
-  { value: "otros", label: "Otros Documentos" },
+  { value: "actas_reuniones", label: "Actas de Reuniones" },
+  { value: "comunicados_internos", label: "Comunicados Internos" },
+  { value: "guias_manuales", label: "Guías y Manuales" },
+  { value: "otros_documentos", label: "Otros Documentos" },
 ];
 
 const ALLOWED_FILE_TYPES = [
