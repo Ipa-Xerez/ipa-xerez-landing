@@ -120,6 +120,7 @@ export default function Home() {
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/blog')}>Blog</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/calendar')}>Calendario</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}>FAQ</Button>
+            {isAuthenticated && <Button variant="ghost" className="text-[#D4AF37] hover:bg-[#D4AF37]/10 text-sm md:text-base font-bold" onClick={() => navigate('/admin/documents')}>Panel Admin</Button>}
             <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-sm md:text-base font-bold" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Únete</Button>
             <PWAInstallButton />
             <div className="flex gap-2">
@@ -143,6 +144,7 @@ export default function Home() {
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/blog'); setMobileMenuOpen(false); }}>Blog</Button>
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/calendar'); setMobileMenuOpen(false); }}>Calendario</Button>
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>FAQ</Button>
+            {isAuthenticated && <Button variant="ghost" className="w-full text-left text-[#D4AF37] hover:bg-[#D4AF37]/10 text-sm font-bold" onClick={() => { navigate('/admin/documents'); setMobileMenuOpen(false); }}>Panel Admin</Button>}
             <Button className="w-full bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-sm font-bold" onClick={() => { document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>Únete</Button>
             <div className="flex gap-2 pt-2">
               <a href="https://www.facebook.com/profile.php?id=61572445883496" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 transition-all duration-300" title="Facebook"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
