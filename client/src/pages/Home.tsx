@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send, Calendar, Clock, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight, Menu, X, LogIn } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Calendar, Timer, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight, Menu, X, LogIn } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 
@@ -210,7 +210,7 @@ export default function Home() {
                         <span className="font-semibold">Mayo 18-24, 2026</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="w-5 h-5 text-[#D4AF37]" />
+                        <Timer className="w-5 h-5 text-[#D4AF37]" />
                         <span className="font-semibold">9:00 AM - 6:00 PM</span>
                       </div>
                       <div className="flex items-center gap-3">
@@ -220,11 +220,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="flex gap-3 mt-6">
-                    <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] font-bold px-6 py-3 flex items-center gap-2 flex-1" onClick={() => navigate('/calendar')}>
-                      Más Información <ArrowRight className="w-4 h-4" />
-                    </Button>
-                    <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-6 py-3 flex-1" onClick={() => setShowInscriptionModal(true)}>
-                      Inscríbete
+                    <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-6 py-3 flex items-center gap-2 flex-1" onClick={() => window.open('https://wa.me/34675508110', '_blank')}>
+                      📞 Contactar Actividades
                     </Button>
                   </div>
                 </div>
