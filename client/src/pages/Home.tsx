@@ -199,31 +199,27 @@ export default function Home() {
 
       {/* Próxima Actividad Widget - Posicionado en el hero */}
       {nextEvent && (
-      <div className="fixed left-4 top-32 md:top-40 z-40 w-80 md:w-96">
-        <div className="bg-white rounded-lg shadow-2xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
-          <div className="bg-red-600 text-white px-4 py-3 flex items-center gap-2">
-            <span className="text-lg">🔹</span>
-            <span className="font-bold text-sm">Próxima Actividad</span>
+      <div className="fixed left-4 top-28 md:top-32 z-40 w-56 md:w-64">
+        <div className="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+          <div className="relative h-32 bg-cover bg-center" style={{ backgroundImage: `url(${nextEvent.image || POLICE_WEEK_POSTER})` }}>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+            <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold">
+              🔹 Próximo
+            </div>
           </div>
-          <div className="p-4">
-            <h3 className="font-bold text-[#003366] mb-3 text-sm line-clamp-2">{nextEvent.title}</h3>
-            <div className="space-y-2 text-xs text-gray-700">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
+          <div className="p-3">
+            <h3 className="font-bold text-[#003366] mb-2 text-xs line-clamp-2">{nextEvent.title}</h3>
+            <div className="space-y-1 text-xs text-gray-700 mb-2">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3 h-3 text-[#D4AF37]" />
                 <span className="font-semibold">{new Date(nextEvent.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
               </div>
-              {nextEvent.time && (
-              <div className="flex items-center gap-2">
-                <Timer className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
-                <span className="font-semibold text-xs">{nextEvent.time}</span>
-              </div>
-              )}
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
+              <div className="flex items-center gap-1">
+                <MapPin className="w-3 h-3 text-[#D4AF37]" />
                 <span className="font-semibold text-xs line-clamp-1">{nextEvent.location || 'Por confirmar'}</span>
               </div>
             </div>
-            <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-3 py-2 text-xs w-full mt-3" onClick={() => window.open('https://wa.me/34675508110', '_blank')}>
+            <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-2 py-1 text-xs w-full" onClick={() => window.open('https://wa.me/34675508110', '_blank')}>
               📞 Contactar
             </Button>
           </div>
