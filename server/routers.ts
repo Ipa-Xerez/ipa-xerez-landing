@@ -564,6 +564,27 @@ export const appRouter = router({
           throw error;
         }
       }),
+
+    seedMembers: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Only admins can seed members");
+        }
+        try {
+          const fs = await import("fs");
+          const path = await import("path");
+          const { fileURLToPath } = await import("url");
+          const __dirname = path.dirname(fileURLToPath(import.meta.url));
+          const jsonPath = path.join(__dirname, "../socios_ipa_xerez.json");
+          const jsonData = fs.readFileSync(jsonPath, "utf-8");
+          const members = JSON.parse(jsonData);
+          const inserted = await db.importIpaMembers(members);
+          return { success: true, inserted, total: members.length };
+        } catch (error) {
+          console.error("[Members] Error seeding members:", error);
+          throw error;
+        }
+      }),
   }),
 })
 export type AppRouter = typeof appRouter;

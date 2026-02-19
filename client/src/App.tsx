@@ -19,6 +19,7 @@ import NewsletterAdmin from "./pages/NewsletterAdmin";
 import Unsubscribe from "./pages/Unsubscribe";
 import MembersArea from "./pages/MembersArea";
 import AdminDocuments from "./pages/AdminDocuments";
+import AdminSeed from "./pages/AdminSeed";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -34,6 +35,7 @@ function Router() {
       <Route path={"/install"} component={InstallGuide} />
       <Route path={"/socios"} component={MembersArea} />
       <Route path={"/admin/documents"} component={AdminDocuments} />
+      <Route path={"/admin/seed"} component={AdminSeed} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
