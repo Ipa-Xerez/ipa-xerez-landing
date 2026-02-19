@@ -434,6 +434,47 @@ export const appRouter = router({
   }),
 
   documents: router({
+    uploadAndCreate: protectedProcedure
+      .input(z.object({
+        title: z.string().min(1, "El titulo es requerido"),
+        description: z.string().optional(),
+        documentType: z.string().min(1, "El tipo de documento es requerido"),
+        fileName: z.string().min(1, "El nombre del archivo es requerido"),
+        fileData: z.string(), // base64 encoded file
+        isPublic: z.number().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        try {
+          // Convertir base64 a buffer
+          const buffer = Buffer.from(input.fileData, 'base64');
+          
+          // Determinar el tipo MIME
+          let mimeType = 'application/octet-stream';
+          if (input.fileName.endsWith('.pdf')) mimeType = 'application/pdf';
+          else if (input.fileName.endsWith('.docx')) mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+          else if (input.fileName.endsWith('.xlsx')) mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+          
+          // Subir a S3
+          const fileKey = `documents/${Date.now()}-${input.fileName}`;
+          const { url } = await storagePut(fileKey, buffer, mimeType);
+          
+          // Crear documento con URL de S3
+          const doc = await db.createPrivateDocument({
+            title: input.title,
+            description: input.description,
+            documentType: input.documentType,
+            fileUrl: url,
+            fileName: input.fileName,
+            uploadedBy: ctx.user?.id,
+            isPublic: input.isPublic || 0,
+          });
+          return doc;
+        } catch (error) {
+          console.error("[Documents] Error uploading document:", error);
+          throw error;
+        }
+      }),
+
     create: protectedProcedure
       .input(z.object({
         title: z.string().min(1, "El titulo es requerido"),

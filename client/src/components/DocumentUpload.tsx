@@ -41,7 +41,7 @@ export default function DocumentUpload({ onSuccess, onError }: DocumentUploadPro
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const createDocumentMutation = trpc.documents.create.useMutation();
+  const uploadDocumentMutation = trpc.documents.uploadAndCreate.useMutation();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -90,50 +90,62 @@ export default function DocumentUpload({ onSuccess, onError }: DocumentUploadPro
     setUploadProgress(0);
 
     try {
-      // Simular progreso de carga
-      const progressInterval = setInterval(() => {
-        setUploadProgress((prev) => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return prev;
+      // Leer archivo como base64
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          // Simular progreso de carga
+          const progressInterval = setInterval(() => {
+            setUploadProgress((prev) => {
+              if (prev >= 90) {
+                clearInterval(progressInterval);
+                return prev;
+              }
+              return prev + Math.random() * 30;
+            });
+          }, 300);
+
+          // Convertir a base64
+          const base64Data = (reader.result as string).split(',')[1];
+
+          // Usar el nuevo procedimiento uploadAndCreate que sube a S3
+          const result = await uploadDocumentMutation.mutateAsync({
+            title: formData.title,
+            description: formData.description,
+            documentType: formData.documentType,
+            fileName: selectedFile.name,
+            fileData: base64Data,
+            isPublic: 0,
+          });
+
+          clearInterval(progressInterval);
+          setUploadProgress(100);
+
+          if (result) {
+            setSuccess(true);
+            setFormData({ title: "", description: "", documentType: "estatutos" });
+            setSelectedFile(null);
+            if (fileInputRef.current) {
+              fileInputRef.current.value = "";
+            }
+
+            setTimeout(() => {
+              setSuccess(false);
+              onSuccess?.();
+            }, 2000);
           }
-          return prev + Math.random() * 30;
-        });
-      }, 300);
-
-      // En una aplicación real, aquí se subiría el archivo a S3
-      // Por ahora, simulamos una URL
-      const fileUrl = `https://example.com/documents/${selectedFile.name}`;
-
-      const result = await createDocumentMutation.mutateAsync({
-        title: formData.title,
-        description: formData.description,
-        documentType: formData.documentType,
-        fileUrl,
-        fileName: selectedFile.name,
-        isPublic: 0,
-      });
-
-      clearInterval(progressInterval);
-      setUploadProgress(100);
-
-      if (result) {
-        setSuccess(true);
-        setFormData({ title: "", description: "", documentType: "estatutos" });
-        setSelectedFile(null);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
+        } catch (err: any) {
+          setError(err.message || "Error al subir el documento");
+          onError?.(err.message);
+        } finally {
+          setIsUploading(false);
+          setUploadProgress(0);
         }
-
-        setTimeout(() => {
-          setSuccess(false);
-          onSuccess?.();
-        }, 2000);
-      }
+      };
+      reader.readAsDataURL(selectedFile);
     } catch (err: any) {
-      setError(err.message || "Error al subir el documento");
+      setError(err.message || "Error al procesar el archivo");
       onError?.(err.message);
-    } finally {
       setIsUploading(false);
       setUploadProgress(0);
     }
