@@ -219,8 +219,12 @@ export default function Home() {
                 <span className="font-semibold text-xs line-clamp-1">{nextEvent.location || 'Por confirmar'}</span>
               </div>
             </div>
-            <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-2 py-1 text-xs w-full" onClick={() => window.open('https://wa.me/34675508110', '_blank')}>
-              📞 Contactar
+            <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-2 py-1 text-xs w-full" onClick={() => {
+              const message = `Hola, me interesa la actividad de ${nextEvent.title} del ${new Date(nextEvent.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}.`;
+              const encodedMessage = encodeURIComponent(message);
+              window.open(`https://wa.me/34675508110?text=${encodedMessage}`, '_blank');
+            }}>
+              📞 Me apunto
             </Button>
           </div>
         </div>
