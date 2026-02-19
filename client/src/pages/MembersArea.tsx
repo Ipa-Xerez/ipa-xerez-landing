@@ -7,6 +7,37 @@ import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
 import DocumentsTable from "@/components/DocumentsTable";
 
+function EstatutosSection() {
+  const estatutosQuery = trpc.documents.getByType.useQuery({ documentType: "estatutos" });
+
+  if (estatutosQuery.isLoading) {
+    return (
+      <div id="estatutos-section" className="mt-12 scroll-mt-24">
+        <h2 className="text-3xl font-bold text-[#003366] mb-8">Estatutos</h2>
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#003366] mb-4"></div>
+        <p className="text-gray-600">Cargando estatutos...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div id="estatutos-section" className="mt-12 scroll-mt-24">
+      <h2 className="text-3xl font-bold text-[#003366] mb-8">Estatutos</h2>
+      {estatutosQuery.data && estatutosQuery.data.length > 0 ? (
+        <DocumentsTable documents={estatutosQuery.data} isAdmin={false} />
+      ) : (
+        <Card className="border-0 shadow-lg">
+          <div className="p-8 text-center">
+            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600 mb-2">No hay estatutos disponibles en este momento</p>
+            <p className="text-sm text-gray-500">Los administradores pueden subir los estatutos en el panel de control</p>
+          </div>
+        </Card>
+      )}
+    </div>
+  );
+}
+
 function DocumentosPrivadosSection() {
   const documentsQuery = trpc.documents.getByType.useQuery({ documentType: "estatutos" });
 
@@ -181,7 +212,7 @@ export default function MembersArea() {
               </p>
               <Button
                 className="w-full bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]"
-                onClick={() => window.open("https://ipa-international.org/wp-content/uploads/2025/12/IPAHOS1.pdf", "_blank")}
+                onClick={() => document.getElementById("estatutos-section")?.scrollIntoView({ behavior: "smooth" })}
               >
                 <Download className="w-4 h-4 mr-2" />
                 Descargar PDF
@@ -252,6 +283,9 @@ export default function MembersArea() {
             </div>
           </div>
         </Card>
+
+        {/* Estatutos */}
+        <EstatutosSection />
 
         {/* Documentos Privados */}
         <DocumentosPrivadosSection />

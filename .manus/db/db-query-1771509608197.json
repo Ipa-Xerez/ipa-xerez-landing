@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, title, document_type, file_url FROM private_documents;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, document_type, file_url FROM private_documents;",
+  "rows": [
+    {
+      "id": "20",
+      "title": "Estatutos Ipa Xerez 2025",
+      "document_type": "estatutos",
+      "file_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/documents/1771509507109-Estatutos IPA Xerez 4.0.pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tdocument_type\tfile_url\n20\tEstatutos Ipa Xerez 2025\testatutos\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/documents/1771509507109-Estatutos IPA Xerez 4.0.pdf\n",
+  "stderr": "",
+  "execution_time_ms": 363
+}
