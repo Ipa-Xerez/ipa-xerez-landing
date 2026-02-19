@@ -15,6 +15,7 @@ import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
 import BlogAdmin from "./pages/BlogAdmin";
 import Calendar from "./pages/Calendar";
+import EventDetail from "./pages/EventDetail";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 import Unsubscribe from "./pages/Unsubscribe";
 import MembersArea from "./pages/MembersArea";
@@ -30,6 +31,7 @@ function Router() {
       <Route path={"/blog"} component={Blog} />
       <Route path={"/admin/blog"} component={BlogAdmin} />
       <Route path={"/calendar"} component={Calendar} />
+      <Route path={"/evento/:id"} component={EventDetail} />
       <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />

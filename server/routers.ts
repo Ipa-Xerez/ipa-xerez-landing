@@ -24,6 +24,9 @@ export const appRouter = router({
 
   events: router({
     getAll: publicProcedure.query(() => db.getEvents()),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(({ input }) => db.getEventById(input.id)),
     getNext: publicProcedure.query(() => db.getUpcomingEvents().then(events => events[0] || null)),
     getUpcoming: publicProcedure.query(() => db.getUpcomingEvents()),
     getByMonth: publicProcedure

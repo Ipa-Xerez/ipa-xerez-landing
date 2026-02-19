@@ -201,7 +201,7 @@ export default function Home() {
       {nextEvent && (
       <div className="fixed left-4 top-28 md:top-32 z-40 w-56 md:w-64">
         <div className="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-          <div className="relative h-32 bg-cover bg-center" style={{ backgroundImage: `url(${nextEvent.image || POLICE_WEEK_POSTER})` }}>
+          <div className="relative h-32 bg-cover bg-center cursor-pointer hover:opacity-90 transition-opacity" style={{ backgroundImage: `url(${nextEvent.image || POLICE_WEEK_POSTER})` }} onClick={() => navigate(`/evento/${nextEvent.id}`)}>
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
             <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold">
               🔹 Próximo

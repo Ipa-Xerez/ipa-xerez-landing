@@ -115,6 +115,22 @@ export async function getEvents(startDate?: Date, endDate?: Date): Promise<Event
   }
 }
 
+export async function getEventById(id: number): Promise<Event | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get event: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.select().from(events).where(eq(events.id, id));
+    return result[0] || null;
+  } catch (error) {
+    console.error("[Database] Failed to get event:", error);
+    return null;
+  }
+}
+
 export async function createEvent(event: InsertEvent): Promise<Event | null> {
   const db = await getDb();
   if (!db) {
