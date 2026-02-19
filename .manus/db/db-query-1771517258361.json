@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE events SET image = 'https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/XvKHcKPThHneDuII.jpg' WHERE title = 'Puy du Fou'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute UPDATE events SET image = 'https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/XvKHcKPThHneDuII.jpg' WHERE title = 'Puy du Fou'",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 393
+}
