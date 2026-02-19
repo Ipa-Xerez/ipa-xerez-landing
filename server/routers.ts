@@ -24,6 +24,7 @@ export const appRouter = router({
 
   events: router({
     getAll: publicProcedure.query(() => db.getEvents()),
+    getNext: publicProcedure.query(() => db.getUpcomingEvents().then(events => events[0] || null)),
     getUpcoming: publicProcedure.query(() => db.getUpcomingEvents()),
     getByMonth: publicProcedure
       .input(z.object({ year: z.number(), month: z.number() }))

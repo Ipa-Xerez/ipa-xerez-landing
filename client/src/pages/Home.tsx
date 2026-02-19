@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, Calendar, Timer, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight, Menu, X, LogIn } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 
 import EventsCarousel from "@/components/EventsCarousel";
@@ -28,6 +28,16 @@ export default function Home() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [showInscriptionModal, setShowInscriptionModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [nextEvent, setNextEvent] = useState<any>(null);
+  const [loadingEvent, setLoadingEvent] = useState(true);
+  const nextEventQuery = trpc.events.getNext.useQuery();
+
+  useEffect(() => {
+    if (nextEventQuery.data) {
+      setNextEvent(nextEventQuery.data);
+      setLoadingEvent(false);
+    }
+  }, [nextEventQuery.data]);
 
   const faqs = [
     { q: "¿Cómo me uno a IPA Xerez?", a: "Puedes unirte completando el formulario de contacto o enviándonos un mensaje por WhatsApp. Te guiaremos en todo el proceso de membresía." },
@@ -188,13 +198,14 @@ export default function Home() {
       </section>
 
       {/* Próxima Actividad Block */}
+      {nextEvent && (
       <section className="py-8 md:py-12 bg-gradient-to-r from-[#003366] via-[#004d99] to-[#003366]">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-lg shadow-2xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
               <div className="grid md:grid-cols-2 gap-0">
                 {/* Imagen del evento */}
-                <div className="relative h-64 md:h-full min-h-64 bg-cover bg-center" style={{ backgroundImage: `url(${POLICE_WEEK_POSTER})` }}>
+                <div className="relative h-64 md:h-full min-h-64 bg-cover bg-center" style={{ backgroundImage: `url(${nextEvent.image || POLICE_WEEK_POSTER})` }}>
                   <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
                 </div>
                 {/* Detalles del evento */}
@@ -203,19 +214,21 @@ export default function Home() {
                     <div className="inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
                       🔹 Próxima Actividad
                     </div>
-                    <h3 className="font-display text-2xl md:text-3xl text-[#003366] font-bold mb-4">Police Week Washington 2026</h3>
+                    <h3 className="font-display text-2xl md:text-3xl text-[#003366] font-bold mb-4">{nextEvent.title}</h3>
                     <div className="space-y-3 text-gray-700">
                       <div className="flex items-center gap-3">
                         <Calendar className="w-5 h-5 text-[#D4AF37]" />
-                        <span className="font-semibold">Mayo 18-24, 2026</span>
+                        <span className="font-semibold">{new Date(nextEvent.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                       </div>
+                      {nextEvent.time && (
                       <div className="flex items-center gap-3">
                         <Timer className="w-5 h-5 text-[#D4AF37]" />
-                        <span className="font-semibold">9:00 AM - 6:00 PM</span>
+                        <span className="font-semibold">{nextEvent.time}</span>
                       </div>
+                      )}
                       <div className="flex items-center gap-3">
                         <MapPin className="w-5 h-5 text-[#D4AF37]" />
-                        <span className="font-semibold">Washington, D.C. - USA</span>
+                        <span className="font-semibold">{nextEvent.location || 'Por confirmar'}</span>
                       </div>
                     </div>
                   </div>
@@ -230,6 +243,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Sección Descripción SEO */}
       <section className="py-12 md:py-16 bg-white border-b border-gray-200">
