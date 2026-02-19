@@ -120,7 +120,7 @@ export default function Home() {
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/blog')}>Blog</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/calendar')}>Calendario</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}>FAQ</Button>
-            {isAuthenticated && <Button variant="ghost" className="text-[#D4AF37] hover:bg-[#D4AF37]/10 text-sm md:text-base font-bold" onClick={() => navigate('/admin/documents')}>Panel Admin</Button>}
+            {isAuthenticated && <button onClick={() => navigate('/admin/documents')} className="hover:opacity-80 transition-opacity" title="Panel de Administración"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="Panel Admin" className="h-8 w-auto" /></button>}
             <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-sm md:text-base font-bold" onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}>Únete</Button>
             <PWAInstallButton />
             <div className="flex gap-2">
