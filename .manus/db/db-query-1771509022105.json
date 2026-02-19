@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO private_documents (title, description, document_type, file_url, file_name, uploaded_by) VALUES ('Estatutos Ipa Xerez 4.0', 'Reglamentos y normas de funcionamiento de IPA Xerez', 'statute', '/estatutos.pdf', 'EstatutosIPAXerez4.0.pdf', 1);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute INSERT INTO private_documents (title, description, document_type, file_url, file_name, uploaded_by) VALUES ('Estatutos Ipa Xerez 4.0', 'Reglamentos y normas de funcionamiento de IPA Xerez', 'statute', '/estatutos.pdf', 'EstatutosIPAXerez4.0.pdf', 1);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 374
+}

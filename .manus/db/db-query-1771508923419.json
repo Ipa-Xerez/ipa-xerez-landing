@@ -1,0 +1,50 @@
+{
+  "query": "SELECT id, title, file_url FROM private_documents;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, file_url FROM private_documents;",
+  "rows": [
+    {
+      "id": "10",
+      "title": "Estatutos Ipa Xerez 2025",
+      "file_url": "/estatutos.pdf"
+    },
+    {
+      "id": "11",
+      "title": "Reglamento Disciplinario Ipa España 2025",
+      "file_url": "https://example.com/documents/Reglamento Disciplinario IPA España 2025_signed.pdf"
+    },
+    {
+      "id": "12",
+      "title": "Test Document",
+      "file_url": "/estatutos.pdf"
+    },
+    {
+      "id": "13",
+      "title": "Empty Document",
+      "file_url": "https://example.com/empty.pdf"
+    },
+    {
+      "id": "14",
+      "title": "Unique Members Test",
+      "file_url": "https://example.com/unique.pdf"
+    },
+    {
+      "id": "15",
+      "title": "Test Document",
+      "file_url": "https://example.com/test.pdf"
+    },
+    {
+      "id": "16",
+      "title": "Empty Document",
+      "file_url": "https://example.com/empty.pdf"
+    },
+    {
+      "id": "17",
+      "title": "Unique Members Test",
+      "file_url": "https://example.com/unique.pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tfile_url\n10\tEstatutos Ipa Xerez 2025\t/estatutos.pdf\n11\tReglamento Disciplinario Ipa España 2025\thttps://example.com/documents/Reglamento Disciplinario IPA España 2025_signed.pdf\n12\tTest Document\t/estatutos.pdf\n13\tEmpty Document\thttps://example.com/empty.pdf\n14\tUnique Members Test\thttps://example.com/unique.pdf\n15\tTest Document\thttps://example.com/test.pdf\n16\tEmpty Document\thttps://example.com/empty.pdf\n17\tUnique Members Test\thttps://example.com/unique.pdf\n",
+  "stderr": "",
+  "execution_time_ms": 360
+}

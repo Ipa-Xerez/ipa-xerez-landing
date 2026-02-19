@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, title, file_url, file_name FROM private_documents WHERE title LIKE '%Estatuto%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, file_url, file_name FROM private_documents WHERE title LIKE '%Estatuto%';",
+  "rows": [
+    {
+      "id": "10",
+      "title": "Estatutos Ipa Xerez 2025",
+      "file_url": "/estatutos.pdf",
+      "file_name": "EstatutosIPAXerez4.0.pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tfile_url\tfile_name\n10\tEstatutos Ipa Xerez 2025\t/estatutos.pdf\tEstatutosIPAXerez4.0.pdf\n",
+  "stderr": "",
+  "execution_time_ms": 357
+}

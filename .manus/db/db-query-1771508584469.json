@@ -1,0 +1,66 @@
+{
+  "query": "SELECT id, title, document_type, file_url, file_name FROM private_documents ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, document_type, file_url, file_name FROM private_documents ORDER BY id;",
+  "rows": [
+    {
+      "id": "10",
+      "title": "Estatutos Ipa Xerez 2025",
+      "document_type": "estatutos",
+      "file_url": "https://example.com/documents/Estatutos IPA Xerez 4.0.pdf",
+      "file_name": "Estatutos IPA Xerez 4.0.pdf"
+    },
+    {
+      "id": "11",
+      "title": "Reglamento Disciplinario Ipa España 2025",
+      "document_type": "otros",
+      "file_url": "https://example.com/documents/Reglamento Disciplinario IPA España 2025_signed.pdf",
+      "file_name": "Reglamento Disciplinario IPA España 2025_signed.pdf"
+    },
+    {
+      "id": "12",
+      "title": "Test Document",
+      "document_type": "statute",
+      "file_url": "https://example.com/test.pdf",
+      "file_name": "test.pdf"
+    },
+    {
+      "id": "13",
+      "title": "Empty Document",
+      "document_type": "guide",
+      "file_url": "https://example.com/empty.pdf",
+      "file_name": "empty.pdf"
+    },
+    {
+      "id": "14",
+      "title": "Unique Members Test",
+      "document_type": "communication",
+      "file_url": "https://example.com/unique.pdf",
+      "file_name": "unique.pdf"
+    },
+    {
+      "id": "15",
+      "title": "Test Document",
+      "document_type": "statute",
+      "file_url": "https://example.com/test.pdf",
+      "file_name": "test.pdf"
+    },
+    {
+      "id": "16",
+      "title": "Empty Document",
+      "document_type": "guide",
+      "file_url": "https://example.com/empty.pdf",
+      "file_name": "empty.pdf"
+    },
+    {
+      "id": "17",
+      "title": "Unique Members Test",
+      "document_type": "communication",
+      "file_url": "https://example.com/unique.pdf",
+      "file_name": "unique.pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tdocument_type\tfile_url\tfile_name\n10\tEstatutos Ipa Xerez 2025\testatutos\thttps://example.com/documents/Estatutos IPA Xerez 4.0.pdf\tEstatutos IPA Xerez 4.0.pdf\n11\tReglamento Disciplinario Ipa España 2025\totros\thttps://example.com/documents/Reglamento Disciplinario IPA España 2025_signed.pdf\tReglamento Disciplinario IPA España 2025_signed.pdf\n12\tTest Document\tstatute\thttps://example.com/test.pdf\ttest.pdf\n13\tEmpty Document\tguide\thttps://example.com/empty.pdf\tempty.pdf\n14\tUnique Members Test\tcommunication\thttps://example.com/unique.pdf\tunique.pdf\n15\tTest Document\tstatute\thttps://example.com/test.pdf\ttest.pdf\n16\tEmpty Document\tguide\thttps://example.com/empty.pdf\tempty.pdf\n17\tUnique Members Test\tcommunication\thttps://example.com/unique.pdf\tunique.pdf\n",
+  "stderr": "",
+  "execution_time_ms": 355
+}
