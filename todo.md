@@ -214,3 +214,25 @@
 - [x] Integrar documentos en MembersArea para miembros
 - [x] Escribir tests para documentos (18 tests pasados)
 - [x] Validar acceso solo para administradores
+
+
+## Document Download Audit System (Completado)
+
+- [x] Crear tabla document_downloads en base de datos
+- [x] Agregar funciones de base de datos para auditoría:
+  - [x] recordDocumentDownload - Registrar descarga
+  - [x] getDocumentDownloads - Obtener descargas de documento
+  - [x] getDownloadStats - Obtener estadísticas de descargas
+  - [x] getAllDownloadsHistory - Obtener historial completo
+  - [x] getMemberDownloadHistory - Obtener historial por socio
+- [x] Crear procedimientos tRPC para auditoría:
+  - [x] downloads.recordDownload
+  - [x] downloads.getDocumentDownloads
+  - [x] downloads.getDownloadStats
+  - [x] downloads.getAllDownloadsHistory
+  - [x] downloads.getMemberDownloadHistory
+- [x] Crear componente DownloadHistory para mostrar historial
+- [x] Agregar pestaña "Descargas" en Panel Admin
+- [x] Mostrar estadísticas de descargas (total y socios únicos)
+- [x] Mostrar tabla con historial de descargas
+- [x] Escribir y ejecutar tests (10 tests pasados)

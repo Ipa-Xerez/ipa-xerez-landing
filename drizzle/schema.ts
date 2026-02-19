@@ -265,3 +265,16 @@ export const memberAccessLogs = mysqlTable("member_access_logs", {
 
 export type MemberAccessLog = typeof memberAccessLogs.$inferSelect;
 export type InsertMemberAccessLog = typeof memberAccessLogs.$inferInsert;
+
+// Document download history tracking
+export const documentDownloads = mysqlTable("document_downloads", {
+  id: int("id").autoincrement().primaryKey(),
+  documentId: int("document_id").notNull(),
+  memberId: int("member_id").notNull(),
+  memberName: varchar("member_name", { length: 255 }).notNull(),
+  memberEmail: varchar("member_email", { length: 320 }).notNull(),
+  downloadedAt: timestamp("downloaded_at").defaultNow().notNull(),
+});
+
+export type DocumentDownload = typeof documentDownloads.$inferSelect;
+export type InsertDocumentDownload = typeof documentDownloads.$inferInsert;

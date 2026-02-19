@@ -586,5 +586,31 @@ export const appRouter = router({
         }
       }),
   }),
+
+  downloads: router({
+    recordDownload: protectedProcedure
+      .input(z.object({
+        documentId: z.number(),
+        memberId: z.number(),
+        memberName: z.string(),
+        memberEmail: z.string(),
+      }))
+      .mutation(({ input }) => db.recordDocumentDownload(input.documentId, input.memberId, input.memberName, input.memberEmail)),
+    
+    getDocumentDownloads: protectedProcedure
+      .input(z.object({ documentId: z.number() }))
+      .query(({ input }) => db.getDocumentDownloads(input.documentId)),
+    
+    getDownloadStats: protectedProcedure
+      .input(z.object({ documentId: z.number() }))
+      .query(({ input }) => db.getDownloadStats(input.documentId)),
+    
+    getAllDownloadsHistory: protectedProcedure
+      .query(() => db.getAllDownloadsHistory()),
+    
+    getMemberDownloadHistory: protectedProcedure
+      .input(z.object({ memberId: z.number() }))
+      .query(({ input }) => db.getMemberDownloadHistory(input.memberId)),
+  }),
 })
 export type AppRouter = typeof appRouter;

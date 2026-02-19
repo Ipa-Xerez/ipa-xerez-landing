@@ -1,4 +1,4 @@
-import { eq, gte, lte, and, count, desc, or, like, inArray, sql } from "drizzle-orm";
+import { eq, gte, lte, and, count, countDistinct, desc, or, like, inArray, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator, eventRegistrations, InsertEventRegistration, EventRegistration, ipaMembers, InsertIpaMember, IpaMember, privateDocuments, InsertPrivateDocument, PrivateDocument, memberAccessLogs, InsertMemberAccessLog } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -1018,5 +1018,101 @@ export async function incrementDocumentViewCount(id: number): Promise<boolean> {
   } catch (error) {
     console.error("[Database] Failed to increment view count:", error);
     return false;
+  }
+}
+
+
+// ============ DOCUMENT DOWNLOADS ============
+
+export async function recordDocumentDownload(documentId: number, memberId: number, memberName: string, memberEmail: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const { documentDownloads } = await import("../drizzle/schema");
+    const result = await db.insert(documentDownloads).values({
+      documentId: documentId,
+      memberId: memberId,
+      memberName: memberName,
+      memberEmail: memberEmail,
+    });
+    return result;
+  } catch (error) {
+    console.error("[Documents] Error recording download:", error);
+    throw error;
+  }
+}
+
+export async function getDocumentDownloads(documentId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const { documentDownloads } = await import("../drizzle/schema");
+    const downloads = await db
+      .select()
+      .from(documentDownloads)
+      .where(eq(documentDownloads.documentId, documentId))
+      .orderBy(desc(documentDownloads.downloadedAt));
+    return downloads;
+  } catch (error) {
+    console.error("[Documents] Error getting downloads:", error);
+    throw error;
+  }
+}
+
+export async function getDownloadStats(documentId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const { documentDownloads } = await import("../drizzle/schema");
+    const stats = await db
+      .select({
+        totalDownloads: count(),
+        uniqueMembers: countDistinct(documentDownloads.memberId),
+      })
+      .from(documentDownloads)
+      .where(eq(documentDownloads.documentId, documentId));
+    
+    return stats[0] || { totalDownloads: 0, uniqueMembers: 0 };
+  } catch (error) {
+    console.error("[Documents] Error getting download stats:", error);
+    throw error;
+  }
+}
+
+export async function getAllDownloadsHistory() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const { documentDownloads } = await import("../drizzle/schema");
+    const downloads = await db
+      .select()
+      .from(documentDownloads)
+      .orderBy(desc(documentDownloads.downloadedAt));
+    return downloads;
+  } catch (error) {
+    console.error("[Documents] Error getting all downloads:", error);
+    throw error;
+  }
+}
+
+export async function getMemberDownloadHistory(memberId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const { documentDownloads } = await import("../drizzle/schema");
+    const downloads = await db
+      .select()
+      .from(documentDownloads)
+      .where(eq(documentDownloads.memberId, memberId))
+      .orderBy(desc(documentDownloads.downloadedAt));
+    return downloads;
+  } catch (error) {
+    console.error("[Documents] Error getting member download history:", error);
+    throw error;
   }
 }

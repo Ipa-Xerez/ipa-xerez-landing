@@ -3,9 +3,10 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Plus, Settings } from "lucide-react";
+import { ArrowLeft, Plus, Settings, BarChart3 } from "lucide-react";
 import DocumentUpload from "@/components/DocumentUpload";
 import DocumentsTable from "@/components/DocumentsTable";
+import DownloadHistory from "@/components/DownloadHistory";
 import { trpc } from "@/lib/trpc";
 
 export default function AdminDocuments() {
@@ -73,7 +74,7 @@ export default function AdminDocuments() {
       {/* Contenido Principal */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow">
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white shadow">
             <TabsTrigger value="documents" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
               Documentos
@@ -81,6 +82,10 @@ export default function AdminDocuments() {
             <TabsTrigger value="upload" className="flex items-center gap-2">
               <Plus className="w-4 h-4" />
               Subir Nuevo
+            </TabsTrigger>
+            <TabsTrigger value="downloads" className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              Descargas
             </TabsTrigger>
           </TabsList>
 
@@ -113,6 +118,16 @@ export default function AdminDocuments() {
                   </Button>
                 </div>
               )}
+            </div>
+          </TabsContent>
+
+          {/* Tab: Historial de Descargas */}
+          <TabsContent value="downloads" className="space-y-6">
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-2xl font-bold text-[#003366] mb-6">
+                Historial de Descargas
+              </h2>
+              <DownloadHistory showAllDownloads={true} />
             </div>
           </TabsContent>
 
