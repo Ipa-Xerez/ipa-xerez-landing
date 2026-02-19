@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send, Calendar, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight, Menu, X, LogIn } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Calendar, Clock, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight, Menu, X, LogIn } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 
@@ -182,6 +182,53 @@ export default function Home() {
               <Button className="bg-white/20 text-white hover:bg-white/30 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 border-2 border-white backdrop-blur-sm" onClick={() => navigate('/socios')}>
                 <LogIn className="w-5 h-5" /> Acceso Socios
               </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Próxima Actividad Block */}
+      <section className="py-8 md:py-12 bg-gradient-to-r from-[#003366] via-[#004d99] to-[#003366]">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-2xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
+              <div className="grid md:grid-cols-2 gap-0">
+                {/* Imagen del evento */}
+                <div className="relative h-64 md:h-full min-h-64 bg-cover bg-center" style={{ backgroundImage: `url(${POLICE_WEEK_POSTER})` }}>
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
+                </div>
+                {/* Detalles del evento */}
+                <div className="p-6 md:p-8 flex flex-col justify-between">
+                  <div>
+                    <div className="inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
+                      🔹 Próxima Actividad
+                    </div>
+                    <h3 className="font-display text-2xl md:text-3xl text-[#003366] font-bold mb-4">Police Week Washington 2026</h3>
+                    <div className="space-y-3 text-gray-700">
+                      <div className="flex items-center gap-3">
+                        <Calendar className="w-5 h-5 text-[#D4AF37]" />
+                        <span className="font-semibold">Mayo 18-24, 2026</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Clock className="w-5 h-5 text-[#D4AF37]" />
+                        <span className="font-semibold">9:00 AM - 6:00 PM</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <MapPin className="w-5 h-5 text-[#D4AF37]" />
+                        <span className="font-semibold">Washington, D.C. - USA</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-3 mt-6">
+                    <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] font-bold px-6 py-3 flex items-center gap-2 flex-1" onClick={() => navigate('/calendar')}>
+                      Más Información <ArrowRight className="w-4 h-4" />
+                    </Button>
+                    <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-6 py-3 flex-1" onClick={() => setShowInscriptionModal(true)}>
+                      Inscríbete
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

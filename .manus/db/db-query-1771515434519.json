@@ -1,0 +1,22 @@
+{
+  "query": "SELECT * FROM events WHERE date >= CURDATE() ORDER BY date ASC LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT * FROM events WHERE date >= CURDATE() ORDER BY date ASC LIMIT 1;",
+  "rows": [
+    {
+      "id": "2",
+      "title": "Puy du Fou",
+      "description": "3 días / 2 noches en el mayor espectáculo del mundo. Incluye autocar, hotel, entrada Puy du Fou y Sueño de Toledo. Precio: 360€ por persona.",
+      "date": "2026-04-17 00:00:00",
+      "location": "Torrejón de Ardoz, Francia",
+      "eventType": "puy-du-fou",
+      "image": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/rSrxZOWeehjBrPoF.jpeg",
+      "registrationUrl": "https://selmaviajes.com/17-04-26-puy-du-fou-especial-ipa/",
+      "createdAt": "2026-02-16 15:28:22",
+      "updatedAt": "2026-02-16 15:28:22"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tdescription\tdate\tlocation\teventType\timage\tregistrationUrl\tcreatedAt\tupdatedAt\n2\tPuy du Fou\t3 días / 2 noches en el mayor espectáculo del mundo. Incluye autocar, hotel, entrada Puy du Fou y Sueño de Toledo. Precio: 360€ por persona.\t2026-04-17 00:00:00\tTorrejón de Ardoz, Francia\tpuy-du-fou\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/rSrxZOWeehjBrPoF.jpeg\thttps://selmaviajes.com/17-04-26-puy-du-fou-especial-ipa/\t2026-02-16 15:28:22\t2026-02-16 15:28:22\n",
+  "stderr": "",
+  "execution_time_ms": 576
+}
