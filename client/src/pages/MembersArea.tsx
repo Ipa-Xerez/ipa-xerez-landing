@@ -211,6 +211,84 @@ export default function MembersArea() {
 
 
 
+        {/* Accesos Directos a Categorías de Documentos */}
+        <div className="grid md:grid-cols-5 gap-4 mb-12">
+          {/* Estatutos */}
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group">
+            <div className="p-6 bg-gradient-to-br from-[#003366] to-[#001a33] text-white h-full flex flex-col">
+              <div className="text-3xl mb-3">📋</div>
+              <h3 className="text-lg font-bold mb-2">Estatutos</h3>
+              <p className="text-xs text-gray-200 mb-4 flex-grow">Reglamentos y normas</p>
+              <Button
+                className="w-full bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F] text-sm"
+                onClick={() => document.getElementById("estatutos-section")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Ver
+              </Button>
+            </div>
+          </Card>
+
+          {/* Actas de Reuniones */}
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group">
+            <div className="p-6 bg-gradient-to-br from-[#D4AF37] to-[#B8860B] text-white h-full flex flex-col">
+              <div className="text-3xl mb-3">📝</div>
+              <h3 className="text-lg font-bold mb-2">Actas</h3>
+              <p className="text-xs text-gray-100 mb-4 flex-grow">De reuniones</p>
+              <Button
+                className="w-full bg-white text-[#D4AF37] hover:bg-gray-100 text-sm font-semibold"
+                onClick={() => document.getElementById("documents-section")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Ver
+              </Button>
+            </div>
+          </Card>
+
+          {/* Comunicados Internos */}
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group">
+            <div className="p-6 bg-gradient-to-br from-[#E74C3C] to-[#C0392B] text-white h-full flex flex-col">
+              <div className="text-3xl mb-3">📢</div>
+              <h3 className="text-lg font-bold mb-2">Comunicados</h3>
+              <p className="text-xs text-gray-100 mb-4 flex-grow">Internos</p>
+              <Button
+                className="w-full bg-white text-[#E74C3C] hover:bg-gray-100 text-sm font-semibold"
+                onClick={() => document.getElementById("documents-section")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Ver
+              </Button>
+            </div>
+          </Card>
+
+          {/* Guías y Manuales */}
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group">
+            <div className="p-6 bg-gradient-to-br from-[#27AE60] to-[#1E8449] text-white h-full flex flex-col">
+              <div className="text-3xl mb-3">📖</div>
+              <h3 className="text-lg font-bold mb-2">Guías</h3>
+              <p className="text-xs text-gray-100 mb-4 flex-grow">Y manuales</p>
+              <Button
+                className="w-full bg-white text-[#27AE60] hover:bg-gray-100 text-sm font-semibold"
+                onClick={() => document.getElementById("documents-section")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Ver
+              </Button>
+            </div>
+          </Card>
+
+          {/* Otros Documentos */}
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group">
+            <div className="p-6 bg-gradient-to-br from-[#8E44AD] to-[#6C3483] text-white h-full flex flex-col">
+              <div className="text-3xl mb-3">📄</div>
+              <h3 className="text-lg font-bold mb-2">Otros</h3>
+              <p className="text-xs text-gray-100 mb-4 flex-grow">Documentos</p>
+              <Button
+                className="w-full bg-white text-[#8E44AD] hover:bg-gray-100 text-sm font-semibold"
+                onClick={() => document.getElementById("documents-section")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Ver
+              </Button>
+            </div>
+          </Card>
+        </div>
+
         {/* Información de Miembro */}
         <Card className="border-0 shadow-lg">
           <div className="p-8">
