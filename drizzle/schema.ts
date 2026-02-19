@@ -219,3 +219,49 @@ export const eventRegistrations = mysqlTable("event_registrations", {
 
 export type EventRegistration = typeof eventRegistrations.$inferSelect;
 export type InsertEventRegistration = typeof eventRegistrations.$inferInsert;
+
+
+// IPA Members table for member access control
+export const ipaMembers = mysqlTable("ipa_members", {
+  id: int("id").autoincrement().primaryKey(),
+  memberNumber: varchar("member_number", { length: 20 }).notNull().unique(), // IPA member number
+  fullName: varchar("full_name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }),
+  phone: varchar("phone", { length: 20 }),
+  status: mysqlEnum("status", ["active", "inactive", "suspended"]).default("active").notNull(),
+  joinDate: timestamp("join_date"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type IpaMember = typeof ipaMembers.$inferSelect;
+export type InsertIpaMember = typeof ipaMembers.$inferInsert;
+
+// Private documents for members only
+export const privateDocuments = mysqlTable("private_documents", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  documentType: varchar("document_type", { length: 50 }).notNull(), // 'statute', 'minutes', 'communication', 'guide', etc.
+  fileUrl: text("file_url").notNull(), // URL to the document file
+  fileName: varchar("file_name", { length: 255 }).notNull(),
+  uploadedBy: int("uploaded_by"), // User ID who uploaded
+  isPublic: tinyint("is_public").default(0).notNull(), // 0 = members only, 1 = public
+  viewCount: int("view_count").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PrivateDocument = typeof privateDocuments.$inferSelect;
+export type InsertPrivateDocument = typeof privateDocuments.$inferInsert;
+
+// Member access logs
+export const memberAccessLogs = mysqlTable("member_access_logs", {
+  id: int("id").autoincrement().primaryKey(),
+  memberId: int("member_id").notNull(),
+  documentId: int("document_id").notNull(),
+  accessedAt: timestamp("accessed_at").defaultNow().notNull(),
+});
+
+export type MemberAccessLog = typeof memberAccessLogs.$inferSelect;
+export type InsertMemberAccessLog = typeof memberAccessLogs.$inferInsert;

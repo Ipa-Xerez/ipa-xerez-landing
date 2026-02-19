@@ -432,5 +432,44 @@ export const appRouter = router({
       .input(z.object({ registrationId: z.number() }))
       .mutation(({ input }) => db.cancelEventRegistration(input.registrationId)),
   }),
+
+  members: router({
+    validateMemberNumber: publicProcedure
+      .input(z.object({ memberNumber: z.string() }))
+      .mutation(async ({ input }) => {
+        try {
+          const member = await db.getIpaMemberByNumber(input.memberNumber);
+          if (member) {
+            return {
+              success: true,
+              message: "Acceso concedido",
+              member,
+            };
+          } else {
+            return {
+              success: false,
+              message: "Numero de socio no encontrado. Por favor verifica tu numero.",
+            };
+          }
+        } catch (error) {
+          console.error("[Members] Error validating member:", error);
+          return {
+            success: false,
+            message: "Error al validar el numero de socio",
+          };
+        }
+      }),
+
+    getMemberDocuments: publicProcedure
+      .input(z.object({ memberNumber: z.string() }))
+      .query(async ({ input }) => {
+        try {
+          return await db.getPrivateDocuments(true);
+        } catch (error) {
+          console.error("[Members] Error fetching documents:", error);
+          throw error;
+        }
+      }),
+  }),
 })
 export type AppRouter = typeof appRouter;

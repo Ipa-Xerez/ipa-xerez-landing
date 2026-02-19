@@ -343,6 +343,19 @@ export default function Home() {
                 </div>
               </div>
             </Card>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden cursor-pointer">
+              <div className="aspect-square bg-gradient-to-br from-[#D4AF37] to-[#003366] flex items-center justify-center">
+                <div className="text-center text-white">
+                  <div className="text-4xl mb-2">🔐</div>
+                  <p className="font-bold">Zona de Socios</p>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Acceso Socios</h3>
+                <p className="text-gray-600 text-sm">Área privada con documentos y recursos exclusivos</p>
+                <Button className="w-full bg-[#003366] text-white hover:bg-[#002244] text-sm mt-4" onClick={() => navigate('/socios')}>Acceder</Button>
+              </div>
+            </Card>
           </div>
         </div>
       </section>

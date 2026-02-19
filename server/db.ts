@@ -1,6 +1,6 @@
 import { eq, gte, lte, and, count, desc, or, like, inArray, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator, eventRegistrations, InsertEventRegistration, EventRegistration } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator, eventRegistrations, InsertEventRegistration, EventRegistration, ipaMembers, InsertIpaMember, IpaMember, privateDocuments, InsertPrivateDocument, PrivateDocument, memberAccessLogs, InsertMemberAccessLog } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 
@@ -814,5 +814,139 @@ export async function cancelEventRegistration(registrationId: number): Promise<b
   } catch (error) {
     console.error("[Database] Failed to cancel event registration:", error);
     throw error;
+  }
+}
+
+
+// IPA Members queries
+export async function importIpaMembers(members: Array<{ memberNumber: string; fullName: string }>): Promise<number> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot import IPA members: database not available");
+    return 0;
+  }
+
+  try {
+    let imported = 0;
+    for (const member of members) {
+      try {
+        await db.insert(ipaMembers).values({
+          memberNumber: member.memberNumber,
+          fullName: member.fullName,
+          status: "active",
+        });
+        imported++;
+      } catch (error) {
+        // Skip duplicates
+        console.warn(`[Database] Skipping duplicate member: ${member.memberNumber}`);
+      }
+    }
+    return imported;
+  } catch (error) {
+    console.error("[Database] Failed to import IPA members:", error);
+    throw error;
+  }
+}
+
+export async function getIpaMemberByNumber(memberNumber: string): Promise<IpaMember | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get IPA member: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.select().from(ipaMembers).where(eq(ipaMembers.memberNumber, memberNumber)).limit(1);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to get IPA member:", error);
+    return null;
+  }
+}
+
+export async function getAllIpaMembers(): Promise<IpaMember[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get IPA members: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db.select().from(ipaMembers).where(eq(ipaMembers.status, "active")).orderBy(ipaMembers.fullName);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get IPA members:", error);
+    return [];
+  }
+}
+
+// Private Documents queries
+export async function createPrivateDocument(doc: InsertPrivateDocument): Promise<PrivateDocument | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create private document: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(privateDocuments).values(doc);
+    const newDoc = await db.select().from(privateDocuments).where(eq(privateDocuments.id, result[0].insertId as number)).limit(1);
+    return newDoc.length > 0 ? newDoc[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to create private document:", error);
+    throw error;
+  }
+}
+
+export async function getPrivateDocuments(membersOnly: boolean = true): Promise<PrivateDocument[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get private documents: database not available");
+    return [];
+  }
+
+  try {
+    const result = membersOnly
+      ? await db.select().from(privateDocuments).where(eq(privateDocuments.isPublic, 0)).orderBy(privateDocuments.createdAt)
+      : await db.select().from(privateDocuments).orderBy(privateDocuments.createdAt);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get private documents:", error);
+    return [];
+  }
+}
+
+export async function getPrivateDocumentsByType(documentType: string): Promise<PrivateDocument[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get private documents: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db.select().from(privateDocuments).where(eq(privateDocuments.documentType, documentType)).orderBy(privateDocuments.createdAt);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get private documents:", error);
+    return [];
+  }
+}
+
+export async function logMemberAccess(memberId: number, documentId: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot log member access: database not available");
+    return false;
+  }
+
+  try {
+    await db.insert(memberAccessLogs).values({
+      memberId,
+      documentId,
+    });
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to log member access:", error);
+    return false;
   }
 }

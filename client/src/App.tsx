@@ -17,6 +17,7 @@ import BlogAdmin from "./pages/BlogAdmin";
 import Calendar from "./pages/Calendar";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 import Unsubscribe from "./pages/Unsubscribe";
+import MembersArea from "./pages/MembersArea";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -30,6 +31,7 @@ function Router() {
       <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />
+      <Route path={"/socios"} component={MembersArea} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

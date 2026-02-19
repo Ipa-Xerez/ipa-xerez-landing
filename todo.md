@@ -150,3 +150,29 @@
 - [x] Crear componente EventFiltersAndSearch para filtros y búsqueda
 - [ ] Integrar componentes en página de eventos
 - [ ] Probar funcionalidad completa
+
+
+## Members Area Implementation (Zona de Socios)
+
+- [x] Crear tablas de base de datos (ipaMembers, privateDocuments, memberAccessLogs)
+- [x] Importar 58 miembros desde Excel (ContactoSocios.xlsx)
+- [x] Crear funciones de base de datos para miembros:
+  - [x] getIpaMemberByNumber - Obtener miembro por número
+  - [x] getAllIpaMembers - Obtener todos los miembros activos
+  - [x] getPrivateDocuments - Obtener documentos privados
+  - [x] getPrivateDocumentsByType - Obtener documentos por tipo
+  - [x] logMemberAccess - Registrar acceso de miembros
+- [x] Crear procedimientos tRPC para miembros:
+  - [x] members.validateMemberNumber - Validar número de socio
+  - [x] members.getMemberDocuments - Obtener documentos del miembro
+- [x] Crear página MembersArea con login por número de socio
+- [x] Agregar botón "Acceso Socios" en sección de Beneficios (Home.tsx)
+- [x] Agregar ruta /socios a App.tsx
+- [x] Implementar formulario de login con validación
+- [x] Crear área protegida con información del miembro
+- [x] Agregar secciones de:
+  - [x] Estatutos (descarga de PDF)
+  - [x] Documentos Privados (próximamente)
+  - [x] Directorio de Socios (próximamente)
+- [x] Crear tests para Members (12 tests pasados)
+- [x] Crear tests para MembersArea component
