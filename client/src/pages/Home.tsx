@@ -174,6 +174,9 @@ export default function Home() {
               <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2" onClick={() => setShowInscriptionModal(true)}>
                 Hazte Socio Ahora <ArrowRight className="w-5 h-5" />
               </Button>
+              <Button className="bg-white/20 text-white hover:bg-white/30 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 border-2 border-white backdrop-blur-sm" onClick={() => navigate('/socios')}>
+                <LogIn className="w-5 h-5" /> Acceso Socios
+              </Button>
               <Button variant="outline" className="text-white border-2 border-white hover:bg-white/20 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm" onClick={() => window.open('https://ipa-international.org/about', '_blank')}>Más Información</Button>
 
             </div>
