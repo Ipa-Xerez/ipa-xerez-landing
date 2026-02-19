@@ -433,6 +433,100 @@ export const appRouter = router({
       .mutation(({ input }) => db.cancelEventRegistration(input.registrationId)),
   }),
 
+  documents: router({
+    create: protectedProcedure
+      .input(z.object({
+        title: z.string().min(1, "El titulo es requerido"),
+        description: z.string().optional(),
+        documentType: z.string().min(1, "El tipo de documento es requerido"),
+        fileUrl: z.string().url("URL invalida"),
+        fileName: z.string().min(1, "El nombre del archivo es requerido"),
+        isPublic: z.number().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        try {
+          const doc = await db.createPrivateDocument({
+            title: input.title,
+            description: input.description,
+            documentType: input.documentType,
+            fileUrl: input.fileUrl,
+            fileName: input.fileName,
+            uploadedBy: ctx.user?.id,
+            isPublic: input.isPublic || 0,
+          });
+          return doc;
+        } catch (error) {
+          console.error("[Documents] Error creating document:", error);
+          throw error;
+        }
+      }),
+
+    getAll: protectedProcedure.query(async () => {
+      try {
+        return await db.getPrivateDocuments(false);
+      } catch (error) {
+        console.error("[Documents] Error fetching documents:", error);
+        throw error;
+      }
+    }),
+
+    getByType: publicProcedure
+      .input(z.object({ documentType: z.string() }))
+      .query(async ({ input }) => {
+        try {
+          return await db.getPrivateDocumentsByType(input.documentType);
+        } catch (error) {
+          console.error("[Documents] Error fetching documents by type:", error);
+          throw error;
+        }
+      }),
+
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        try {
+          const doc = await db.getPrivateDocumentById(input.id);
+          if (doc) {
+            await db.incrementDocumentViewCount(input.id);
+          }
+          return doc;
+        } catch (error) {
+          console.error("[Documents] Error fetching document:", error);
+          throw error;
+        }
+      }),
+
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        description: z.string().optional(),
+        documentType: z.string().optional(),
+        isPublic: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const { id, ...updates } = input;
+          return await db.updatePrivateDocument(id, updates);
+        } catch (error) {
+          console.error("[Documents] Error updating document:", error);
+          throw error;
+        }
+      }),
+
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        try {
+          const success = await db.deletePrivateDocument(input.id);
+          return { success };
+        } catch (error) {
+          console.error("[Documents] Error deleting document:", error);
+          throw error;
+        }
+      }),
+  }),
+
   members: router({
     validateMemberNumber: publicProcedure
       .input(z.object({ memberNumber: z.string() }))

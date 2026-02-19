@@ -950,3 +950,73 @@ export async function logMemberAccess(memberId: number, documentId: number): Pro
     return false;
   }
 }
+
+
+export async function updatePrivateDocument(id: number, updates: Partial<InsertPrivateDocument>): Promise<PrivateDocument | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update private document: database not available");
+    return null;
+  }
+
+  try {
+    await db.update(privateDocuments).set(updates).where(eq(privateDocuments.id, id));
+    const updated = await db.select().from(privateDocuments).where(eq(privateDocuments.id, id)).limit(1);
+    return updated.length > 0 ? updated[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to update private document:", error);
+    throw error;
+  }
+}
+
+export async function deletePrivateDocument(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete private document: database not available");
+    return false;
+  }
+
+  try {
+    await db.delete(privateDocuments).where(eq(privateDocuments.id, id));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to delete private document:", error);
+    throw error;
+  }
+}
+
+export async function getPrivateDocumentById(id: number): Promise<PrivateDocument | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get private document: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.select().from(privateDocuments).where(eq(privateDocuments.id, id)).limit(1);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to get private document:", error);
+    return null;
+  }
+}
+
+export async function incrementDocumentViewCount(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot increment view count: database not available");
+    return false;
+  }
+
+  try {
+    const doc = await getPrivateDocumentById(id);
+    if (doc) {
+      await db.update(privateDocuments).set({ viewCount: (doc.viewCount || 0) + 1 }).where(eq(privateDocuments.id, id));
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("[Database] Failed to increment view count:", error);
+    return false;
+  }
+}

@@ -5,6 +5,37 @@ import { Card } from "@/components/ui/card";
 import { Lock, LogOut, FileText, Download, Users } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
+import DocumentsTable from "@/components/DocumentsTable";
+
+function DocumentosPrivadosSection() {
+  const documentsQuery = trpc.documents.getByType.useQuery({ documentType: "estatutos" });
+
+  if (documentsQuery.isLoading) {
+    return (
+      <div className="mt-12 text-center py-12">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#003366] mb-4"></div>
+        <p className="text-gray-600">Cargando documentos...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div id="documents-section" className="mt-12 scroll-mt-24">
+      <h2 className="text-3xl font-bold text-[#003366] mb-8">Documentos Disponibles</h2>
+      {documentsQuery.data && documentsQuery.data.length > 0 ? (
+        <DocumentsTable documents={documentsQuery.data} isAdmin={false} />
+      ) : (
+        <Card className="border-0 shadow-lg">
+          <div className="p-8 text-center">
+            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600 mb-2">No hay documentos disponibles en este momento</p>
+            <p className="text-sm text-gray-500">Los administradores pueden subir documentos en el panel de control</p>
+          </div>
+        </Card>
+      )}
+    </div>
+  );
+}
 
 export default function MembersArea() {
   const [, navigate] = useLocation();
@@ -160,9 +191,9 @@ export default function MembersArea() {
               </p>
               <Button
                 className="w-full bg-white text-[#D4AF37] hover:bg-gray-100 font-semibold"
-                disabled
+                onClick={() => document.getElementById("documents-section")?.scrollIntoView({ behavior: "smooth" })}
               >
-                Próximamente
+                Ver Documentos
               </Button>
             </div>
           </Card>
@@ -213,6 +244,9 @@ export default function MembersArea() {
             </div>
           </div>
         </Card>
+
+        {/* Documentos Privados */}
+        <DocumentosPrivadosSection />
 
         {/* Footer */}
         <div className="mt-12 text-center">

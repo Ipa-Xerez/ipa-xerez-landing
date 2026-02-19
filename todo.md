@@ -176,3 +176,41 @@
   - [x] Directorio de Socios (próximamente)
 - [x] Crear tests para Members (12 tests pasados)
 - [x] Crear tests para MembersArea component
+
+
+## Document Management System for Administrators (Completado)
+
+- [x] Crear procedimientos tRPC para documentos:
+  - [x] documents.create - Crear nuevo documento
+  - [x] documents.getAll - Obtener todos los documentos
+  - [x] documents.update - Actualizar documento
+  - [x] documents.delete - Eliminar documento
+  - [x] documents.getByType - Obtener documentos por tipo
+  - [x] documents.getById - Obtener documento por ID
+- [x] Crear funciones de base de datos para documentos:
+  - [x] createPrivateDocument
+  - [x] updatePrivateDocument
+  - [x] deletePrivateDocument
+  - [x] getPrivateDocumentById
+  - [x] incrementDocumentViewCount
+- [x] Implementar componente DocumentUpload con:
+  - [x] Validacion de tipo de archivo (PDF, Word, Excel)
+  - [x] Progreso de carga
+  - [x] Manejo de errores
+  - [x] Limite de tamanio (10MB)
+- [x] Implementar componente DocumentsTable con:
+  - [x] Tabla de documentos
+  - [x] Botones de descargar/eliminar
+  - [x] Filtros por tipo
+  - [x] Busqueda por titulo
+  - [x] Contador de vistas
+- [x] Crear pagina AdminDocuments (/admin/documents) con:
+  - [x] Tabs para documentos y upload
+  - [x] Tabla de documentos
+  - [x] Botones de editar/eliminar
+  - [x] Filtros por tipo
+  - [x] Busqueda
+  - [x] Informacion de ayuda
+- [x] Integrar documentos en MembersArea para miembros
+- [x] Escribir tests para documentos (18 tests pasados)
+- [x] Validar acceso solo para administradores
