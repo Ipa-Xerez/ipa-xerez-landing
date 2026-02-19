@@ -1,0 +1,20 @@
+{
+  "query": "SELECT id, title, location FROM events LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, location FROM events LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "title": "Police Week 2026",
+      "location": "Washington D.C., USA"
+    },
+    {
+      "id": "2",
+      "title": "Puy du Fou",
+      "location": "Toledo, España"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tlocation\n1\tPolice Week 2026\tWashington D.C., USA\n2\tPuy du Fou\tToledo, España\n",
+  "stderr": "",
+  "execution_time_ms": 349
+}
