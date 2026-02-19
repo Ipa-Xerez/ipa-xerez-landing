@@ -76,6 +76,7 @@ export default function MembersArea() {
     setCurrentMember(null);
     setMemberNumber("");
     setLoginError("");
+    setTimeout(() => navigate("/"), 500);
   };
 
   if (!isLoggedIn) {
@@ -129,9 +130,16 @@ export default function MembersArea() {
               </form>
 
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <p className="text-xs text-gray-600 text-center">
+                <p className="text-xs text-gray-600 text-center mb-4">
                   ¿Problemas para acceder? Contacta con la administración de IPA Xerez
                 </p>
+                <Button
+                  variant="outline"
+                  className="w-full border-2 border-[#003366] text-[#003366] hover:bg-[#003366]/10"
+                  onClick={() => navigate("/")}
+                >
+                  Volver a Inicio
+                </Button>
               </div>
             </div>
           </Card>
