@@ -194,6 +194,8 @@ export default function Calendar() {
                   const dayEvents = day ? getEventsForDay(day) : [];
                   const hasLocalEvent = dayEvents.some(e => e.type === "local");
                   const hasIntlEvent = dayEvents.some(e => e.type === "international");
+                  const today = new Date();
+                  const isToday = day && day === today.getDate() && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear();
 
                   return (
                     <div
@@ -201,6 +203,8 @@ export default function Calendar() {
                       className={`aspect-square p-2 rounded-lg border-2 text-center flex flex-col items-center justify-center cursor-pointer transition-all ${
                         !day
                           ? "bg-gray-50 border-gray-100"
+                          : isToday
+                          ? "bg-[#D4AF37] border-[#B8860B] hover:bg-[#C4991F] font-bold"
                           : hasLocalEvent
                           ? "bg-blue-100 border-blue-400 hover:bg-blue-200"
                           : hasIntlEvent
