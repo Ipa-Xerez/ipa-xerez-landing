@@ -27,12 +27,55 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
   throw new Error(`No available port found starting from ${startPort}`);
 }
 
+async function initializeMembers() {
+  try {
+    const fs = await import("fs");
+    const path = await import("path");
+    const { fileURLToPath } = await import("url");
+    const { getDb } = await import("../db");
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const jsonPath = path.join(__dirname, "../../socios_ipa_xerez.json");
+    
+    if (fs.existsSync(jsonPath)) {
+      const jsonData = fs.readFileSync(jsonPath, "utf-8");
+      const members = JSON.parse(jsonData);
+      const db = await getDb();
+      
+      if (db) {
+        const { ipaMembers } = await import("../../drizzle/schema");
+        let imported = 0;
+        
+        for (const member of members) {
+          try {
+            await db.insert(ipaMembers).values({
+              memberNumber: member.memberNumber,
+              fullName: member.fullName,
+              status: "active",
+            });
+            imported++;
+          } catch (e) {
+            // Skip duplicates
+          }
+        }
+        
+        if (imported > 0) {
+          console.log(`[Init] Imported ${imported} members from JSON`);
+        }
+      }
+    }
+  } catch (error) {
+    console.warn("[Init] Could not initialize members:", error);
+  }
+}
+
 async function startServer() {
   const app = express();
   const server = createServer(app);
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  // Initialize members on startup
+  await initializeMembers();
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
