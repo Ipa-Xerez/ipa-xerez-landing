@@ -21,6 +21,7 @@ import Unsubscribe from "./pages/Unsubscribe";
 import MembersArea from "./pages/MembersArea";
 import AdminDocuments from "./pages/AdminDocuments";
 import AdminSeed from "./pages/AdminSeed";
+import Inscription from "./pages/Inscription";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -38,6 +39,7 @@ function Router() {
       <Route path={"/socios"} component={MembersArea} />
       <Route path={"/admin/documents"} component={AdminDocuments} />
       <Route path={"/admin/seed"} component={AdminSeed} />
+      <Route path={"/inscripcion"} component={Inscription} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
