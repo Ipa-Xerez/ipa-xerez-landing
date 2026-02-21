@@ -236,3 +236,17 @@
 - [x] Mostrar estadísticas de descargas (total y socios únicos)
 - [x] Mostrar tabla con historial de descargas
 - [x] Escribir y ejecutar tests (10 tests pasados)
+
+
+## Nuevas Mejoras Principales (Fase 2)
+
+- [x] 1. Mejorar SEO y meta descripciones en todas las páginas
+- [ ] 2. Agregar formulario de inscripción de socios
+- [ ] 3. Sistema de notificaciones por email
+- [ ] 4. Galería mejorada con fotos de eventos pasados
+- [ ] 5. Sección de testimonios de socios
+- [ ] 6. Integración con Google Calendar
+- [ ] 7. Estadísticas en tiempo real
+- [ ] 8. Blog mejorado: categorías, búsqueda, comentarios
+- [ ] 9. Directorio de socios con búsqueda
+- [ ] 10. Sistema de membresía con niveles de acceso
