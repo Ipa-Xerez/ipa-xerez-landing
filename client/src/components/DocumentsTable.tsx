@@ -27,8 +27,11 @@ export default function DocumentsTable({
   const [selectedType, setSelectedType] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState("");
 
   const deleteDocumentMutation = trpc.documents.delete.useMutation();
+  const updateDocumentMutation = trpc.documents.update.useMutation();
 
   const filteredDocuments = documents.filter((doc) => {
     const matchesType = selectedType === "all" || doc.documentType === selectedType;
@@ -51,6 +54,32 @@ export default function DocumentsTable({
     } finally {
       setDeletingId(null);
     }
+  };
+
+  const handleEdit = (doc: PrivateDocument) => {
+    setEditingId(doc.id);
+    setEditTitle(doc.title);
+  };
+
+  const handleSaveEdit = async (id: number) => {
+    if (!editTitle.trim()) {
+      alert("El título no puede estar vacío");
+      return;
+    }
+
+    try {
+      await updateDocumentMutation.mutateAsync({ id, title: editTitle });
+      setEditingId(null);
+      onRefresh?.();
+    } catch (error) {
+      console.error("Error updating document:", error);
+      alert("Error al actualizar el documento");
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditTitle("");
   };
 
   const documentTypes = Array.from(new Set(documents.map((d) => d.documentType)));
@@ -128,7 +157,17 @@ export default function DocumentsTable({
                   <tr key={doc.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-semibold text-[#003366]">{doc.title}</p>
+                        {editingId === doc.id ? (
+                          <input
+                            type="text"
+                            value={editTitle}
+                            onChange={(e) => setEditTitle(e.target.value)}
+                            className="w-full px-2 py-1 border-2 border-blue-500 rounded font-semibold text-[#003366]"
+                            autoFocus
+                          />
+                        ) : (
+                          <p className="font-semibold text-[#003366]">{doc.title}</p>
+                        )}
                         {doc.description && (
                           <p className="text-sm text-gray-600 mt-1">{doc.description}</p>
                         )}
@@ -158,13 +197,32 @@ export default function DocumentsTable({
                         >
                           <Download className="w-4 h-4" />
                         </Button>
-                        {isAdmin && (
+                        {isAdmin && editingId === doc.id ? (
+                          <>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-green-500 text-green-600 hover:bg-green-50"
+                              onClick={() => handleSaveEdit(doc.id)}
+                            >
+                              Guardar
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-gray-500 text-gray-600 hover:bg-gray-50"
+                              onClick={handleCancelEdit}
+                            >
+                              Cancelar
+                            </Button>
+                          </>
+                        ) : isAdmin ? (
                           <>
                             <Button
                               size="sm"
                               variant="outline"
                               className="border-blue-500 text-blue-600 hover:bg-blue-50"
-                              disabled
+                              onClick={() => handleEdit(doc)}
                             >
                               <Edit2 className="w-4 h-4" />
                             </Button>
@@ -178,7 +236,7 @@ export default function DocumentsTable({
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </>
-                        )}
+                        ) : null}
                       </div>
                     </td>
                   </tr>
