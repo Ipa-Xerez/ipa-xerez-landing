@@ -896,6 +896,39 @@ export async function getAllIpaMembers(): Promise<IpaMember[]> {
   }
 }
 
+export async function createIpaMember(member: InsertIpaMember): Promise<IpaMember | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create IPA member: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(ipaMembers).values(member);
+    const created = await db.select().from(ipaMembers).where(eq(ipaMembers.memberNumber, member.memberNumber)).limit(1);
+    return created.length > 0 ? created[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to create IPA member:", error);
+    throw error;
+  }
+}
+
+export async function deleteIpaMember(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete IPA member: database not available");
+    return false;
+  }
+
+  try {
+    await db.delete(ipaMembers).where(eq(ipaMembers.id, id));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to delete IPA member:", error);
+    throw error;
+  }
+}
+
 // Private Documents queries
 export async function createPrivateDocument(doc: InsertPrivateDocument): Promise<PrivateDocument | null> {
   const db = await getDb();

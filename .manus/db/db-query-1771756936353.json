@@ -1,0 +1,60 @@
+{
+  "query": "SELECT id, member_number, full_name FROM ipa_members WHERE status = 'active' ORDER BY full_name LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, member_number, full_name FROM ipa_members WHERE status = 'active' ORDER BY full_name LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "member_number": "36729",
+      "full_name": "ARGÜEZ JURADO, Maria del Carmen"
+    },
+    {
+      "id": "3",
+      "member_number": "13676",
+      "full_name": "ARROYO ROMERO, María Pilar"
+    },
+    {
+      "id": "5",
+      "member_number": "38068",
+      "full_name": "BENÍTEZ GARCÍA, Manuel"
+    },
+    {
+      "id": "7",
+      "member_number": "39329",
+      "full_name": "BURBANO PEÑA, Christian Eduardo"
+    },
+    {
+      "id": "8",
+      "member_number": "38470",
+      "full_name": "CALVENTE CEBALLOS, Fernando"
+    },
+    {
+      "id": "10",
+      "member_number": "38469",
+      "full_name": "CALVO ROMERO, Julian"
+    },
+    {
+      "id": "14",
+      "member_number": "38072",
+      "full_name": "CARRETÓN CASADO, María Antonia"
+    },
+    {
+      "id": "16",
+      "member_number": "34256",
+      "full_name": "CASTRO VILLALBA, Manuel"
+    },
+    {
+      "id": "18",
+      "member_number": "39353",
+      "full_name": "CHACON MARTINEZ, Adriana"
+    },
+    {
+      "id": "20",
+      "member_number": "31168",
+      "full_name": "CHACON MARTINEZ, Juan Carlos"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tmember_number\tfull_name\n1\t36729\tARGÜEZ JURADO, Maria del Carmen\n3\t13676\tARROYO ROMERO, María Pilar\n5\t38068\tBENÍTEZ GARCÍA, Manuel\n7\t39329\tBURBANO PEÑA, Christian Eduardo\n8\t38470\tCALVENTE CEBALLOS, Fernando\n10\t38469\tCALVO ROMERO, Julian\n14\t38072\tCARRETÓN CASADO, María Antonia\n16\t34256\tCASTRO VILLALBA, Manuel\n18\t39353\tCHACON MARTINEZ, Adriana\n20\t31168\tCHACON MARTINEZ, Juan Carlos\n",
+  "stderr": "",
+  "execution_time_ms": 392
+}

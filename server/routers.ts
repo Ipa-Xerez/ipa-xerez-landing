@@ -573,6 +573,8 @@ export const appRouter = router({
   }),
 
   members: router({
+    getAll: protectedProcedure.query(() => db.getAllIpaMembers()),
+    
     validateMemberNumber: publicProcedure
       .input(z.object({ memberNumber: z.string() }))
       .mutation(async ({ input }) => {
@@ -630,6 +632,37 @@ export const appRouter = router({
           throw error;
         }
       }),
+
+    create: protectedProcedure
+      .input(z.object({
+        memberNumber: z.string().min(1),
+        fullName: z.string().min(1),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const member = await db.createIpaMember({
+            memberNumber: input.memberNumber,
+            fullName: input.fullName,
+            status: "active",
+          });
+          return member;
+        } catch (error) {
+          console.error("[Members] Error creating member:", error);
+          throw error;
+        }
+      }),
+
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        try {
+          const success = await db.deleteIpaMember(input.id);
+          return { success };
+        } catch (error) {
+          console.error("[Members] Error deleting member:", error);
+          throw error;
+        }
+      }),
   }),
 
   downloads: router({
@@ -657,5 +690,7 @@ export const appRouter = router({
       .input(z.object({ memberId: z.number() }))
       .query(({ input }) => db.getMemberDownloadHistory(input.memberId)),
   }),
+
+
 })
 export type AppRouter = typeof appRouter;
