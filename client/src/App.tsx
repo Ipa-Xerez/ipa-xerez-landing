@@ -27,7 +27,6 @@ function AdminIndex() {
   return <Redirect to="/admin/documents" />;
 }
 function Router() {
-function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
