@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { PWAInstallButton } from "./components/PWAInstallButton";
@@ -41,6 +41,9 @@ function Router() {
       <Route path={"/admin/seed"} component={AdminSeed} />
       <Route path={"/inscripcion"} component={Inscription} />
       <Route path={"/404"} component={NotFound} />
+      <Route path={"/admin"}>
+  <Redirect to="/admin/documents" />
+</Route>
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
