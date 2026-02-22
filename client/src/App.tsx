@@ -22,7 +22,14 @@ import MembersArea from "./pages/MembersArea";
 import AdminDocuments from "./pages/AdminDocuments";
 import AdminSeed from "./pages/AdminSeed";
 import Inscription from "./pages/Inscription";
+import AdminSeed from "./pages/AdminSeed";
+import Inscription from "./pages/Inscription";
 
+function AdminIndex() {
+  return <Redirect to="/admin/documents" />;
+}
+
+function Router() {
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -41,9 +48,7 @@ function Router() {
       <Route path={"/admin/seed"} component={AdminSeed} />
       <Route path={"/inscripcion"} component={Inscription} />
       <Route path={"/404"} component={NotFound} />
-      <Route path={"/admin"}>
-  <Redirect to="/admin/documents" />
-</Route>
+      <Route path={"/admin"} component={AdminIndex} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
