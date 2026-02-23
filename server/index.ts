@@ -1,3 +1,6 @@
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { appRouter } from "./routers";
+import { createContext } from "./_core/context";
 import express from "express";
 import { createServer } from "http";
 import path from "path";
@@ -12,6 +15,13 @@ async function startServer() {
   await initializeNewsletterSchedules();
 
   const app = express();
+  app.use(
+  "/api/trpc",
+  createExpressMiddleware({
+    router: appRouter,
+    createContext,
+  })
+);
   const server = createServer(app);
 
   // Serve static files from dist/public in production
