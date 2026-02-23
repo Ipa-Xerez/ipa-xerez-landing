@@ -6,6 +6,7 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import { registerLocalAuthRoutes } from "./localAuth";
 import { serveStatic, setupVite } from "./vite";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -70,6 +71,7 @@ async function initializeMembers() {
 
 async function startServer() {
   const app = express();
+  app.use(express.json());
   const server = createServer(app);
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
@@ -82,6 +84,7 @@ async function startServer() {
 
 
   // tRPC API
+  registerLocalAuthRoutes(app);
   app.use(
     "/api/trpc",
     createExpressMiddleware({
