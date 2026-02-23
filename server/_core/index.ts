@@ -85,6 +85,7 @@ async function startServer() {
 
   // tRPC API
   registerLocalAuthRoutes(app);
+  console.log("✅ LocalAuth registrado correctamente");
   app.use(
     "/api/trpc",
     createExpressMiddleware({
