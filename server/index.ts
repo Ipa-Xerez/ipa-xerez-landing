@@ -6,6 +6,7 @@ import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import { initializeNewsletterSchedules } from "./services/newsletterSchedulerService";
+import { registerOAuthRoutes } from "./_core/auth";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +23,7 @@ async function startServer() {
     createContext,
   })
 );
+  registerOAuthRoutes(app);
   const server = createServer(app);
 
   // Serve static files from dist/public in production
