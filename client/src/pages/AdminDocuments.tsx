@@ -9,6 +9,7 @@ import DocumentsTable from "@/components/DocumentsTable";
 import DownloadHistory from "@/components/DownloadHistory";
 import MembersManagement from "@/components/MembersManagement";
 import { trpc } from "@/lib/trpc";
+import { getLoginUrl } from "@/const";
 
 export default function AdminDocuments() {
   const { user, loading } = useAuth();
@@ -22,10 +23,19 @@ export default function AdminDocuments() {
 
   // Redirigir si no es admin
   useEffect(() => {
-    if (!loading && (!user || user.role !== "admin")) {
-      navigate("/");
-    }
-  }, [user, loading, navigate]);
+  if (loading) return;
+
+  // 1) Si no hay sesión, ir al login (portal OAuth)
+  if (!user) {
+    window.location.href = getLoginUrl();
+    return;
+  }
+
+  // 2) Si hay sesión pero no es admin, volver a Home
+  if (user.role !== "admin") {
+    navigate("/");
+  }
+}, [user, loading, navigate]);
 
   if (loading) {
     return (
