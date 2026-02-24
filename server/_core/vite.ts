@@ -7,7 +7,6 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
 
-// Required in ESM to recreate __dirname
 const __filename = fileURLToPath(import.meta.url);
 const _dirname = path.dirname(_filename);
 
@@ -60,22 +59,6 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  /**
-   * In production Render runs:
-   *   /opt/render/project/src/dist/index.js
-   *
-   * This file compiles to:
-   *   /opt/render/project/src/dist/_core/vite.js
-   *
-   * So __dirname becomes:
-   *   /opt/render/project/src/dist/_core
-   *
-   * The Vite build output is:
-   *   /opt/render/project/src/dist/public
-   *
-   * Therefore we resolve ../public
-   */
-
   const distPath = path.resolve(__dirname, "..", "public");
   const indexHtml = path.resolve(distPath, "index.html");
 
