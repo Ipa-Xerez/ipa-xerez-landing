@@ -51,11 +51,15 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(process.cwd(), "dist/public");
+  const path = require("path");
 
-  app.use(express.static(distPath));
+  const root = process.cwd();
+  const distPath = path.resolve(root, "dist/public");
+  const indexHtml = path.resolve(distPath, "index.html");
+
+  app.use(require("express").static(distPath));
 
   app.get("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+    res.sendFile(indexHtml);
   });
 }
