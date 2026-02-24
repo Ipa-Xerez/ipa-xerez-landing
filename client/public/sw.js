@@ -150,22 +150,19 @@ async function cacheFirst(request) {
 
 // Estrategia: Stale While Revalidate
 async function staleWhileRevalidate(request) {
-  const cached = await caches.match(request);
-  
-  const fetchPromise = fetch(request)
+  const cache = await caches.open(RUNTIME_CACHE);
+  const cached = await cache.match(request);
+
+  const networkPromise = fetch(request)
     .then(response => {
-      if (response.ok) {
-        const cache = caches.open(RUNTIME_CACHE);
-        cache.then(c => c.put(request, response.clone()));
+      if (response && response.ok) {
+        cache.put(request, response.clone());
       }
       return response;
     })
-    .catch(error => {
-      console.error('[SW] Fetch failed for:', request.url, error);
-      return cached || createOfflineResponse();
-    });
+    .catch(() => cached);
 
-  return cached || fetchPromise;
+  return cached || networkPromise;
 }
 
 // Verificar si una URL coincide con algún patrón
