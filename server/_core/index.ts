@@ -101,7 +101,7 @@ async function startServer() {
   const port = Number(process.env.PORT) || 10000;
 
 server.listen(port, "0.0.0.0", () => {
-console.log("Server running on port " + port);
+console.log("Server running on port" + port);
 });
 
 async function initializeMembers() {
