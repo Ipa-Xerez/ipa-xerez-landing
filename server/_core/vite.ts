@@ -47,7 +47,8 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(__dirname, "../../dist/public");
+  const root = process.cwd(); // en Render: /opt/render/project/src
+  const distPath = path.resolve(root, "dist/public");
   const indexHtml = path.resolve(distPath, "index.html");
 
   app.use(express.static(distPath));
