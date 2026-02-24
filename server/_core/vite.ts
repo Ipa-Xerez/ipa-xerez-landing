@@ -6,7 +6,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
-
 const __filename = fileURLToPath(import.meta.url);
 const _dirname = path.dirname(_filename);
 
