@@ -87,11 +87,13 @@ self.addEventListener('activate', event => {
 // Interceptar requests y aplicar estrategias de caché
 self.addEventListener('fetch', event => {
   const { request } = event;
-  const url = new URL(request.url);
 
-  // No cachear requests de POST, DELETE, etc.
-  if (request.method !== 'GET') {
-    return;
+  // Some requests can have non-standard / invalid URLs (extensions, etc.)
+  let url;
+  try {
+    url = new URL(request.url);
+  } catch (e) {
+    return; // ignore and let the browser handle it
   }
 
   // Determinar estrategia según el patrón de URL
