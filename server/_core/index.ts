@@ -101,14 +101,7 @@ async function startServer() {
   const port = parseInt(process.env.PORT || "3000");
 
 server.listen(port, "0.0.0.0", () => {
-import express from "express";
-import { createServer } from "http";
-import net from "net";
-import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { appRouter } from "../routers";
-import { createContext } from "./context";
-import { registerLocalAuthRoutes } from "./localAuth";
-import { serveStatic, setupVite } from "./vite";
+
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
