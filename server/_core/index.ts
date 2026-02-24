@@ -101,7 +101,6 @@ async function startServer() {
   const port = parseInt(process.env.PORT || "3000");
 
 server.listen(port, "0.0.0.0", () => {
-  import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
