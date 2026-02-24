@@ -95,7 +95,7 @@ self.addEventListener('fetch', event => {
   } catch (e) {
     return; // ignore and let the browser handle it
   }
-
+if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
   // Determinar estrategia según el patrón de URL
   if (matchesPattern(url, CACHE_PATTERNS.networkFirst)) {
     event.respondWith(networkFirst(request));
