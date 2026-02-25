@@ -197,34 +197,37 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Próxima Actividad Widget - Posicionado en el hero */}
+      {/* Próxima Actividad Widget - Barra fija arriba */}
       {nextEvent && (
-      <div className="fixed left-4 top-28 md:top-32 z-40 w-56 md:w-64">
-        <div className="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-          <div className="relative h-32 bg-cover bg-center cursor-pointer hover:opacity-90 transition-opacity" style={{ backgroundImage: `url(${nextEvent.image || POLICE_WEEK_POSTER})` }} onClick={() => navigate(`/evento/${nextEvent.id}`)}>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
-            <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold">
-              🔹 Próximo
+      <div className="fixed left-0 right-0 top-0 z-40 bg-red-600 text-white px-4 py-2 shadow-lg hidden sm:block">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="flex-shrink-0">
+              <Calendar className="w-4 h-4" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold line-clamp-1">{nextEvent.title}</p>
+              <p className="text-xs opacity-90">{new Date(nextEvent.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} • {nextEvent.location || 'Por confirmar'}</p>
             </div>
           </div>
-          <div className="p-3">
-            <h3 className="font-bold text-[#003366] mb-2 text-xs line-clamp-2">{nextEvent.title}</h3>
-            <div className="space-y-1 text-xs text-gray-700 mb-2">
-              <div className="flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-[#D4AF37]" />
-                <span className="font-semibold">{new Date(nextEvent.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-[#D4AF37]" />
-                <span className="font-semibold text-xs line-clamp-1">{nextEvent.location || 'Por confirmar'}</span>
-              </div>
-            </div>
-            <Button className="bg-red-600 text-white hover:bg-red-700 font-bold px-2 py-1 text-xs w-full" onClick={() => {
-              const message = `Hola, me interesa la actividad de ${nextEvent.title} del ${new Date(nextEvent.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}.`;
-              const encodedMessage = encodeURIComponent(message);
-              window.open(`https://wa.me/34675508110?text=${encodedMessage}`, '_blank');
-            }}>
-              📞 Me apunto
+          <div className="flex-shrink-0 flex gap-2">
+            <Button 
+              size="sm"
+              className="bg-white text-red-600 hover:bg-gray-100 font-bold text-xs px-3 py-1" 
+              onClick={() => navigate(`/evento/${nextEvent.id}`)}
+            >
+              Ver detalles
+            </Button>
+            <Button 
+              size="sm"
+              className="bg-yellow-400 text-red-600 hover:bg-yellow-300 font-bold text-xs px-3 py-1" 
+              onClick={() => {
+                const message = `Hola, me interesa la actividad de ${nextEvent.title} del ${new Date(nextEvent.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}.`;
+                const encodedMessage = encodeURIComponent(message);
+                window.open(`https://wa.me/34675508110?text=${encodedMessage}`, '_blank');
+              }}
+            >
+              Me apunto
             </Button>
           </div>
         </div>
@@ -232,7 +235,7 @@ export default function Home() {
       )}
       
       {/* Espaciador para que el contenido no se superponga con el widget fijo */}
-      <div className="hidden md:block h-0"></div>
+      <div className="h-16 hidden sm:block"></div>
 
       {/* Sección Descripción SEO */}
       <section className="py-12 md:py-16 bg-white border-b border-gray-200">
