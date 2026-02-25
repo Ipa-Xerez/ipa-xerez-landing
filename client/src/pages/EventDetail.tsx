@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Clock, ArrowLeft, Share2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
-const POLICE_WEEK_POSTER = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/bspODVNHZxCvOkZg.PNG";
+const POLICE_WEEK_POSTER = "//poster-washington.jpg";
 
 export default function EventDetail() {
   const [, params] = useRoute("/evento/:id");
