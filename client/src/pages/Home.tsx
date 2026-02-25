@@ -17,8 +17,8 @@ const SERVICE1 = "/Service1.png";
 const SERVICE2 = "/Service2.png";
 const SERVICE3 = "/Service3.png";
 const SERVICE4 = "/Service4.png";
-const POLICE_WEEK_POSTER = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/bspODVNHZxCvOkZg.PNG";
-const INSCRIPTION_FORM = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/ISIAsxyZJpDNPGZY.pdf";
+const POLICE_WEEK_POSTER = "/Póster Washington.jpeg";
+const INSCRIPTION_FORM = "/Xerez- Formulario INSCRIPCION.pdf";
 
 export default function Home() {
   const [, navigate] = useLocation();
