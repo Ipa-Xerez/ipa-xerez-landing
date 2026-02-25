@@ -10,7 +10,6 @@ import { PWAOfflineIndicator } from "./components/PWAOfflineIndicator";
 import { PWAAndroidInstall } from "./components/PWAAndroidInstall";
 import { PWAInstallPrompt } from "./components/PWAInstallPrompt";
 import Home from "./pages/Home";
-import Cover from "./pages/Cover";
 import InstallGuide from "./pages/InstallGuide";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
@@ -31,8 +30,7 @@ function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path={"/"} component={Cover} />
-      <Route path={"/home"} component={Home} />
+      <Route path={"/"} component={Home} />
       <Route path={"/gallery"} component={Gallery} />
       <Route path={"/blog"} component={Blog} />
       <Route path={"/admin/blog"} component={BlogAdmin} />

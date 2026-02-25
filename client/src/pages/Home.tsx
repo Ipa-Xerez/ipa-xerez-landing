@@ -12,7 +12,7 @@ import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 
-const HERO_IMAGE = "/Portada Nueva.jpg";
+const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/WdCcjBwVsNlQtuaX.jpg";
 const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/qryPxOwfcjeRuuhi.png";
 const SERVICE2 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/wzfjUxFoBpcdYQUa.png";
 const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EIOozMpBSiOenCLv.png";
