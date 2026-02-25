@@ -13,10 +13,10 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 
 const HERO_IMAGE = "/Portada Nueva.jpg";
-const SERVICE1 = "/Service1.png";
-const SERVICE2 = "/Service2.png";
-const SERVICE3 = "/Service3.png";
-const SERVICE4 = "/Service4.png";
+const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/qryPxOwfcjeRuuhi.png";
+const SERVICE2 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/wzfjUxFoBpcdYQUa.png";
+const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EIOozMpBSiOenCLv.png";
+const SERVICE4 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/XQLbepsewhNLSlYB.png";
 const POLICE_WEEK_POSTER = "/poster-washington.jpg";
 const INSCRIPTION_FORM = "/INSCRIPCION.pdf";
 
