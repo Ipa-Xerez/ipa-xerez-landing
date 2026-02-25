@@ -17,8 +17,8 @@ const SERVICE1 = "/Service1.png";
 const SERVICE2 = "/Service2.png";
 const SERVICE3 = "/Service3.png";
 const SERVICE4 = "/Service4.png";
-const POLICE_WEEK_POSTER = "/Póster Washington.jpeg";
-const INSCRIPTION_FORM = "/Xerez- Formulario INSCRIPCION.pdf";
+const POLICE_WEEK_POSTER = "/poster washington.jpg";
+const INSCRIPTION_FORM = "/INSCRIPCION.pdf";
 
 export default function Home() {
   const [, navigate] = useLocation();
