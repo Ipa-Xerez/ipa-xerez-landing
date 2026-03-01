@@ -1,3 +1,4 @@
+import { serveStatic } from "./serveStatic";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { appRouter } from "./routers";
 import { createContext } from "./_core/context";
