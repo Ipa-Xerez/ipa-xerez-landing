@@ -1,0 +1,22 @@
+{
+  "query": "SELECT id, title, date, location FROM events WHERE date > NOW() ORDER BY date LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, date, location FROM events WHERE date > NOW() ORDER BY date LIMIT 5;",
+  "rows": [
+    {
+      "id": "2",
+      "title": "Puy du Fou",
+      "date": "2026-04-17 00:00:00",
+      "location": "Toledo, España"
+    },
+    {
+      "id": "1",
+      "title": "Police Week 2026",
+      "date": "2026-05-11 00:00:00",
+      "location": "Toledo, España"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tdate\tlocation\n2\tPuy du Fou\t2026-04-17 00:00:00\tToledo, España\n1\tPolice Week 2026\t2026-05-11 00:00:00\tToledo, España\n",
+  "stderr": "",
+  "execution_time_ms": 417
+}

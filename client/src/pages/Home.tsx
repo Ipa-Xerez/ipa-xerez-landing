@@ -199,29 +199,30 @@ export default function Home() {
 
       {/* Próxima Actividad Widget - Barra fija arriba */}
       {nextEvent && (
-      <div className="fixed left-0 right-0 top-0 z-40 bg-red-600 text-white px-2 sm:px-4 py-1 sm:py-2 shadow-lg">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className="flex-shrink-0">
-              <Calendar className="w-4 h-4" />
+      <div className="fixed left-0 right-0 top-0 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white px-2 sm:px-4 py-2 sm:py-3 shadow-lg border-b-2 border-yellow-400">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+            <div className="flex-shrink-0 bg-yellow-400 rounded-full p-1">
+              <Calendar className="w-4 h-4 text-red-600" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs sm:text-xs font-semibold line-clamp-1">{nextEvent.title}</p>
-              <p className="text-xs sm:text-xs opacity-90 hidden sm:block">{new Date(nextEvent.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} • {nextEvent.location || 'Por confirmar'}</p>
+              <p className="text-xs sm:text-sm font-bold line-clamp-1 text-yellow-300">Próximo Evento</p>
+              <p className="text-xs sm:text-sm font-semibold line-clamp-1">{nextEvent.title}</p>
+              <p className="text-xs opacity-90 hidden sm:block">{new Date(nextEvent.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} • {nextEvent.location || 'Por confirmar'}</p>
               <p className="text-xs opacity-90 sm:hidden">{new Date(nextEvent.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</p>
             </div>
           </div>
           <div className="flex-shrink-0 flex gap-1 sm:gap-2">
             <Button 
               size="sm"
-              className="bg-white text-red-600 hover:bg-gray-100 font-bold text-xs px-2 sm:px-3 py-0.5 sm:py-1 hidden sm:block" 
+              className="bg-white text-red-600 hover:bg-yellow-100 font-bold text-xs px-2 sm:px-3 py-1 sm:py-1.5 hidden sm:block" 
               onClick={() => navigate(`/evento/${nextEvent.id}`)}
             >
               Ver detalles
             </Button>
             <Button 
               size="sm"
-              className="bg-yellow-400 text-red-600 hover:bg-yellow-300 font-bold text-xs px-2 sm:px-3 py-0.5 sm:py-1" 
+              className="bg-yellow-400 text-red-600 hover:bg-yellow-300 font-bold text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-1.5 transition-all duration-200 hover:scale-105" 
               onClick={() => {
                 const message = `Hola, me interesa la actividad de ${nextEvent.title} del ${new Date(nextEvent.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}.`;
                 const encodedMessage = encodeURIComponent(message);
