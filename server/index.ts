@@ -41,7 +41,15 @@ async function startServer() {
   });
 
   const port = process.env.PORT || 3000;
+// === SERVIR FRONTEND EN PRODUCCIÓN ===
 
+const clientDist = path.resolve(process.cwd(), "dist");
+
+app.use(express.static(clientDist));
+
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(clientDist, "index.html"));
+});
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
