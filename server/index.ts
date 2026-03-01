@@ -43,7 +43,7 @@ async function startServer() {
   const port = process.env.PORT || 3000;
 // === SERVIR FRONTEND EN PRODUCCIÓN ===
 
-const clientDist = path.resolve(process.cwd(), "dist");
+const clientDist = path.resolve(process.cwd(), "client", "dist");
 
 app.use(express.static(clientDist));
 
