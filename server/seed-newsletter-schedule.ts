@@ -1,5 +1,6 @@
 import { getDb } from "./db";
 import { newsletterSchedules, newsletterTemplates } from "../drizzle/schema";
+import { eq } from "drizzle-orm";
 
 /**
  * Script para crear la configuración de newsletter automático
@@ -32,8 +33,33 @@ async function seedNewsletterSchedule() {
       })}`
     );
 
+    // Verificar si ya existe un schedule activo
+    const existingSchedules = await db
+      .select()
+      .from(newsletterSchedules)
+      .where(eq(newsletterSchedules.isActive, 1));
+
+    if (existingSchedules.length > 0) {
+      console.log("ℹ️  Ya existe un schedule activo. Usando el existente...");
+      const scheduleId = existingSchedules[0].id;
+
+      // Verificar si ya tiene template
+      const existingTemplates = await db
+        .select()
+        .from(newsletterTemplates)
+        .where(eq(newsletterTemplates.scheduleId, scheduleId));
+
+      if (existingTemplates.length > 0) {
+        console.log("✅ Newsletter ya está configurado y activo");
+        console.log(
+          `📧 El newsletter se enviará automáticamente cada 15 días los viernes a las 10:00 AM (Madrid)`
+        );
+        process.exit(0);
+      }
+    }
+
     // Insertar schedule
-    const scheduleResult = await db.insert(newsletterSchedules).values({
+    await db.insert(newsletterSchedules).values({
       name: "Newsletter Automático IPA Xerez",
       description:
         "Newsletter automático cada 15 días los viernes a las 10:00 AM (Madrid)",
@@ -46,11 +72,21 @@ async function seedNewsletterSchedule() {
       nextSendAt: nextFriday,
     });
 
-    const scheduleId = (scheduleResult as any).insertId;
+    // Obtener el schedule recién creado
+    const schedules = await db
+      .select()
+      .from(newsletterSchedules)
+      .where(eq(newsletterSchedules.name, "Newsletter Automático IPA Xerez"));
+
+    if (schedules.length === 0) {
+      throw new Error("No se pudo crear el schedule");
+    }
+
+    const scheduleId = schedules[0].id;
     console.log(`✅ Schedule creado con ID: ${scheduleId}`);
 
     // Insertar template
-    const templateResult = await db.insert(newsletterTemplates).values({
+    await db.insert(newsletterTemplates).values({
       scheduleId: scheduleId,
       subject: "IPA Xerez Newsletter - Últimas Noticias",
       includeEvents: 1, // true
@@ -61,7 +97,11 @@ async function seedNewsletterSchedule() {
       maxBlogPosts: 3,
     });
 
-    const templateId = (templateResult as any).insertId;
+    const templateId = (await db
+      .select()
+      .from(newsletterTemplates)
+      .where(eq(newsletterTemplates.scheduleId, scheduleId)))[0]?.id;
+
     console.log(`✅ Template creado con ID: ${templateId}`);
 
     console.log("\n✨ Configuración completada!");
