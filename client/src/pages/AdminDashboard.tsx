@@ -2,34 +2,86 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { FileText, Users, BookOpen, LogOut, Lock } from "lucide-react";
+import { useState } from "react";
 
 const ADMIN_EMAIL = "ipaagrupacionxerez@gmail.com";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const [, navigate] = useLocation();
+  const [emailInput, setEmailInput] = useState("");
+  const [emailValidated, setEmailValidated] = useState(false);
+  const [error, setError] = useState("");
 
-  // Verificar si el usuario tiene el email autorizado
-  if (!user || user.email !== ADMIN_EMAIL) {
+  // Manejar validación de email
+  const handleEmailValidation = () => {
+    setError("");
+    
+    if (!emailInput.trim()) {
+      setError("Por favor ingresa tu email");
+      return;
+    }
+
+    if (emailInput.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+      setEmailValidated(true);
+    } else {
+      setError("Email incorrecto. No tienes permiso para acceder.");
+      setEmailInput("");
+    }
+  };
+
+  // Si no ha validado el email, mostrar formulario de validación
+  if (!emailValidated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
         <Card className="border-0 shadow-2xl p-8 max-w-md bg-white">
           <div className="text-center">
-            <Lock className="w-16 h-16 text-red-600 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
-            <p className="text-gray-600 mb-6">Solo los administradores autorizados pueden acceder a este panel.</p>
-            <p className="text-sm text-gray-500 mb-2">Email requerido:</p>
-            <p className="text-sm font-bold text-gray-700 mb-6 bg-gray-100 p-2 rounded">{ADMIN_EMAIL}</p>
-            <Button 
-              onClick={() => {
-                logout();
-                navigate("/");
-              }}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold"
-            >
-              Volver al Inicio
-            </Button>
+            <Lock className="w-16 h-16 text-[#003366] mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-[#003366] mb-2">Panel de Administración</h1>
+            <p className="text-gray-600 mb-6">Ingresa tu email para acceder</p>
+            
+            <div className="space-y-4">
+              <div>
+                <Input
+                  type="email"
+                  placeholder="tu@email.com"
+                  value={emailInput}
+                  onChange={(e) => {
+                    setEmailInput(e.target.value);
+                    setError("");
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleEmailValidation();
+                    }
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003366]"
+                />
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg text-sm">
+                  {error}
+                </div>
+              )}
+
+              <Button 
+                onClick={handleEmailValidation}
+                className="w-full bg-[#003366] hover:bg-[#002244] text-white font-bold py-2"
+              >
+                Validar Acceso
+              </Button>
+
+              <Button 
+                onClick={() => navigate("/")}
+                variant="outline"
+                className="w-full text-gray-600 border-gray-300"
+              >
+                Volver al Inicio
+              </Button>
+            </div>
           </div>
         </Card>
       </div>
@@ -78,8 +130,8 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-300">Bienvenido,</p>
-              <p className="font-bold text-lg">{user?.email || "Administrador"}</p>
+              <p className="text-sm text-gray-300">Acceso validado</p>
+              <p className="font-bold text-lg text-[#D4AF37]">✓ Autorizado</p>
             </div>
           </div>
         </div>
@@ -143,8 +195,9 @@ export default function AdminDashboard() {
         <div className="flex justify-center">
           <Button 
             onClick={() => {
-              logout();
-              navigate("/");
+              setEmailValidated(false);
+              setEmailInput("");
+              setError("");
             }}
             className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3"
           >
