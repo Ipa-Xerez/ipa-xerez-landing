@@ -10,24 +10,6 @@ import { toast } from "sonner";
 
 export default function BlogAdmin() {
   const [, navigate] = useLocation();
-  const { user, isAuthenticated } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isCheckingAdmin, setIsCheckingAdmin] = useState(true);
-  const checkAdminMutation = trpc.admin.isAdmin.useMutation();
-
-  useEffect(() => {
-    if (isAuthenticated && user?.email) {
-      checkAdminMutation.mutateAsync({ email: user.email }).then(result => {
-        setIsAdmin(result);
-        setIsCheckingAdmin(false);
-      }).catch(() => {
-        setIsAdmin(false);
-        setIsCheckingAdmin(false);
-      });
-    } else {
-      setIsCheckingAdmin(false);
-    }
-  }, [isAuthenticated, user?.email]);
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -57,47 +39,7 @@ export default function BlogAdmin() {
   const uploadImageMutation = trpc.blog.uploadImage.useMutation();
 
 
-  // Show loading while checking authentication
-  if (isCheckingAdmin) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Verificando permisos...</p>
-        </div>
-      </div>
-    );
-  }
 
-  // Redirect if not authenticated
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-red-50 to-white flex items-center justify-center p-4">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-red-800 mb-4">Acceso Denegado</h1>
-          <p className="text-gray-600 mb-6">Debes estar autenticado para acceder al panel de admin</p>
-          <Button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-700">
-            Volver al Inicio
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  // Redirect if not admin
-  if (!isAdmin) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-red-50 to-white flex items-center justify-center p-4">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-red-800 mb-4">Acceso Denegado</h1>
-          <p className="text-gray-600 mb-6">No tienes permisos para acceder al panel de administración</p>
-          <Button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-700">
-            Volver al Inicio
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   // Handle image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
