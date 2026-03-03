@@ -85,13 +85,7 @@ export default function Blog() {
               >
                 📧 Enviar Historia
               </Button>
-              <Button 
-                className="bg-transparent hover:bg-white/10 p-2 rounded-lg transition-all duration-200" 
-                onClick={() => window.location.href = getLoginUrl('/admin/blog')}
-                title="Panel de Administración"
-              >
-                <img src="/favicon-192.png" alt="Admin" className="h-6 w-6" />
-              </Button>
+
             </div>
           </div>
           <h1 className="text-5xl font-bold mb-4">📰 Blog IPA Xerez</h1>
