@@ -54,18 +54,19 @@ export default function BlogAdmin() {
     }
   };
 
-  // Upload image to S3
+  // Upload image to S3 (simplified - optional)
   const uploadImage = async () => {
-    if (!imageFile) return;
+    if (!imageFile) {
+      toast.info("No hay imagen seleccionada");
+      return;
+    }
 
     setIsUploading(true);
     try {
-      // Read file as base64
       const reader = new FileReader();
       reader.onload = async () => {
-        const base64Data = (reader.result as string).split(',')[1];
-        
         try {
+          const base64Data = (reader.result as string).split(',')[1];
           const result = await uploadImageMutation.mutateAsync({
             fileName: imageFile.name,
             fileData: base64Data,
@@ -76,11 +77,17 @@ export default function BlogAdmin() {
             ...prev,
             image: result.url,
           }));
-          
-          toast.success("Imagen cargada correctamente a S3");
+          setImageFile(null);
+          setImagePreview("");
+          toast.success("Imagen cargada correctamente");
         } catch (error) {
-          toast.error("Error al cargar la imagen a S3");
-          console.error(error);
+          console.error("Error al cargar imagen:", error);
+          // Fallback: usar data URL si S3 falla
+          setFormData((prev) => ({
+            ...prev,
+            image: reader.result as string,
+          }));
+          toast.warning("Imagen guardada localmente (sin S3)");
         } finally {
           setIsUploading(false);
         }
@@ -105,6 +112,12 @@ export default function BlogAdmin() {
     if (!formData.content.trim()) {
       toast.error("El contenido es requerido");
       return;
+    }
+
+    // Imagen es opcional
+    if (!formData.image.trim()) {
+      const confirmed = window.confirm("¿Guardar artículo sin imagen?");
+      if (!confirmed) return;
     }
 
     try {
