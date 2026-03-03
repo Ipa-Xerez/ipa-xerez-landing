@@ -13,7 +13,7 @@ import Home from "./pages/Home";
 import InstallGuide from "./pages/InstallGuide";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
-import BlogAdminTest from "./pages/BlogAdminTest";
+import BlogAdmin from "./pages/BlogAdmin";
 import Calendar from "./pages/Calendar";
 import EventDetail from "./pages/EventDetail";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
@@ -31,7 +31,7 @@ function Router() {
   return (
     <Switch>
       {/* Admin routes - must be before generic routes */}
-      <Route path={"/admin/blog"} component={BlogAdminTest} />
+      <Route path={"/admin/blog"} component={BlogAdmin} />
       <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
       <Route path={"/admin/documents"} component={AdminDocuments} />
       <Route path={"/admin/seed"} component={AdminSeed} />

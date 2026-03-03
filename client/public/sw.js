@@ -1,5 +1,5 @@
 // Service Worker para IPA Xerez PWA
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `ipa-xerez-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `ipa-xerez-runtime-${CACHE_VERSION}`;
 const IMAGES_CACHE = `ipa-xerez-images-${CACHE_VERSION}`;
