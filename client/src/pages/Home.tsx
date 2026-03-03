@@ -130,7 +130,7 @@ export default function Home() {
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/blog')}>Blog</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/calendar')}>Calendario</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}>FAQ</Button>
-            {isAuthenticated && <button onClick={() => navigate('/admin/documents')} className="hover:opacity-80 transition-opacity" title="Panel de Administración"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="Panel Admin" className="h-8 w-auto" /></button>}
+
 
             <PWAInstallButton />
             <div className="flex gap-2">
@@ -696,6 +696,20 @@ export default function Home() {
               </p>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* Acceso Administrador */}
+      <section className="py-12 bg-gradient-to-r from-[#003366] to-[#001a33]">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Administracion</h2>
+          <p className="text-gray-300 mb-6">Eres administrador de IPA Xerez?</p>
+          <Button 
+            onClick={() => navigate('/admin/blog')} 
+            className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] font-bold px-8 py-3"
+          >
+            Acceder al Panel de Administracion
+          </Button>
         </div>
       </section>
 
