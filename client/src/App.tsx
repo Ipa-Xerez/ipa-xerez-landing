@@ -13,7 +13,7 @@ import Home from "./pages/Home";
 import InstallGuide from "./pages/InstallGuide";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
-import BlogAdmin from "./pages/BlogAdmin";
+import BlogAdminTest from "./pages/BlogAdminTest";
 import Calendar from "./pages/Calendar";
 import EventDetail from "./pages/EventDetail";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
@@ -30,21 +30,25 @@ function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
+      {/* Admin routes - must be before generic routes */}
+      <Route path={"/admin/blog"} component={BlogAdminTest} />
+      <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
+      <Route path={"/admin/documents"} component={AdminDocuments} />
+      <Route path={"/admin/seed"} component={AdminSeed} />
+      <Route path={"/admin"} component={AdminIndex} />
+      
+      {/* Public routes */}
       <Route path={"/"} component={Home} />
       <Route path={"/gallery"} component={Gallery} />
       <Route path={"/blog"} component={Blog} />
-      <Route path={"/admin/blog"} component={BlogAdmin} />
       <Route path={"/calendar"} component={Calendar} />
       <Route path={"/evento/:id"} component={EventDetail} />
-      <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />
       <Route path={"/socios"} component={MembersArea} />
-      <Route path={"/admin/documents"} component={AdminDocuments} />
-      <Route path={"/admin/seed"} component={AdminSeed} />
       <Route path={"/inscripcion"} component={Inscription} />
       <Route path={"/404"} component={NotFound} />
-      <Route path={"/admin"} component={AdminIndex} />
+      
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
