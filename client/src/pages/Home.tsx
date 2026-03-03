@@ -705,9 +705,10 @@ export default function Home() {
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Administracion</h2>
           <p className="text-gray-300 mb-6">Eres administrador de IPA Xerez?</p>
           <Button 
-            onClick={() => navigate('/admin/blog')} 
-            className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] font-bold px-8 py-3"
+            onClick={() => navigate('/admin/dashboard')} 
+            className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] font-bold px-8 py-3 flex items-center gap-2 mx-auto"
           >
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA" className="h-6 w-auto" />
             Acceder al Panel de Administracion
           </Button>
         </div>

@@ -22,15 +22,17 @@ import MembersArea from "./pages/MembersArea";
 import AdminDocuments from "./pages/AdminDocuments";
 import AdminSeed from "./pages/AdminSeed";
 import Inscription from "./pages/Inscription";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function AdminIndex() {
-  return <Redirect to="/admin/documents" />;
+  return <Redirect to="/admin/dashboard" />;
 }
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       {/* Admin routes - must be before generic routes */}
+      <Route path={"/admin/dashboard"} component={AdminDashboard} />
       <Route path={"/admin/blog"} component={BlogAdmin} />
       <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
       <Route path={"/admin/documents"} component={AdminDocuments} />
