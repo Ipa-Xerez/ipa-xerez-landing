@@ -38,9 +38,6 @@ export default function BlogAdmin() {
   const deleteMutation = trpc.blog.delete.useMutation();
   const uploadImageMutation = trpc.blog.uploadImage.useMutation();
 
-
-
-
   // Handle image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -153,7 +150,6 @@ export default function BlogAdmin() {
         category: "",
         tags: "",
         isPublished: 1,
-
       });
       setImageFile(null);
       setImagePreview("");
@@ -178,11 +174,9 @@ export default function BlogAdmin() {
       author: post.author || "",
       image: post.image || "",
       category: post.category || "",
-      tags: post.tags ? JSON.parse(post.tags).join(", ") : "",
+      tags: post.tags?.join(", ") || "",
       isPublished: post.isPublished || 1,
-
     });
-    setImagePreview(post.image || "");
     setEditingId(post.id);
     setIsCreating(true);
   };
@@ -213,15 +207,12 @@ export default function BlogAdmin() {
       category: "",
       tags: "",
       isPublished: 1,
-
     });
     setImageFile(null);
     setImagePreview("");
     setIsCreating(false);
     setEditingId(null);
   };
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -248,124 +239,101 @@ export default function BlogAdmin() {
         {/* Create/Edit Form */}
         {isCreating && (
           <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
-                {editingId ? "Editar Artículo" : "Crear Nuevo Artículo"}
-              </h2>
-              <button
-                onClick={handleCancel}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-
+            <h2 className="text-2xl font-bold mb-6">
+              {editingId ? "Editar Artículo" : "Crear Nuevo Artículo"}
+            </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Title */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Título *
-                </label>
+                <label className="block text-sm font-medium mb-2">Título *</label>
                 <Input
                   type="text"
+                  placeholder="Título del artículo"
                   value={formData.title}
                   onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
+                    setFormData((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  placeholder="Título del artículo"
-                  className="w-full"
+                  required
                 />
               </div>
 
               {/* Slug */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Slug (URL)
-                </label>
+                <label className="block text-sm font-medium mb-2">Slug (URL)</label>
                 <Input
                   type="text"
+                  placeholder="slug-del-articulo (se genera automáticamente)"
                   value={formData.slug}
                   onChange={(e) =>
-                    setFormData({ ...formData, slug: e.target.value })
+                    setFormData((prev) => ({ ...prev, slug: e.target.value }))
                   }
-                  placeholder="slug-del-articulo (se genera automáticamente)"
-                  className="w-full"
                 />
               </div>
 
               {/* Excerpt */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Resumen (Excerpt)
-                </label>
+                <label className="block text-sm font-medium mb-2">Resumen (Excerpt)</label>
                 <Textarea
+                  placeholder="Resumen breve del artículo"
                   value={formData.excerpt}
                   onChange={(e) =>
-                    setFormData({ ...formData, excerpt: e.target.value })
+                    setFormData((prev) => ({ ...prev, excerpt: e.target.value }))
                   }
-                  placeholder="Resumen breve del artículo"
                   rows={3}
-                  className="w-full"
                 />
               </div>
 
               {/* Content */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Contenido *
-                </label>
+                <label className="block text-sm font-medium mb-2">Contenido *</label>
                 <Textarea
+                  placeholder="Contenido del artículo (puedes usar markdown básico)"
                   value={formData.content}
                   onChange={(e) =>
-                    setFormData({ ...formData, content: e.target.value })
+                    setFormData((prev) => ({ ...prev, content: e.target.value }))
                   }
-                  placeholder="Contenido del artículo (puedes usar markdown básico)"
-                  rows={10}
-                  className="w-full font-mono text-sm"
+                  rows={8}
+                  required
                 />
                 <p className="text-xs text-gray-500 mt-2">
                   💡 Tip: Usa saltos de línea para separar párrafos
                 </p>
               </div>
 
-              {/* Image Upload */}
+              {/* Image */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Imagen Destacada
-                </label>
+                <label className="block text-sm font-medium mb-2">Imagen Destacada</label>
                 <div className="flex gap-4">
-                  <div className="flex-1">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className="block w-full text-sm text-gray-500
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-md file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-blue-50 file:text-blue-700
-                        hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {imageFile && (
-                    <Button
-                      type="button"
-                      onClick={uploadImage}
-                      disabled={isUploading}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      {isUploading ? "Subiendo..." : "Subir"}
-                    </Button>
-                  )}
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                  <Button
+                    type="button"
+                    onClick={uploadImage}
+                    disabled={!imageFile || isUploading}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    {isUploading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Subiendo...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-4 h-4 mr-2" />
+                        Subir
+                      </>
+                    )}
+                  </Button>
                 </div>
-
                 {imagePreview && (
                   <div className="mt-4">
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="max-w-xs h-auto rounded-lg shadow-md"
+                      className="max-w-xs h-auto rounded"
                     />
                   </div>
                 )}
@@ -373,84 +341,70 @@ export default function BlogAdmin() {
 
               {/* Author */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Autor
-                </label>
+                <label className="block text-sm font-medium mb-2">Autor</label>
                 <Input
                   type="text"
+                  placeholder="Nombre del autor"
                   value={formData.author}
                   onChange={(e) =>
-                    setFormData({ ...formData, author: e.target.value })
+                    setFormData((prev) => ({ ...prev, author: e.target.value }))
                   }
-                  placeholder="Nombre del autor"
-                  className="w-full"
                 />
               </div>
 
               {/* Category */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Categoría
-                </label>
+                <label className="block text-sm font-medium mb-2">Categoría</label>
                 <Input
                   type="text"
+                  placeholder="ej: Eventos, Noticias, Historias"
                   value={formData.category}
                   onChange={(e) =>
-                    setFormData({ ...formData, category: e.target.value })
+                    setFormData((prev) => ({ ...prev, category: e.target.value }))
                   }
-                  placeholder="ej: Eventos, Noticias, Historias"
-                  className="w-full"
                 />
               </div>
 
               {/* Tags */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Tags (separados por comas)
-                </label>
+                <label className="block text-sm font-medium mb-2">Tags (separados por comas)</label>
                 <Input
                   type="text"
+                  placeholder="tag1, tag2, tag3"
                   value={formData.tags}
                   onChange={(e) =>
-                    setFormData({ ...formData, tags: e.target.value })
+                    setFormData((prev) => ({ ...prev, tags: e.target.value }))
                   }
-                  placeholder="tag1, tag2, tag3"
-                  className="w-full"
                 />
               </div>
 
-              {/* Publish Status */}
-              <div className="flex items-center gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.isPublished === 1}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        isPublished: e.target.checked ? 1 : 0,
-                      })
-                    }
-                    className="w-4 h-4 rounded"
-                  />
-                  <span className="text-sm font-semibold text-gray-700">
-                    Publicar ahora
-                  </span>
+              {/* Published */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="published"
+                  checked={formData.isPublished === 1}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      isPublished: e.target.checked ? 1 : 0,
+                    }))
+                  }
+                  className="w-4 h-4"
+                />
+                <label htmlFor="published" className="ml-2 text-sm font-medium">
+                  Publicar ahora
                 </label>
               </div>
 
-
-              {/* Submit Buttons */}
-              <div className="flex gap-4 pt-6 border-t border-gray-200">
+              {/* Buttons */}
+              <div className="flex gap-4">
                 <Button
                   type="submit"
-                  disabled={createMutation.isPending || updateMutation.isPending}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-600 hover:bg-blue-700 flex-1"
                 >
-                  <Save className="h-4 w-4 mr-2" />
-                  {createMutation.isPending || updateMutation.isPending
-                    ? "Guardando..."
-                    : "Guardar Artículo"}
+                  <Save className="w-4 h-4 mr-2" />
+                  Guardar Artículo
                 </Button>
                 <Button
                   type="button"
@@ -458,6 +412,7 @@ export default function BlogAdmin() {
                   variant="outline"
                   className="flex-1"
                 >
+                  <X className="w-4 h-4 mr-2" />
                   Cancelar
                 </Button>
               </div>
@@ -465,113 +420,88 @@ export default function BlogAdmin() {
           </div>
         )}
 
-        {/* Posts List */}
+        {/* Articles List */}
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
+            <h2 className="text-2xl font-bold">
               Artículos ({posts.length})
             </h2>
-            {!isCreating && (
-              <Button
-                onClick={() => setIsCreating(true)}
-                className="bg-green-600 hover:bg-green-700"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Nuevo Artículo
-              </Button>
-            )}
+            <Button
+              onClick={() => setIsCreating(true)}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Nuevo Artículo
+            </Button>
           </div>
 
           {postsLoading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="text-gray-600 mt-4">Cargando artículos...</p>
+            <div className="text-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin mx-auto" />
+              <p className="mt-2 text-gray-600">Cargando artículos...</p>
             </div>
           ) : posts.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">No hay artículos aún</p>
+            <div className="text-center py-8">
+              <p className="text-gray-600">No hay artículos publicados aún.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                      Título
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                      Categoría
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                      Estado
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                      Fecha
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                      Facebook
-                    </th>
-                    <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">
-                      Acciones
-                    </th>
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-3 px-4">Título</th>
+                    <th className="text-left py-3 px-4">Categoría</th>
+                    <th className="text-left py-3 px-4">Estado</th>
+                    <th className="text-left py-3 px-4">Fecha</th>
+                    <th className="text-left py-3 px-4">Facebook</th>
+                    <th className="text-left py-3 px-4">Acciones</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {posts.map((post) => (
-                    <tr key={post.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm text-gray-900 font-medium">
-                        {post.title}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
+                <tbody>
+                  {posts.map((post: any) => (
+                    <tr key={post.id} className="border-b hover:bg-gray-50">
+                      <td className="py-3 px-4 font-medium">{post.title}</td>
+                      <td className="py-3 px-4 text-sm text-gray-600">
                         {post.category || "-"}
                       </td>
-                      <td className="px-6 py-4 text-sm">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                            post.isPublished
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
+                      <td className="py-3 px-4">
+                        <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
                           {post.isPublished ? "Publicado" : "Borrador"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {new Date(
-                          post.publishedAt || post.createdAt
-                        ).toLocaleDateString("es-ES")}
+                      <td className="py-3 px-4 text-sm">
+                        {new Date(post.createdAt).toLocaleDateString("es-ES")}
                       </td>
-                      <td className="px-6 py-4 text-sm">
-                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">
-                          No compartido
-                        </span>
+                      <td className="py-3 px-4 text-sm text-gray-600">
+                        No compartido
                       </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex justify-end gap-2">
-                          <button
+                      <td className="py-3 px-4">
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="ghost"
                             onClick={() => handleEdit(post)}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                             title="Editar"
                           >
-                            <Edit2 className="h-4 w-4" />
-                          </button>
-                          <button
+                            <Edit2 className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
                             onClick={() => handleDelete(post.id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             title="Eliminar"
+                            className="text-red-600 hover:text-red-700"
                           >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-
-                          <a
-                            href={`/blog?search=${encodeURIComponent(post.title)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => navigate(`/blog/${post.slug}`)}
                             title="Ver en blog"
                           >
-                            <Eye className="h-4 w-4" />
-                          </a>
+                            <Eye className="w-4 h-4" />
+                          </Button>
                         </div>
                       </td>
                     </tr>
