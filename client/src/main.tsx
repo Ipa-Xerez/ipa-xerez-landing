@@ -18,9 +18,16 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
 
   if (!isUnauthorized) return;
 
+  // No redirigir a login si ya estamos en una ruta admin protegida
+  const currentPath = window.location.pathname;
+  if (currentPath.startsWith('/admin')) {
+    console.warn('[Auth] Unauthorized in admin area, but staying on page');
+    return;
+  }
+
   // Preserve current path for return after login
-  const currentPath = window.location.pathname + window.location.search;
-  window.location.href = getLoginUrl(currentPath);
+  const fullPath = currentPath + window.location.search;
+  window.location.href = getLoginUrl(fullPath);
 };
 
 queryClient.getQueryCache().subscribe(event => {
