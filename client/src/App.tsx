@@ -23,6 +23,7 @@ import AdminDocuments from "./pages/AdminDocuments";
 import AdminSeed from "./pages/AdminSeed";
 import Inscription from "./pages/Inscription";
 import AdminDashboard from "./pages/AdminDashboard";
+import MembersAdmin from "./pages/MembersAdmin";
 
 function AdminIndex() {
   return <Redirect to="/admin/dashboard" />;
@@ -34,6 +35,7 @@ function Router() {
       {/* Admin routes - must be before generic routes */}
       <Route path={"/admin/dashboard"} component={AdminDashboard} />
       <Route path={"/admin/blog"} component={BlogAdmin} />
+      <Route path={"/admin/members"} component={MembersAdmin} />
       <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
       <Route path={"/admin/documents"} component={AdminDocuments} />
       <Route path={"/admin/seed"} component={AdminSeed} />

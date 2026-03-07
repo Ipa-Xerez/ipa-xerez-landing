@@ -1,26 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Plus, Settings, BarChart3, LogOut } from "lucide-react";
+import { ArrowLeft, Plus, LogOut } from "lucide-react";
 import DocumentUpload from "@/components/DocumentUpload";
 import DocumentsTable from "@/components/DocumentsTable";
-import DownloadHistory from "@/components/DownloadHistory";
-import MembersManagement from "@/components/MembersManagement";
 import { trpc } from "@/lib/trpc";
 import { getLoginUrl } from "@/const";
 
 export default function AdminDocuments() {
   const { user, loading, logout } = useAuth();
   const [, navigate] = useLocation();
-  const [activeTab, setActiveTab] = useState("documents");
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [showUploadForm, setShowUploadForm] = useState(false);
 
   const documentsQuery = trpc.documents.getAll.useQuery(undefined, {
     enabled: !!user && user.role === "admin",
   });
 
+  // Loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#003366] to-[#002244] flex items-center justify-center">
@@ -32,12 +29,26 @@ export default function AdminDocuments() {
     );
   }
 
+  // Not authenticated
   if (!user || user.role !== "admin") {
-    return null;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md">
+          <h1 className="text-2xl font-bold text-[#003366] mb-4">Acceso Denegado</h1>
+          <p className="text-gray-600 mb-6">No tienes permisos para acceder a esta sección.</p>
+          <Button
+            onClick={() => navigate("/")}
+            className="bg-[#003366] hover:bg-[#002244] text-white"
+          >
+            Volver al Inicio
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   const handleUploadSuccess = () => {
-    setRefreshKey((prev) => prev + 1);
+    setShowUploadForm(false);
     documentsQuery.refetch();
   };
 
@@ -51,11 +62,11 @@ export default function AdminDocuments() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/admin/dashboard")}
                 className="text-gray-600 hover:text-[#003366]"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
-                Volver
+                Volver al Panel
               </Button>
               <h1 className="text-3xl font-bold text-[#003366]">Gestión de Documentos</h1>
             </div>
@@ -80,132 +91,77 @@ export default function AdminDocuments() {
         </div>
       </div>
 
-      {/* Contenido Principal */}
+      {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white shadow">
-            <TabsTrigger value="documents" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Documentos
-            </TabsTrigger>
-            <TabsTrigger value="upload" className="flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Subir Nuevo
-            </TabsTrigger>
-            <TabsTrigger value="downloads" className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              Descargas
-            </TabsTrigger>
-            <TabsTrigger value="members" className="flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Socios
-            </TabsTrigger>
-          </TabsList>
+        {/* Documentos Section */}
+        <div className="bg-white rounded-lg shadow p-6 mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-[#003366]">Documentos Disponibles</h2>
+            <Button
+              onClick={() => setShowUploadForm(!showUploadForm)}
+              className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              {showUploadForm ? "Cancelar" : "Subir Documento"}
+            </Button>
+          </div>
 
-          {/* Tab: Documentos */}
-          <TabsContent value="documents" className="space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold text-[#003366] mb-4">
-                Documentos Disponibles
-              </h2>
-              {documentsQuery.isLoading ? (
-                <div className="text-center py-12">
-                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#003366] mb-4"></div>
-                  <p className="text-gray-600">Cargando documentos...</p>
-                </div>
-              ) : documentsQuery.data ? (
-                <DocumentsTable
-                  documents={documentsQuery.data}
-                  onRefresh={() => documentsQuery.refetch()}
-                  isAdmin={true}
-                />
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-600 mb-4">No hay documentos disponibles</p>
-                  <Button
-                    onClick={() => setActiveTab("upload")}
-                    className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Subir Primer Documento
-                  </Button>
-                </div>
-              )}
-            </div>
-          </TabsContent>
-
-          {/* Tab: Gestión de Socios */}
-          <TabsContent value="members" className="space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold text-[#003366] mb-6">
-                Gestión de Socios
-              </h2>
-              <MembersManagement />
-            </div>
-          </TabsContent>
-
-          {/* Tab: Historial de Descargas */}
-          <TabsContent value="downloads" className="space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold text-[#003366] mb-6">
-                Historial de Descargas
-              </h2>
-              <DownloadHistory showAllDownloads={true} />
-            </div>
-          </TabsContent>
-
-          {/* Tab: Subir Documento */}
-          <TabsContent value="upload" className="space-y-6">
-            <div className="max-w-2xl">
+          {/* Upload Form */}
+          {showUploadForm && (
+            <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
               <DocumentUpload onSuccess={handleUploadSuccess} />
             </div>
+          )}
 
-            {/* Información de Ayuda */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h3 className="font-semibold text-blue-900 mb-3">Información Importante</h3>
-              <ul className="space-y-2 text-sm text-blue-800">
-                <li>
-                  ✓ Los documentos se almacenan de forma segura en la nube
-                </li>
-                <li>
-                  ✓ Solo los miembros de IPA Xerez pueden acceder a documentos privados
-                </li>
-                <li>
-                  ✓ Se registra automáticamente cada acceso a los documentos
-                </li>
-                <li>
-                  ✓ Puedes cambiar la visibilidad de los documentos en cualquier momento
-                </li>
-                <li>
-                  ✓ Los documentos eliminados no se pueden recuperar
-                </li>
-              </ul>
+          {/* Documents List */}
+          {documentsQuery.isLoading ? (
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#003366] mb-4"></div>
+              <p className="text-gray-600">Cargando documentos...</p>
             </div>
+          ) : documentsQuery.error ? (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+              <p className="text-red-700 font-semibold mb-4">Error al cargar documentos</p>
+              <p className="text-red-600 text-sm mb-4">{documentsQuery.error.message}</p>
+              <Button
+                onClick={() => documentsQuery.refetch()}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                Reintentar
+              </Button>
+            </div>
+          ) : documentsQuery.data && documentsQuery.data.length > 0 ? (
+            <DocumentsTable
+              documents={documentsQuery.data}
+              onRefresh={() => documentsQuery.refetch()}
+              isAdmin={true}
+            />
+          ) : (
+            <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+              <p className="text-gray-600 mb-4 text-lg">No hay documentos todavía</p>
+              <p className="text-gray-500 text-sm mb-6">Comienza subiendo tu primer documento</p>
+              <Button
+                onClick={() => setShowUploadForm(true)}
+                className="bg-[#D4AF37] text-[#003366] hover:bg-[#C4991F]"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Subir Primer Documento
+              </Button>
+            </div>
+          )}
+        </div>
 
-            {/* Tipos de Documentos */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="font-semibold text-[#003366] mb-4">Tipos de Documentos Disponibles</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="font-semibold text-[#003366]">📋 Estatutos</p>
-                  <p className="text-sm text-gray-600 mt-1">Reglamentos y normas de la asociación</p>
-                </div>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="font-semibold text-[#003366]">📝 Actas de Reuniones</p>
-                  <p className="text-sm text-gray-600 mt-1">Registros de asambleas y juntas directivas</p>
-                </div>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="font-semibold text-[#003366]">📢 Comunicados Internos</p>
-                  <p className="text-sm text-gray-600 mt-1">Avisos y comunicaciones importantes</p>
-                </div>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="font-semibold text-[#003366]">📚 Guías y Manuales</p>
-                  <p className="text-sm text-gray-600 mt-1">Documentos de referencia y procedimientos</p>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+        {/* Info Section */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <h3 className="font-semibold text-blue-900 mb-3">Información sobre Documentos</h3>
+          <ul className="space-y-2 text-sm text-blue-800">
+            <li>✓ Los documentos se almacenan de forma segura en la nube</li>
+            <li>✓ Solo los miembros de IPA Xerez pueden acceder a documentos privados</li>
+            <li>✓ Se registra automáticamente cada acceso a los documentos</li>
+            <li>✓ Puedes cambiar la visibilidad de los documentos en cualquier momento</li>
+            <li>✓ Los documentos eliminados no se pueden recuperar</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

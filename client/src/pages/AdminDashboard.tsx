@@ -101,7 +101,7 @@ export default function AdminDashboard() {
       icon: Users,
       title: "Gestionar Socios",
       description: "Agregar y administrar miembros",
-      action: () => navigate("/socios"),
+      action: () => navigate("/admin/members"),
       color: "from-green-500 to-green-600"
     },
     {
