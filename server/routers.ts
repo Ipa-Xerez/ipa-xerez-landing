@@ -322,7 +322,7 @@ export const appRouter = router({
         const { id, ...data } = input;
         return db.updateBlogPost(id, data);
       }),
-     delete: adminProcedure
+     delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteBlogPost(input.id)),
     uploadImage: protectedProcedure
