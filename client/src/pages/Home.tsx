@@ -11,6 +11,7 @@ import { PWAInstallButton } from "@/components/PWAInstallButton";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
+import ImageCarousel from "@/components/ImageCarousel";
 
 const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/WdCcjBwVsNlQtuaX.jpg";
 const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/qryPxOwfcjeRuuhi.png";
@@ -128,7 +129,7 @@ export default function Home() {
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => document.getElementById('beneficios')?.scrollIntoView({ behavior: 'smooth' })}>Beneficios</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/gallery')}>Galería</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/blog')}>Blog</Button>
-            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/calendar')}>Calendario</Button>
+            <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/calendar')}>Eventos</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}>FAQ</Button>
 
 
@@ -159,7 +160,7 @@ export default function Home() {
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { document.getElementById('beneficios')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>Beneficios</Button>
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/gallery'); setMobileMenuOpen(false); }}>Galería</Button>
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/blog'); setMobileMenuOpen(false); }}>Blog</Button>
-            <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/calendar'); setMobileMenuOpen(false); }}>Calendario</Button>
+            <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/calendar'); setMobileMenuOpen(false); }}>Eventos</Button>
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>FAQ</Button>
             {isAuthenticated && <Button variant="ghost" className="w-full text-left text-[#D4AF37] hover:bg-[#D4AF37]/10 text-sm font-bold" onClick={() => { navigate('/admin/documents'); setMobileMenuOpen(false); }}>Panel Admin</Button>}
             <Button className="w-full bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-sm font-bold" onClick={() => { document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>Únete</Button>
@@ -173,12 +174,19 @@ export default function Home() {
         )}
       </nav>
 
-      {/* Hero mejorado */}
-      <section className="relative h-[500px] md:h-[600px] overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_IMAGE})` }}>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70"></div>
-        </div>
-        <div className="relative h-full flex items-center justify-center text-center text-white">
+      {/* Hero con Carrusel */}
+      <section className="relative">
+        <ImageCarousel
+          images={[
+            { src: HERO_IMAGE, alt: "IPA Xerez - Portada" },
+            { src: SERVICE1, alt: "Viajes e Intercambios" },
+            { src: SERVICE2, alt: "Formación Especializada" },
+            { src: SERVICE3, alt: "Eventos y Cultura" },
+          ]}
+          autoPlayInterval={5000}
+          height="h-[500px] md:h-[600px]"
+        />
+        <div className="absolute inset-0 flex items-center justify-center text-center text-white pointer-events-none">
           <div className="max-w-4xl mx-auto px-4">
             <div className="mb-6 inline-block">
               <div className="bg-[#D4AF37]/20 border border-[#D4AF37] rounded-full px-6 py-2 text-[#D4AF37] text-xs md:text-sm font-semibold backdrop-blur-sm">
@@ -189,7 +197,7 @@ export default function Home() {
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight font-bold drop-shadow-lg">DE POLICÍAS</h1>
             <p className="text-2xl md:text-3xl mb-6 text-[#D4AF37] drop-shadow-md font-semibold">AGRUPACIÓN XEREZ</p>
             <p className="text-lg md:text-2xl mb-10 text-gray-100 drop-shadow-md max-w-2xl mx-auto">Únete a IPA Xerez: la mayor asociación policial del mundo con 370.000+ miembros. Amistad, profesionalidad y hermandad internacional en más de 60 países</p>
-            <div className="flex gap-4 justify-center flex-wrap">
+            <div className="flex gap-4 justify-center flex-wrap pointer-events-auto">
               <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2" onClick={() => setShowInscriptionModal(true)}>
                 Hazte Socio Ahora <ArrowRight className="w-5 h-5" />
               </Button>
