@@ -224,11 +224,11 @@ export default function BlogAdmin() {
               <p className="text-blue-100">Gestiona los artículos del blog de IPA Xerez</p>
             </div>
             <Button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/admin")}
               variant="outline"
               className="text-white border-white hover:bg-white/20"
             >
-              ← Volver
+              ← Volver al Panel
             </Button>
           </div>
         </div>

@@ -1,23 +1,15 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Plus, LogOut } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import MembersManagement from "@/components/MembersManagement";
 import { trpc } from "@/lib/trpc";
-import { getLoginUrl } from "@/const";
+
 
 export default function MembersAdmin() {
   const [, navigate] = useLocation();
 
-  const handleLogout = async () => {
-    try {
-      await trpc.auth.logout.useMutation().mutateAsync();
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      window.location.href = getLoginUrl();
-    }
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -29,7 +21,7 @@ export default function MembersAdmin() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate("/admin/dashboard")}
+                onClick={() => navigate("/admin")}
                 className="text-gray-600 hover:text-[#003366]"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
@@ -37,17 +29,7 @@ export default function MembersAdmin() {
               </Button>
               <h1 className="text-3xl font-bold text-[#003366]">Gestión de Socios</h1>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleLogout}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                Cerrar Sesión
-              </Button>
-            </div>
+
           </div>
         </div>
       </div>

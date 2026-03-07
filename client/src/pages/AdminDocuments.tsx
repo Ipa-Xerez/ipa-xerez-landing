@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Plus, LogOut } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import DocumentUpload from "@/components/DocumentUpload";
 import DocumentsTable from "@/components/DocumentsTable";
 import { trpc } from "@/lib/trpc";
-import { getLoginUrl } from "@/const";
+
 
 export default function AdminDocuments() {
   const [, navigate] = useLocation();
@@ -13,15 +13,7 @@ export default function AdminDocuments() {
 
   const documentsQuery = trpc.documents.getAll.useQuery();
 
-  const handleLogout = async () => {
-    try {
-      await trpc.auth.logout.useMutation().mutateAsync();
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      window.location.href = getLoginUrl();
-    }
-  };
+
 
   const handleUploadSuccess = () => {
     setShowUploadForm(false);
@@ -38,7 +30,7 @@ export default function AdminDocuments() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate("/admin/dashboard")}
+                onClick={() => navigate("/admin")}
                 className="text-gray-600 hover:text-[#003366]"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
@@ -46,17 +38,7 @@ export default function AdminDocuments() {
               </Button>
               <h1 className="text-3xl font-bold text-[#003366]">Gestión de Documentos</h1>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleLogout}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                Cerrar Sesión
-              </Button>
-            </div>
+
           </div>
         </div>
       </div>
