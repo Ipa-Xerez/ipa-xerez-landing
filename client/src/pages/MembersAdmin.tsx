@@ -8,12 +8,6 @@ import { getLoginUrl } from "@/const";
 
 export default function MembersAdmin() {
   const [, navigate] = useLocation();
-  
-  // Get current user from auth.me query
-  const meQuery = trpc.auth.me.useQuery(undefined, {
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
 
   const handleLogout = async () => {
     try {
@@ -24,38 +18,6 @@ export default function MembersAdmin() {
       window.location.href = getLoginUrl();
     }
   };
-
-  // Loading state
-  if (meQuery.isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#003366] to-[#002244] flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
-          <p className="text-lg">Cargando...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If auth.me fails or returns null, show access denied
-  if (!meQuery.data) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md">
-          <h1 className="text-2xl font-bold text-[#003366] mb-4">Acceso Requerido</h1>
-          <p className="text-gray-600 mb-6">Por favor inicia sesión para acceder a esta sección.</p>
-          <Button
-            onClick={() => window.location.href = getLoginUrl()}
-            className="bg-[#003366] hover:bg-[#002244] text-white"
-          >
-            Iniciar Sesión
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  const user = meQuery.data;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -75,10 +37,7 @@ export default function MembersAdmin() {
               </Button>
               <h1 className="text-3xl font-bold text-[#003366]">Gestión de Socios</h1>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-sm text-gray-600">
-                Admin: <span className="font-semibold text-[#003366]">{user.name}</span>
-              </div>
+            <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
