@@ -8,7 +8,11 @@ export default function MembersManagement() {
   const [fullName, setFullName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { data: members, refetch } = trpc.members.getAll.useQuery();
+  const membersQuery = trpc.members.getAll.useQuery();
+  const { data: members, refetch, error: membersError, isLoading } = membersQuery;
+  
+  // Debug logging
+  console.log('[MembersManagement] Query state:', { members, isLoading, error: membersError });
   const createMutation = trpc.members.create.useMutation();
   const deleteMutation = trpc.members.delete.useMutation();
 
@@ -102,7 +106,20 @@ export default function MembersManagement() {
           <h3 className="font-semibold text-[#003366]">Socios Registrados</h3>
         </div>
         
-        {!members || members.length === 0 ? (
+        {isLoading ? (
+          <div className="p-8 text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#003366] mb-4"></div>
+            <p className="text-gray-600">Cargando socios...</p>
+          </div>
+        ) : membersError ? (
+          <div className="p-8 text-center bg-red-50 border border-red-200">
+            <p className="text-red-700 font-semibold mb-2">Error al cargar socios</p>
+            <p className="text-red-600 text-sm mb-4">{membersError.message}</p>
+            <Button onClick={() => refetch()} className="bg-red-600 hover:bg-red-700 text-white">
+              Reintentar
+            </Button>
+          </div>
+        ) : !members || members.length === 0 ? (
           <div className="p-8 text-center">
             <p className="text-gray-600">No hay socios registrados</p>
           </div>

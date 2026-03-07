@@ -888,7 +888,7 @@ export async function getAllIpaMembers(): Promise<IpaMember[]> {
   }
 
   try {
-    const result = await db.select().from(ipaMembers).where(eq(ipaMembers.status, "active")).orderBy(ipaMembers.fullName);
+    const result = await db.select().from(ipaMembers).orderBy(ipaMembers.fullName);
     return result;
   } catch (error) {
     console.error("[Database] Failed to get IPA members:", error);
