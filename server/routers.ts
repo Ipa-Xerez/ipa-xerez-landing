@@ -1,7 +1,7 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { publicProcedure, router, protectedProcedure, adminProcedure } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { notifyOwner } from "./_core/notification";
@@ -322,7 +322,7 @@ export const appRouter = router({
         const { id, ...data } = input;
         return db.updateBlogPost(id, data);
       }),
-     delete: protectedProcedure
+     delete: adminProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteBlogPost(input.id)),
     uploadImage: protectedProcedure
