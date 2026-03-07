@@ -506,7 +506,7 @@ export const appRouter = router({
         }
       }),
 
-    getAll: protectedProcedure.query(async () => {
+    getAll: publicProcedure.query(async () => {
       try {
         return await db.getPrivateDocuments(false);
       } catch (error) {
@@ -573,7 +573,7 @@ export const appRouter = router({
   }),
 
   members: router({
-    getAll: protectedProcedure.query(() => db.getAllIpaMembers()),
+    getAll: publicProcedure.query(() => db.getAllIpaMembers()),
     
     validateMemberNumber: publicProcedure
       .input(z.object({ memberNumber: z.string() }))
