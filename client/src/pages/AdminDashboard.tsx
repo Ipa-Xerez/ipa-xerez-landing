@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { FileText, Users, BookOpen, LogOut, Lock } from "lucide-react";
 import { useState } from "react";
+import { getLoginUrl } from "@/const";
 
 const ADMIN_EMAIL = "ipaagrupacionxerez@gmail.com";
 
@@ -194,10 +195,9 @@ export default function AdminDashboard() {
         {/* Logout Button */}
         <div className="flex justify-center">
           <Button 
-            onClick={() => {
-              setEmailValidated(false);
-              setEmailInput("");
-              setError("");
+            onClick={async () => {
+              await logout();
+              window.location.href = getLoginUrl();
             }}
             className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3"
           >

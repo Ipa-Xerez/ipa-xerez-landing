@@ -3,7 +3,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Plus, Settings, BarChart3 } from "lucide-react";
+import { ArrowLeft, Plus, Settings, BarChart3, LogOut } from "lucide-react";
 import DocumentUpload from "@/components/DocumentUpload";
 import DocumentsTable from "@/components/DocumentsTable";
 import DownloadHistory from "@/components/DownloadHistory";
@@ -12,7 +12,7 @@ import { trpc } from "@/lib/trpc";
 import { getLoginUrl } from "@/const";
 
 export default function AdminDocuments() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const [, navigate] = useLocation();
   const [activeTab, setActiveTab] = useState("documents");
   const [refreshKey, setRefreshKey] = useState(0);
@@ -75,8 +75,22 @@ export default function AdminDocuments() {
               </Button>
               <h1 className="text-3xl font-bold text-[#003366]">Gestión de Documentos</h1>
             </div>
-            <div className="text-sm text-gray-600">
-              Admin: <span className="font-semibold text-[#003366]">{user.name}</span>
+            <div className="flex items-center gap-4">
+              <div className="text-sm text-gray-600">
+                Admin: <span className="font-semibold text-[#003366]">{user.name}</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={async () => {
+                  await logout();
+                  window.location.href = getLoginUrl();
+                }}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Cerrar Sesión
+              </Button>
             </div>
           </div>
         </div>
