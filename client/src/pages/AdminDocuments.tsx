@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus, LogOut } from "lucide-react";
@@ -9,16 +8,36 @@ import { trpc } from "@/lib/trpc";
 import { getLoginUrl } from "@/const";
 
 export default function AdminDocuments() {
-  const { user, loading, logout } = useAuth();
   const [, navigate] = useLocation();
   const [showUploadForm, setShowUploadForm] = useState(false);
 
-  const documentsQuery = trpc.documents.getAll.useQuery(undefined, {
-    enabled: !!user && user.role === "admin",
+  // Get current user from auth.me query
+  const meQuery = trpc.auth.me.useQuery(undefined, {
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 
+  const documentsQuery = trpc.documents.getAll.useQuery(undefined, {
+    enabled: !!meQuery.data,
+  });
+
+  const handleLogout = async () => {
+    try {
+      await trpc.auth.logout.useMutation().mutateAsync();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      window.location.href = getLoginUrl();
+    }
+  };
+
+  const handleUploadSuccess = () => {
+    setShowUploadForm(false);
+    documentsQuery.refetch();
+  };
+
   // Loading state
-  if (loading) {
+  if (meQuery.isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#003366] to-[#002244] flex items-center justify-center">
         <div className="text-white text-center">
@@ -29,28 +48,25 @@ export default function AdminDocuments() {
     );
   }
 
-  // Not authenticated
-  if (!user) {
+  // If auth.me fails or returns null, show access denied
+  if (!meQuery.data) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md">
-          <h1 className="text-2xl font-bold text-[#003366] mb-4">Acceso Denegado</h1>
-          <p className="text-gray-600 mb-6">No tienes permisos para acceder a esta sección.</p>
+          <h1 className="text-2xl font-bold text-[#003366] mb-4">Acceso Requerido</h1>
+          <p className="text-gray-600 mb-6">Por favor inicia sesión para acceder a esta sección.</p>
           <Button
-            onClick={() => navigate("/")}
+            onClick={() => window.location.href = getLoginUrl()}
             className="bg-[#003366] hover:bg-[#002244] text-white"
           >
-            Volver al Inicio
+            Iniciar Sesión
           </Button>
         </div>
       </div>
     );
   }
 
-  const handleUploadSuccess = () => {
-    setShowUploadForm(false);
-    documentsQuery.refetch();
-  };
+  const user = meQuery.data;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -77,10 +93,7 @@ export default function AdminDocuments() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={async () => {
-                  await logout();
-                  window.location.href = getLoginUrl();
-                }}
+                onClick={handleLogout}
                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
               >
                 <LogOut className="w-4 h-4 mr-2" />
