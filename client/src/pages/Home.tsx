@@ -118,7 +118,7 @@ export default function Home() {
       {/* Navbar mejorada */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => navigate('/admin')}>
             <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA Xerez" className="h-12 w-auto" />
             <span className="font-heading text-[#003366] text-xl hidden sm:inline font-bold">IPA Xerez</span>
           </div>
