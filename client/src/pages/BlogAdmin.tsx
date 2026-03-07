@@ -188,7 +188,8 @@ export default function BlogAdmin() {
     try {
       await deleteMutation.mutateAsync({ id });
       toast.success("Artículo eliminado correctamente");
-      refetchPosts();
+      // Redirigir a /admin/documents después de eliminar
+      setTimeout(() => navigate('/admin/documents'), 500);
     } catch (error) {
       toast.error("Error al eliminar el artículo");
       console.error(error);
