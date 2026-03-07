@@ -21,22 +21,6 @@ export default function AdminDocuments() {
     enabled: !!user && user.role === "admin",
   });
 
-  // Redirigir si no es admin
-  useEffect(() => {
-  if (loading) return;
-
-  // 1) Si no hay sesión, ir al login (portal OAuth) con returnPath
-  if (!user) {
-    window.location.href = getLoginUrl("/admin/documents");
-    return;
-  }
-
-  // 2) Si hay sesión pero no es admin, volver a Home
-  if (user.role !== "admin") {
-    navigate("/");
-  }
-}, [user, loading, navigate]);
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#003366] to-[#002244] flex items-center justify-center">
