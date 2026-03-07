@@ -25,9 +25,9 @@ export default function AdminDocuments() {
   useEffect(() => {
   if (loading) return;
 
-  // 1) Si no hay sesión, ir al login (portal OAuth)
+  // 1) Si no hay sesión, ir al login (portal OAuth) con returnPath
   if (!user) {
-    window.location.href = getLoginUrl();
+    window.location.href = getLoginUrl("/admin/documents");
     return;
   }
 

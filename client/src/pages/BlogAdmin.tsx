@@ -3,9 +3,8 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
-import { Upload, Save, X, Plus, Edit2, Trash2, Eye, Loader2, Share2 } from "lucide-react";
+import { Upload, Save, X, Plus, Edit2, Trash2, Eye, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function BlogAdmin() {
@@ -128,7 +127,7 @@ export default function BlogAdmin() {
         publishedAt: new Date(),
       };
 
-      if (editingId) {
+      if (editingId !== null) {
         await updateMutation.mutateAsync({
           id: editingId,
           ...submitData,
@@ -188,8 +187,7 @@ export default function BlogAdmin() {
     try {
       await deleteMutation.mutateAsync({ id });
       toast.success("Artículo eliminado correctamente");
-      // Redirigir a /admin/documents después de eliminar
-      setTimeout(() => navigate('/admin/documents'), 500);
+      refetchPosts();
     } catch (error) {
       toast.error("Error al eliminar el artículo");
       console.error(error);
