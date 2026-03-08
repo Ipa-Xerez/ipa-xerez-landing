@@ -717,15 +717,15 @@ export default function Home() {
       {/* Acceso Administrador */}
       <section className="py-12 bg-gradient-to-r from-[#003366] to-[#001a33]">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Administracion</h2>
-          <p className="text-gray-300 mb-6">Eres administrador de IPA Xerez?</p>
-          <Button 
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Administración</h2>
+          <p className="text-gray-300 mb-6">¿Eres administrador de IPA Xerez?</p>
+          <button 
             onClick={() => navigate('/admin/dashboard')} 
-            className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] font-bold px-8 py-3 flex items-center gap-2 mx-auto"
+            className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] font-bold px-8 py-3 flex items-center gap-3 mx-auto rounded-lg transition-all duration-300 hover:scale-105 transform cursor-pointer shadow-lg hover:shadow-xl"
           >
-            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA" className="h-6 w-auto" />
-            Acceder al Panel de Administracion
-          </Button>
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA" className="h-8 w-auto" />
+            <span>Acceder al Panel de Administración</span>
+          </button>
         </div>
       </section>
 
