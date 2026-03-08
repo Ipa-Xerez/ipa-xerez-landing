@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import InstallGuide from "./pages/InstallGuide";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
 import BlogAdmin from "./pages/BlogAdmin";
 import Calendar from "./pages/Calendar";
 import EventDetail from "./pages/EventDetail";
@@ -45,6 +46,7 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/gallery"} component={Gallery} />
       <Route path={"/blog"} component={Blog} />
+      <Route path={"/blog/:slug"} component={BlogDetail} />
       <Route path={"/calendar"} component={Calendar} />
       <Route path={"/evento/:id"} component={EventDetail} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
