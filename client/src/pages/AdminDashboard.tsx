@@ -17,6 +17,11 @@ export default function AdminDashboard() {
     }
   }, [user, loading, navigate]);
 
+  // Si no es admin y no está cargando, redirigir (useEffect se encarga)
+  if (!loading && (!user || user.role !== "admin")) {
+    return null;
+  }
+
   // Mostrar pantalla de carga mientras se verifica autenticación
   if (loading) {
     return (
@@ -27,11 +32,6 @@ export default function AdminDashboard() {
         </div>
       </div>
     );
-  }
-
-  // Si no es admin, no renderizar nada (useEffect redirige)
-  if (!user || user.role !== "admin") {
-    return null;
   }
 
   const adminOptions = [
