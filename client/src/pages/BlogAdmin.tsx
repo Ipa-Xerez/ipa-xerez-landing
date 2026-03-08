@@ -40,17 +40,32 @@ export default function BlogAdmin() {
   // Handle image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    // Validar tamaño de archivo (máx 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("La imagen no puede exceder 5MB");
+      return;
     }
+
+    setImageFile(file);
+    
+    // Generar preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        setImagePreview(reader.result as string);
+      } catch (err) {
+        console.error("Error setting preview:", err);
+      }
+    };
+    reader.onerror = () => {
+      toast.error("Error al leer la imagen");
+    };
+    reader.readAsDataURL(file);
   };
 
-  // Upload image to S3 (simplified - optional)
+  // Upload image to S3
   const uploadImage = async () => {
     if (!imageFile) {
       toast.info("No hay imagen seleccionada");
@@ -58,41 +73,65 @@ export default function BlogAdmin() {
     }
 
     setIsUploading(true);
+    
     try {
+      // Leer el archivo una sola vez
       const reader = new FileReader();
+      
       reader.onload = async () => {
         try {
           const base64Data = (reader.result as string).split(',')[1];
+          
           const result = await uploadImageMutation.mutateAsync({
             fileName: imageFile.name,
             fileData: base64Data,
             mimeType: imageFile.type,
           });
           
+          // Actualizar form con URL de S3
           setFormData((prev) => ({
             ...prev,
             image: result.url,
           }));
+          
+          // Limpiar estado de carga
           setImageFile(null);
           setImagePreview("");
+          setIsUploading(false);
+          
           toast.success("Imagen cargada correctamente");
         } catch (error) {
-          console.error("Error al cargar imagen:", error);
+          console.error("Error uploading to S3:", error);
+          
           // Fallback: usar data URL si S3 falla
-          setFormData((prev) => ({
-            ...prev,
-            image: reader.result as string,
-          }));
-          toast.warning("Imagen guardada localmente (sin S3)");
-        } finally {
-          setIsUploading(false);
+          try {
+            setFormData((prev) => ({
+              ...prev,
+              image: reader.result as string,
+            }));
+            setImageFile(null);
+            setImagePreview("");
+            setIsUploading(false);
+            
+            toast.warning("Imagen guardada localmente (sin S3)");
+          } catch (fallbackErr) {
+            console.error("Fallback error:", fallbackErr);
+            setIsUploading(false);
+            toast.error("Error al procesar la imagen");
+          }
         }
       };
+      
+      reader.onerror = () => {
+        setIsUploading(false);
+        toast.error("Error al leer la imagen");
+      };
+      
       reader.readAsDataURL(imageFile);
     } catch (error) {
-      toast.error("Error al procesar la imagen");
-      console.error(error);
+      console.error("Error in uploadImage:", error);
       setIsUploading(false);
+      toast.error("Error al procesar la imagen");
     }
   };
 
