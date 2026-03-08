@@ -7,6 +7,29 @@ import { useLocation } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 
+// Safe parse tags: handles both JSON arrays and comma-separated strings
+function safeParseTags(tagsValue: any): string[] {
+  if (!tagsValue) return [];
+  
+  try {
+    // If it's a string that looks like JSON array
+    if (typeof tagsValue === 'string' && tagsValue.trim().startsWith('[')) {
+      return JSON.parse(tagsValue);
+    }
+    // If it's a string with comma-separated values
+    if (typeof tagsValue === 'string') {
+      return tagsValue.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+    }
+    // If it's already an array
+    if (Array.isArray(tagsValue)) {
+      return tagsValue;
+    }
+  } catch (error) {
+    console.warn('[Blog] Error parsing tags:', error, 'value:', tagsValue);
+  }
+  return [];
+}
+
 export default function Blog() {
   const { isAuthenticated } = useAuth();
   const [, navigate] = useLocation();
@@ -258,11 +281,11 @@ export default function Blog() {
                         <span>{post.author}</span>
                       </div>
                     )}
-                    {post.tags && JSON.parse(post.tags || "[]").length > 0 && (
+                    {post.tags && safeParseTags(post.tags).length > 0 && (
                       <div className="flex items-start gap-2">
                         <Tag className="h-4 w-4 mt-0.5" />
                         <div className="flex flex-wrap gap-1">
-                          {JSON.parse(post.tags || "[]").map(
+                          {safeParseTags(post.tags).map(
                             (tag: string, i: number) => (
                               <span
                                 key={i}
@@ -381,10 +404,10 @@ export default function Blog() {
               </div>
 
               {/* Tags */}
-              {selectedPost.tags && JSON.parse(selectedPost.tags || "[]").length > 0 && (
+              {selectedPost.tags && safeParseTags(selectedPost.tags).length > 0 && (
                 <div className="mt-8 pt-8 border-t border-gray-200">
                   <div className="flex flex-wrap gap-2">
-                    {JSON.parse(selectedPost.tags || "[]").map(
+                    {safeParseTags(selectedPost.tags).map(
                       (tag: string, i: number) => (
                         <span
                           key={i}

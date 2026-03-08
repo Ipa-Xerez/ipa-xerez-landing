@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE blog_posts SET tags = '[\"Washington\",\"Police Week\",\"Viajes\",\"Eventos Internacionales\"]' WHERE slug = 'washington-dc-police-week';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute UPDATE blog_posts SET tags = '[\"Washington\",\"Police Week\",\"Viajes\",\"Eventos Internacionales\"]' WHERE slug = 'washington-dc-police-week';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 368
+}
