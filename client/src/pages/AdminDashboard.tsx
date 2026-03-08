@@ -1,5 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FileText, Users, BookOpen, LogOut } from "lucide-react";
@@ -9,7 +10,14 @@ export default function AdminDashboard() {
   const { user, loading, logout } = useAuth();
   const [, navigate] = useLocation();
 
-  // Protección: Redirigir si no es admin
+  // Usar useEffect para navegar, no en render
+  useEffect(() => {
+    if (!loading && (!user || user.role !== "admin")) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
+
+  // Mostrar pantalla de carga mientras se verifica autenticación
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
@@ -21,8 +29,8 @@ export default function AdminDashboard() {
     );
   }
 
+  // Si no es admin, no renderizar nada (useEffect redirige)
   if (!user || user.role !== "admin") {
-    navigate("/");
     return null;
   }
 

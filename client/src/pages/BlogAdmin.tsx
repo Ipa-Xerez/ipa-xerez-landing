@@ -12,7 +12,14 @@ export default function BlogAdmin() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
 
-  // Protección: Redirigir si no es admin
+  // Usar useEffect para navegar, no en render
+  useEffect(() => {
+    if (!loading && (!user || user.role !== "admin")) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
+
+  // Mostrar pantalla de carga mientras se verifica autenticación
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
@@ -24,10 +31,11 @@ export default function BlogAdmin() {
     );
   }
 
+  // Si no es admin, no renderizar nada (useEffect redirige)
   if (!user || user.role !== "admin") {
-    navigate("/");
     return null;
   }
+
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 

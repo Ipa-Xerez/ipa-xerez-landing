@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
@@ -12,7 +12,14 @@ export default function AdminDocuments() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
 
-  // Protección: Redirigir si no es admin
+  // Usar useEffect para navegar, no en render
+  useEffect(() => {
+    if (!loading && (!user || user.role !== "admin")) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
+
+  // Mostrar pantalla de carga mientras se verifica autenticación
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
@@ -24,8 +31,8 @@ export default function AdminDocuments() {
     );
   }
 
+  // Si no es admin, no renderizar nada (useEffect redirige)
   if (!user || user.role !== "admin") {
-    navigate("/");
     return null;
   }
 
