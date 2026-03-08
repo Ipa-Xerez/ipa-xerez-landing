@@ -1,0 +1,64 @@
+{
+  "query": "SHOW TABLES;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SHOW TABLES;",
+  "rows": [
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "__drizzle_migrations"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "administrators"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "blog_posts"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "contacts"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "document_downloads"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "event_registrations"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "events"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "ipa_members"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "member_access_logs"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "newsletter_campaigns"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "newsletter_clicks"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "newsletter_opens"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "newsletter_schedules"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "newsletter_subscribers"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "newsletter_templates"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "private_documents"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "unsubscribe_tokens"
+    },
+    {
+      "Tables_in_TPXNrRKBQNE8qaxNyKenmM": "users"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_TPXNrRKBQNE8qaxNyKenmM\n__drizzle_migrations\nadministrators\nblog_posts\ncontacts\ndocument_downloads\nevent_registrations\nevents\nipa_members\nmember_access_logs\nnewsletter_campaigns\nnewsletter_clicks\nnewsletter_opens\nnewsletter_schedules\nnewsletter_subscribers\nnewsletter_templates\nprivate_documents\nunsubscribe_tokens\nusers\n",
+  "stderr": "",
+  "execution_time_ms": 351
+}
