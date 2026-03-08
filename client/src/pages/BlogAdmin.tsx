@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,25 @@ import { Upload, Save, X, Plus, Edit2, Trash2, Eye, Loader2 } from "lucide-react
 import { toast } from "sonner";
 
 export default function BlogAdmin() {
+  const { user, loading } = useAuth();
   const [, navigate] = useLocation();
+
+  // Protección: Redirigir si no es admin
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#003366] mb-4"></div>
+          <p className="text-lg text-gray-600">Cargando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || user.role !== "admin") {
+    navigate("/");
+    return null;
+  }
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 

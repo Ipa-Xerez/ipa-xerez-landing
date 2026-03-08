@@ -2,13 +2,33 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
+import { useAuth } from "@/_core/hooks/useAuth";
 import DocumentUpload from "@/components/DocumentUpload";
 import DocumentsTable from "@/components/DocumentsTable";
 import { trpc } from "@/lib/trpc";
 
 
 export default function AdminDocuments() {
+  const { user, loading } = useAuth();
   const [, navigate] = useLocation();
+
+  // Protección: Redirigir si no es admin
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#003366] mb-4"></div>
+          <p className="text-lg text-gray-600">Cargando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || user.role !== "admin") {
+    navigate("/");
+    return null;
+  }
+
   const [showUploadForm, setShowUploadForm] = useState(false);
 
   const documentsQuery = trpc.documents.getAll.useQuery();
