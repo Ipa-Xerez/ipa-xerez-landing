@@ -1,0 +1,200 @@
+{
+  "query": "SELECT id, title, createdAt FROM private_documents WHERE DATE(createdAt) = CURDATE();",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, createdAt FROM private_documents WHERE DATE(createdAt) = CURDATE();",
+  "rows": [
+    {
+      "id": "180002",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 16:59:40"
+    },
+    {
+      "id": "180003",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 16:59:40"
+    },
+    {
+      "id": "180004",
+      "title": "Updated Title",
+      "createdAt": "2026-03-08 16:59:40"
+    },
+    {
+      "id": "180005",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 16:59:41"
+    },
+    {
+      "id": "180006",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 16:59:41"
+    },
+    {
+      "id": "180008",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 16:59:41"
+    },
+    {
+      "id": "180010",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:00:20"
+    },
+    {
+      "id": "180011",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:00:21"
+    },
+    {
+      "id": "180012",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:00:21"
+    },
+    {
+      "id": "180013",
+      "title": "Updated Title",
+      "createdAt": "2026-03-08 17:00:21"
+    },
+    {
+      "id": "180014",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:00:22"
+    },
+    {
+      "id": "180015",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:00:22"
+    },
+    {
+      "id": "180017",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:00:22"
+    },
+    {
+      "id": "180019",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:05:53"
+    },
+    {
+      "id": "180020",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:05:53"
+    },
+    {
+      "id": "180021",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:05:54"
+    },
+    {
+      "id": "180022",
+      "title": "Updated Title",
+      "createdAt": "2026-03-08 17:05:54"
+    },
+    {
+      "id": "180023",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:05:54"
+    },
+    {
+      "id": "180024",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:05:54"
+    },
+    {
+      "id": "180026",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:05:55"
+    },
+    {
+      "id": "180028",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:07"
+    },
+    {
+      "id": "180029",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:07"
+    },
+    {
+      "id": "180030",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:07"
+    },
+    {
+      "id": "180031",
+      "title": "Updated Title",
+      "createdAt": "2026-03-08 17:07:08"
+    },
+    {
+      "id": "180032",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:08"
+    },
+    {
+      "id": "180033",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:08"
+    },
+    {
+      "id": "180035",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:09"
+    },
+    {
+      "id": "180037",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:17"
+    },
+    {
+      "id": "180038",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:17"
+    },
+    {
+      "id": "180039",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:17"
+    },
+    {
+      "id": "180040",
+      "title": "Updated Title",
+      "createdAt": "2026-03-08 17:07:18"
+    },
+    {
+      "id": "180041",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 17:07:18"
+    },
+    {
+      "id": "210002",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 19:14:40"
+    },
+    {
+      "id": "210003",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 19:14:41"
+    },
+    {
+      "id": "210004",
+      "title": "Updated Title",
+      "createdAt": "2026-03-08 19:14:41"
+    },
+    {
+      "id": "210005",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 19:14:41"
+    },
+    {
+      "id": "210006",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 19:14:42"
+    },
+    {
+      "id": "210008",
+      "title": "Test Estatutos",
+      "createdAt": "2026-03-08 19:14:42"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tcreatedAt\n180002\tTest Estatutos\t2026-03-08 16:59:40\n180003\tTest Estatutos\t2026-03-08 16:59:40\n180004\tUpdated Title\t2026-03-08 16:59:40\n180005\tTest Estatutos\t2026-03-08 16:59:41\n180006\tTest Estatutos\t2026-03-08 16:59:41\n180008\tTest Estatutos\t2026-03-08 16:59:41\n180010\tTest Estatutos\t2026-03-08 17:00:20\n180011\tTest Estatutos\t2026-03-08 17:00:21\n180012\tTest Estatutos\t2026-03-08 17:00:21\n180013\tUpdated Title\t2026-03-08 17:00:21\n180014\tTest Estatutos\t2026-03-08 17:00:22\n180015\tTest Estatutos\t2026-03-08 17:00:22\n180017\tTest Estatutos\t2026-03-08 17:00:22\n180019\tTest Estatutos\t2026-03-08 17:05:53\n180020\tTest Estatutos\t2026-03-08 17:05:53\n180021\tTest Estatutos\t2026-03-08 17:05:54\n180022\tUpdated Title\t2026-03-08 17:05:54\n180023\tTest Estatutos\t2026-03-08 17:05:54\n180024\tTest Estatutos\t2026-03-08 17:05:54\n180026\tTest Estatutos\t2026-03-08 17:05:55\n180028\tTest Estatutos\t2026-03-08 17:07:07\n180029\tTest Estatutos\t2026-03-08 17:07:07\n180030\tTest Estatutos\t2026-03-08 17:07:07\n180031\tUpdated Title\t2026-03-08 17:07:08\n180032\tTest Estatutos\t2026-03-08 17:07:08\n180033\tTest Estatutos\t2026-03-08 17:07:08\n180035\tTest Estatutos\t2026-03-08 17:07:09\n180037\tTest Estatutos\t2026-03-08 17:07:17\n180038\tTest Estatutos\t2026-03-08 17:07:17\n180039\tTest Estatutos\t2026-03-08 17:07:17\n180040\tUpdated Title\t2026-03-08 17:07:18\n180041\tTest Estatutos\t2026-03-08 17:07:18\n210002\tTest Estatutos\t2026-03-08 19:14:40\n210003\tTest Estatutos\t2026-03-08 19:14:41\n210004\tUpdated Title\t2026-03-08 19:14:41\n210005\tTest Estatutos\t2026-03-08 19:14:41\n210006\tTest Estatutos\t2026-03-08 19:14:42\n210008\tTest Estatutos\t2026-03-08 19:14:42\n",
+  "stderr": "",
+  "execution_time_ms": 372
+}

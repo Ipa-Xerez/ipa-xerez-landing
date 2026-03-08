@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, title, slug, image, createdAt FROM blog_posts WHERE DATE(createdAt) = CURDATE();",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, slug, image, createdAt FROM blog_posts WHERE DATE(createdAt) = CURDATE();",
+  "rows": [
+    {
+      "id": "240001",
+      "title": "Washington D. C. y la Police Week: un viaje entre memoria, historia y símbolos",
+      "slug": "washington-dc-police-week",
+      "image": "NULL",
+      "createdAt": "2026-03-08 19:05:32"
+    },
+    {
+      "id": "240002",
+      "title": "Test Post for Delete",
+      "slug": "test-post-delete-1772997282612",
+      "image": "NULL",
+      "createdAt": "2026-03-08 19:14:42"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tslug\timage\tcreatedAt\n240001\tWashington D. C. y la Police Week: un viaje entre memoria, historia y símbolos\twashington-dc-police-week\tNULL\t2026-03-08 19:05:32\n240002\tTest Post for Delete\ttest-post-delete-1772997282612\tNULL\t2026-03-08 19:14:42\n",
+  "stderr": "",
+  "execution_time_ms": 391
+}
