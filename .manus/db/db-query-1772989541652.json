@@ -1,0 +1,46 @@
+{
+  "query": "SELECT id, title, slug, isPublished FROM blog_posts LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, slug, isPublished FROM blog_posts LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "title": "Police Week Washington 2024",
+      "slug": "police-week-washington-2024",
+      "isPublished": "1"
+    },
+    {
+      "id": "30001",
+      "title": "Puy du Fou España: una experiencia única que todo socio de IPA debería vivir",
+      "slug": "puy-du-fou-españa:-una-experiencia-única-que-todo-socio-de-ipa-debería-vivir",
+      "isPublished": "1"
+    },
+    {
+      "id": "60001",
+      "title": "Un Rocío Sangriento: novela policial ambientada en la Comisaría de Jerez",
+      "slug": "un-rocío-sangriento:-novela-policial-ambientada-en-la-comisaría-de-jerez",
+      "isPublished": "1"
+    },
+    {
+      "id": "90001",
+      "title": "📱 Grabar a un policía no es delito… pero no todo vale: intimidad, respeto y responsabilidad en redes",
+      "slug": "📱-grabar-a-un-policía-no-es-delito…-pero-no-todo-vale:-intimidad,-respeto-y-responsabilidad-en-redes",
+      "isPublished": "1"
+    },
+    {
+      "id": "210001",
+      "title": "Test Post for Delete",
+      "slug": "test-post-delete-1772989182023",
+      "isPublished": "1"
+    },
+    {
+      "id": "210002",
+      "title": "Test Post for Delete",
+      "slug": "test-post-delete-1772989222713",
+      "isPublished": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tslug\tisPublished\n1\tPolice Week Washington 2024\tpolice-week-washington-2024\t1\n30001\tPuy du Fou España: una experiencia única que todo socio de IPA debería vivir\tpuy-du-fou-españa:-una-experiencia-única-que-todo-socio-de-ipa-debería-vivir\t1\n60001\tUn Rocío Sangriento: novela policial ambientada en la Comisaría de Jerez\tun-rocío-sangriento:-novela-policial-ambientada-en-la-comisaría-de-jerez\t1\n90001\t📱 Grabar a un policía no es delito… pero no todo vale: intimidad, respeto y responsabilidad en redes\t📱-grabar-a-un-policía-no-es-delito…-pero-no-todo-vale:-intimidad,-respeto-y-responsabilidad-en-redes\t1\n210001\tTest Post for Delete\ttest-post-delete-1772989182023\t1\n210002\tTest Post for Delete\ttest-post-delete-1772989222713\t1\n",
+  "stderr": "",
+  "execution_time_ms": 645
+}

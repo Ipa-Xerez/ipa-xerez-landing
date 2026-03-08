@@ -34,7 +34,15 @@ export default function BlogAdmin() {
   const { data: posts = [], isLoading: postsLoading, refetch: refetchPosts } = trpc.blog.getAll.useQuery();
   const createMutation = trpc.blog.create.useMutation();
   const updateMutation = trpc.blog.update.useMutation();
-  const deleteMutation = trpc.blog.delete.useMutation();
+  const deleteMutation = trpc.blog.delete.useMutation({
+    onSuccess: () => {
+      // Refetch posts after successful deletion
+      refetchPosts();
+    },
+    onError: (error) => {
+      console.error("[BlogAdmin] Delete mutation error:", error);
+    },
+  });
   const uploadImageMutation = trpc.blog.uploadImage.useMutation();
 
   // Handle image selection
@@ -224,12 +232,25 @@ export default function BlogAdmin() {
     if (!confirm("¿Estás seguro de que quieres eliminar este artículo?")) return;
 
     try {
+      console.log("[BlogAdmin] Deleting post with id:", id);
       await deleteMutation.mutateAsync({ id });
+      console.log("[BlogAdmin] Post deleted successfully");
       toast.success("Artículo eliminado correctamente");
-      refetchPosts();
-    } catch (error) {
-      toast.error("Error al eliminar el artículo");
-      console.error(error);
+    } catch (error: any) {
+      console.error("[BlogAdmin] Error deleting post:", error);
+      
+      // Extract meaningful error message
+      let errorMessage = "Error al eliminar el artículo";
+      
+      if (error?.message) {
+        errorMessage = error.message;
+      } else if (error?.data?.code) {
+        errorMessage = `Error: ${error.data.code}`;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+      
+      toast.error(errorMessage);
     }
   };
 
