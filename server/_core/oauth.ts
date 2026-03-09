@@ -44,12 +44,15 @@ export function registerOAuthRoutes(app: Express) {
       const cookieOptions = getSessionCookieOptions(req);
       res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
 
-      // Decodificar la ruta de retorno del state
+      // Decodificar el state para extraer redirectUri y returnPath
       let redirectPath = "/";
       try {
         const decodedState = Buffer.from(state, 'base64').toString('utf-8');
-        // El state ahora contiene solo la ruta de retorno
-        redirectPath = decodedState || "/";
+        // Format: redirectUri|returnPath
+        const parts = decodedState.split('|');
+        if (parts.length === 2) {
+          redirectPath = parts[1] || "/";
+        }
       } catch (e) {
         console.error("[OAuth] Error decoding state:", e);
         // Si no se puede decodificar, usar el default
