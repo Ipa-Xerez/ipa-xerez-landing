@@ -54,13 +54,24 @@ export function registerOAuthRoutes(app: Express) {
       console.log("[OAuth] Final redirect URL will be:", `${origin}${returnPath}`);
 
       // Intercambiar código por token usando el redirectUri correcto
-      const tokenResponse = await sdk.exchangeCodeForToken(code, redirectUri);
-      const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
+      let userInfo: any;
+      try {
+        console.log("[OAuth] Calling exchangeCodeForToken with:", { redirectUri, codeLength: code.length });
+        const tokenResponse = await sdk.exchangeCodeForToken(code, redirectUri);
+        console.log("[OAuth] Token exchange successful");
+        
+        console.log("[OAuth] Getting user info...");
+        userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
+        console.log("[OAuth] User info retrieved:", { openId: userInfo.openId, email: userInfo.email });
 
-      if (!userInfo.openId) {
-        console.error("[OAuth] No openId in user info");
-        res.status(400).json({ error: "openId missing from user info" });
-        return;
+        if (!userInfo.openId) {
+          console.error("[OAuth] No openId in user info");
+          res.status(400).json({ error: "openId missing from user info" });
+          return;
+        }
+      } catch (tokenError) {
+        console.error("[OAuth] Token exchange or user info failed:", tokenError);
+        throw tokenError;
       }
 
       console.log("[OAuth] User info:", { openId: userInfo.openId, email: userInfo.email });
