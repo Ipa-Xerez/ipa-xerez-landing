@@ -264,6 +264,39 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Dashboard Público - Estadísticas */}
+      <section className="py-12 md:py-16 bg-gradient-to-b from-[#F5F5F5] to-white">
+        <div className="container mx-auto px-4">
+          <h2 className="font-display text-3xl md:text-4xl text-[#003366] text-center mb-12 font-bold">IPA Xerez en Números</h2>
+          <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            <Card className="border-0 shadow-lg text-center p-8 bg-white hover:shadow-xl transition-shadow">
+              <Users className="w-12 h-12 text-[#D4AF37] mx-auto mb-4" />
+              <p className="text-4xl font-bold text-[#003366] mb-2">140+</p>
+              <p className="text-gray-600 font-semibold">Países Miembros</p>
+              <p className="text-sm text-gray-500 mt-2">Red global de IPA</p>
+            </Card>
+            <Card className="border-0 shadow-lg text-center p-8 bg-white hover:shadow-xl transition-shadow">
+              <Globe className="w-12 h-12 text-[#D4AF37] mx-auto mb-4" />
+              <p className="text-4xl font-bold text-[#003366] mb-2">370K+</p>
+              <p className="text-gray-600 font-semibold">Miembros Activos</p>
+              <p className="text-sm text-gray-500 mt-2">En todo el mundo</p>
+            </Card>
+            <Card className="border-0 shadow-lg text-center p-8 bg-white hover:shadow-xl transition-shadow">
+              <Calendar className="w-12 h-12 text-[#D4AF37] mx-auto mb-4" />
+              <p className="text-4xl font-bold text-[#003366] mb-2">50+</p>
+              <p className="text-gray-600 font-semibold">Eventos Anuales</p>
+              <p className="text-sm text-gray-500 mt-2">En Xerez y región</p>
+            </Card>
+            <Card className="border-0 shadow-lg text-center p-8 bg-white hover:shadow-xl transition-shadow">
+              <Heart className="w-12 h-12 text-[#D4AF37] mx-auto mb-4" />
+              <p className="text-4xl font-bold text-[#003366] mb-2">1950</p>
+              <p className="text-gray-600 font-semibold">Año de Fundación</p>
+              <p className="text-sm text-gray-500 mt-2">Tradición de 74 años</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Sección Mantente Informado */}
       <section className="py-12 md:py-16 bg-gradient-to-r from-[#D4AF37] to-[#FFD700]">
         <div className="container mx-auto px-4">

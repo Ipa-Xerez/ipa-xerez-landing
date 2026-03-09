@@ -19,6 +19,8 @@ import EventDetail from "./pages/EventDetail";
 import Unsubscribe from "./pages/Unsubscribe";
 import MembersArea from "./pages/MembersArea";
 import Inscription from "./pages/Inscription";
+import Login from "./pages/Login";
+import AdminPanel from "./components/AdminPanel";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -26,6 +28,7 @@ function Router() {
     <Switch>
       
       {/* Public routes */}
+      <Route path={"/login"} component={Login} />
       <Route path={"/"} component={Home} />
       <Route path={"/gallery"} component={Gallery} />
       <Route path={"/blog"} component={Blog} />
@@ -62,6 +65,7 @@ function App() {
           <PWAUpdateNotification />
           <PWAAndroidInstall />
           <PWAInstallPrompt />
+          <AdminPanel />
           <Router />
         </TooltipProvider>
       </ThemeProvider>
