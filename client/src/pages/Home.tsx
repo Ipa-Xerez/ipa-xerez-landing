@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, Calendar, Timer, Users, Globe, Heart, Award, Zap, ChevronDown, ArrowRight, Menu, X, LogIn } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 
 import EventsCarousel from "@/components/EventsCarousel";
@@ -23,7 +23,9 @@ const INSCRIPTION_FORM = "/INSCRIPCION.pdf";
 
 export default function Home() {
   const [, navigate] = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
+  const [showAdminMenu, setShowAdminMenu] = useState(false);
+  const adminMenuRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success">("idle");
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
@@ -39,6 +41,17 @@ export default function Home() {
       setLoadingEvent(false);
     }
   }, [nextEventQuery.data]);
+
+  // Cerrar el menu cuando se hace clic fuera
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (adminMenuRef.current && !adminMenuRef.current.contains(event.target as Node)) {
+        setShowAdminMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const faqs = [
     { q: "¿Cómo me uno a IPA Xerez?", a: "Puedes unirte completando el formulario de contacto o enviándonos un mensaje por WhatsApp. Te guiaremos en todo el proceso de membresía." },
@@ -119,9 +132,51 @@ export default function Home() {
       {/* Navbar mejorada */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA Xerez" className="h-12 w-auto" />
-            <span className="font-heading text-[#003366] text-xl hidden sm:inline font-bold">IPA Xerez</span>
+          <div className="flex items-center gap-3 relative" ref={adminMenuRef}>
+            <button
+              onClick={() => setShowAdminMenu(!showAdminMenu)}
+              className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer group"
+              title="Admin Access"
+            >
+              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA Xerez" className="h-12 w-auto group-hover:scale-105 transition-transform" />
+              <span className="font-heading text-[#003366] text-xl hidden sm:inline font-bold">IPA Xerez</span>
+            </button>
+            
+            {/* Admin Menu Dropdown */}
+            {showAdminMenu && (
+              <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-48">
+                {isAuthenticated && user ? (
+                  <>
+                    <div className="px-4 py-3 border-b border-gray-200">
+                      <p className="text-sm font-semibold text-[#003366]">Sesión Activa</p>
+                      <p className="text-xs text-gray-600 truncate">{user.email}</p>
+                      {user.role === 'admin' && (
+                        <p className="text-xs text-green-600 font-semibold mt-1">✓ Administrador</p>
+                      )}
+                    </div>
+                    <button
+                      onClick={async () => {
+                        await logout();
+                        setShowAdminMenu(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      Cerrar Sesión
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => {
+                      window.location.href = getLoginUrl();
+                      setShowAdminMenu(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-[#003366] hover:bg-[#F5F5F5] transition-colors font-semibold"
+                  >
+                    Iniciar Sesión
+                  </button>
+                )}
+              </div>
+            )}
           </div>
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-2 md:gap-4 items-center flex-wrap justify-end">
