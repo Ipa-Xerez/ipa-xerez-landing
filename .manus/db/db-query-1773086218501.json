@@ -1,0 +1,21 @@
+{
+  "query": "SELECT * FROM administrators;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT * FROM administrators;",
+  "rows": [
+    {
+      "id": "30001",
+      "user_id": "NULL",
+      "email": "ipaagrupacionxerez@gmail.com",
+      "name": "IPA Xerez Admin",
+      "permissions": "blog,newsletter,events",
+      "added_by": "NULL",
+      "added_at": "2026-02-17 19:07:04",
+      "createdAt": "2026-02-17 19:07:04",
+      "updatedAt": "2026-03-03 09:31:03"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuser_id\temail\tname\tpermissions\tadded_by\tadded_at\tcreatedAt\tupdatedAt\n30001\tNULL\tipaagrupacionxerez@gmail.com\tIPA Xerez Admin\tblog,newsletter,events\tNULL\t2026-02-17 19:07:04\t2026-02-17 19:07:04\t2026-03-03 09:31:03\n",
+  "stderr": "",
+  "execution_time_ms": 1025
+}
