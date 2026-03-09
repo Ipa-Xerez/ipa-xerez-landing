@@ -131,7 +131,7 @@ export default function Home() {
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/blog')}>Blog</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/calendar')}>Eventos</Button>
             <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}>FAQ</Button>
-
+            <Button className="bg-[#003366] text-white hover:bg-[#002244] text-sm md:text-base font-semibold" onClick={() => navigate('/login')}>Login</Button>
 
             <PWAInstallButton />
 
