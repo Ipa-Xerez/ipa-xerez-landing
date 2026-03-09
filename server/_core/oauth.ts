@@ -44,18 +44,18 @@ export function registerOAuthRoutes(app: Express) {
       const cookieOptions = getSessionCookieOptions(req);
       res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
 
-      // Extraer la ruta de retorno del state si está disponible
+      // Decodificar la ruta de retorno del state
       let redirectPath = "/";
       try {
         const decodedState = Buffer.from(state, 'base64').toString('utf-8');
-        const returnMatch = decodedState.match(/return=([^&]+)/);
-        if (returnMatch) {
-          redirectPath = decodeURIComponent(returnMatch[1]);
-        }
+        // El state ahora contiene solo la ruta de retorno
+        redirectPath = decodedState || "/";
       } catch (e) {
+        console.error("[OAuth] Error decoding state:", e);
         // Si no se puede decodificar, usar el default
       }
 
+      console.log("[OAuth] Redirecting to:", redirectPath);
       res.redirect(302, redirectPath);
     } catch (error) {
       console.error("[OAuth] Callback failed", error);
