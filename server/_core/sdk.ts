@@ -40,13 +40,15 @@ class OAuthService {
 
   private decodeState(state: string): string {
     try {
+      // State contiene solo la ruta de retorno (base64 encoded)
+      // El redirectUri se construye aquí
       const decoded = atob(state);
-      // El state contiene: redirectUri|returnPath
-      const parts = decoded.split('|');
-      return parts[0]; // Retornar solo el redirectUri
+      // Retornar el redirectUri completo
+      return `${typeof window !== "undefined" ? window.location.origin : "https://ipaxerez.manus.space"}/api/oauth/callback`;
     } catch (e) {
       console.error('[OAuth] Error decoding state:', e);
-      return '';
+      // Fallback a la URL por defecto
+      return 'https://ipaxerez.manus.space/api/oauth/callback';
     }
   }
 

@@ -15,18 +15,23 @@ export function registerOAuthRoutes(app: Express) {
     const state = getQueryParam(req, "state");
 
     if (!code || !state) {
+      console.error("[OAuth] Missing code or state");
       res.status(400).json({ error: "code and state are required" });
       return;
     }
 
     try {
+      console.log("[OAuth] Processing callback...");
       const tokenResponse = await sdk.exchangeCodeForToken(code, state);
       const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
 
       if (!userInfo.openId) {
+        console.error("[OAuth] No openId in user info");
         res.status(400).json({ error: "openId missing from user info" });
         return;
       }
+
+      console.log("[OAuth] User info:", { openId: userInfo.openId, email: userInfo.email });
 
       await db.upsertUser({
         openId: userInfo.openId,
@@ -44,24 +49,11 @@ export function registerOAuthRoutes(app: Express) {
       const cookieOptions = getSessionCookieOptions(req);
       res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
 
-      // Decodificar el state para extraer redirectUri y returnPath
-      let redirectPath = "/";
-      try {
-        const decodedState = Buffer.from(state, 'base64').toString('utf-8');
-        // Format: redirectUri|returnPath
-        const parts = decodedState.split('|');
-        if (parts.length === 2) {
-          redirectPath = parts[1] || "/";
-        }
-      } catch (e) {
-        console.error("[OAuth] Error decoding state:", e);
-        // Si no se puede decodificar, usar el default
-      }
-
-      console.log("[OAuth] Redirecting to:", redirectPath);
-      res.redirect(302, redirectPath);
+      console.log("[OAuth] Session created, redirecting to home");
+      // Redirigir siempre a home después de autenticación exitosa
+      res.redirect(302, "/");
     } catch (error) {
-      console.error("[OAuth] Callback failed", error);
+      console.error("[OAuth] Callback failed:", error);
       res.status(500).json({ error: "OAuth callback failed" });
     }
   });
