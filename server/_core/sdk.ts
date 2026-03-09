@@ -123,7 +123,7 @@ class SDKServer {
   /**
    * Get user information using access token
    * @example
-   * const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
+   * const userInfo = await sdk.getUserInfo(tokenResponse);
    */
   async getUserInfo(
     token: ExchangeTokenResponse
@@ -141,7 +141,7 @@ class SDKServer {
       expiresInMs: number;
     }
   ): Promise<string> {
-    const secret = new TextEncoder().encode(ENV.jwtSecret);
+    const secret = new TextEncoder().encode(ENV.cookieSecret);
     const now = Math.floor(Date.now() / 1000);
 
     const token = await new SignJWT({
@@ -161,7 +161,7 @@ class SDKServer {
    * Verify and decode a JWT session token
    */
   async verifySessionToken(token: string): Promise<SessionPayload> {
-    const secret = new TextEncoder().encode(ENV.jwtSecret);
+    const secret = new TextEncoder().encode(ENV.cookieSecret);
     const verified = await jwtVerify(token, secret);
     return verified.payload as unknown as SessionPayload;
   }
