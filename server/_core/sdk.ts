@@ -39,8 +39,15 @@ class OAuthService {
   }
 
   private decodeState(state: string): string {
-    const redirectUri = atob(state);
-    return redirectUri;
+    try {
+      const decoded = atob(state);
+      // El state contiene: redirectUri|returnPath
+      const parts = decoded.split('|');
+      return parts[0]; // Retornar solo el redirectUri
+    } catch (e) {
+      console.error('[OAuth] Error decoding state:', e);
+      return '';
+    }
   }
 
   async getTokenByCode(
