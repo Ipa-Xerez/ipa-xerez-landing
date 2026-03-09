@@ -11,14 +11,19 @@ function getQueryParam(req: Request, key: string): string | undefined {
 
 function parseState(state: string): { origin: string; returnPath: string } {
   try {
+    console.log("[OAuth] Raw state:", state);
     const decoded = Buffer.from(state, 'base64').toString('utf-8');
+    console.log("[OAuth] Decoded state:", decoded);
     const parsed = JSON.parse(decoded);
+    console.log("[OAuth] Parsed state object:", parsed);
     return {
       origin: parsed.origin || "http://localhost:3000",
       returnPath: parsed.returnPath || "/",
     };
   } catch (e) {
     console.error("[OAuth] Error parsing state:", e);
+    console.error("[OAuth] State value was:", state);
+    // Fallback: intenta extraer origin del header Host
     return {
       origin: "http://localhost:3000",
       returnPath: "/",
@@ -39,12 +44,14 @@ export function registerOAuthRoutes(app: Express) {
 
     try {
       console.log("[OAuth] Processing callback...");
+      console.log("[OAuth] Code:", code.substring(0, 20) + "...");
+      console.log("[OAuth] State length:", state.length);
       
       // Decodificar state para obtener origin y returnPath
       const { origin, returnPath } = parseState(state);
       const redirectUri = `${origin}/api/oauth/callback`;
       
-      console.log("[OAuth] Parsed state:", { origin, returnPath, redirectUri });
+      console.log("[OAuth] Final redirect URL will be:", `${origin}${returnPath}`);
 
       // Intercambiar código por token usando el redirectUri correcto
       const tokenResponse = await sdk.exchangeCodeForToken(code, redirectUri);

@@ -6,6 +6,7 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { registerLocalAuthRoutes } from "./localAuth";
+import { registerOAuthRoutes } from "./oauth";
 import { serveStatic, setupVite } from "./vite";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -78,8 +79,7 @@ async function startServer() {
   // Initialize members on startup
   await initializeMembers();
   // OAuth callback under /api/oauth/callback
-
-
+  registerOAuthRoutes(app);
 
   // tRPC API
   registerLocalAuthRoutes(app);
