@@ -79,12 +79,27 @@ export default function AdminDashboard() {
     );
   }
 
+  // Debug: Log del email recibido
+  if (user?.email) {
+    console.log("[AdminDashboard] User email:", user.email);
+    console.log("[AdminDashboard] Admin email:", ADMIN_EMAIL);
+    console.log("[AdminDashboard] Match:", user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
+  }
+
   if (!user || !user.email || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
         <div className="bg-slate-800 rounded-lg p-8 text-center max-w-md">
           <h1 className="text-2xl font-bold text-white mb-4">Acceso Denegado</h1>
           <p className="text-slate-300 mb-6">No tienes permisos para acceder al panel de administración.</p>
+          {user?.email && (
+            <div className="bg-slate-700 p-3 rounded mb-6 text-left">
+              <p className="text-xs text-slate-400">Tu email:</p>
+              <p className="text-sm text-white font-mono break-all">{user.email}</p>
+              <p className="text-xs text-slate-400 mt-2">Email requerido:</p>
+              <p className="text-sm text-white font-mono">{ADMIN_EMAIL}</p>
+            </div>
+          )}
           <Button 
             onClick={() => navigate("/")}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white"
