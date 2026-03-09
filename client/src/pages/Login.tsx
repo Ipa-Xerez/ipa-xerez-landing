@@ -1,15 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
 export default function Login() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
+  const [showDebug, setShowDebug] = useState(false);
+
+  // Debug: mostrar información del usuario en consola
+  useEffect(() => {
+    if (user) {
+      console.log("[Login] Usuario autenticado:", {
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        id: user.id,
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (user && !loading) {
+      console.log("[Login] Redirigiendo a home...");
       navigate("/");
     }
   }, [user, loading, navigate]);
@@ -49,6 +63,27 @@ export default function Login() {
           >
             Iniciar Sesión con OAuth
           </Button>
+
+          {user && (
+            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded">
+              <p className="text-green-800 font-semibold text-sm mb-2">✅ Autenticado como:</p>
+              <p className="text-green-700 text-sm">{user.email}</p>
+              <p className="text-green-600 text-xs mt-1">Rol: {user.role || "user"}</p>
+            </div>
+          )}
+
+          <button
+            onClick={() => setShowDebug(!showDebug)}
+            className="w-full text-xs text-gray-400 hover:text-gray-600 mt-4"
+          >
+            {showDebug ? "Ocultar" : "Mostrar"} información de debug
+          </button>
+
+          {showDebug && (
+            <div className="mt-4 p-3 bg-gray-100 rounded text-xs font-mono text-gray-700 max-h-40 overflow-y-auto">
+              <p>Usuario: {user ? JSON.stringify(user, null, 2) : "No autenticado"}</p>
+            </div>
+          )}
 
           <p className="text-gray-500 text-xs text-center mt-6">
             Solo administradores autorizados pueden acceder.

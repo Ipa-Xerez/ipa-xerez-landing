@@ -9,7 +9,7 @@ const toast = (options: { title: string; description?: string; variant?: string 
   console.log(options.variant === "destructive" ? "❌" : "✅", options.title, options.description || "");
 };
 
-const ADMIN_EMAIL = "Ipaagrupacionxerez@gmail.com";
+const ADMIN_EMAIL = "ipaagrupacionxerez@gmail.com";
 
 export default function AdminPanel() {
   const { user, logout } = useAuth();
@@ -67,8 +67,9 @@ export default function AdminPanel() {
     },
   });
 
-  // Verificar si es admin
-  if (!user || user.email !== ADMIN_EMAIL) {
+  // Verificar si es admin (case-insensitive)
+  const isAdmin = user && user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  if (!isAdmin) {
     return null;
   }
 
