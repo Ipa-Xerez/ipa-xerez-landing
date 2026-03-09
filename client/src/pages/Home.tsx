@@ -119,7 +119,7 @@ export default function Home() {
       {/* Navbar mejorada */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => navigate('/admin')}>
+          <div className="flex items-center gap-3">
             <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA Xerez" className="h-12 w-auto" />
             <span className="font-heading text-[#003366] text-xl hidden sm:inline font-bold">IPA Xerez</span>
           </div>
@@ -134,13 +134,7 @@ export default function Home() {
 
 
             <PWAInstallButton />
-            <Button 
-              onClick={() => navigate('/admin/dashboard')} 
-              className="bg-transparent hover:bg-[#F5F5F5] p-2 rounded-lg transition-all duration-200" 
-              title="Panel de Administración"
-            >
-              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="Admin" className="h-6 w-6" />
-            </Button>
+
             <div className="flex gap-2">
               <a href="https://www.facebook.com/profile.php?id=61572445883496" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 transition-all duration-300 hover:scale-110" title="Facebook"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
               <a href="https://www.tiktok.com/@ipa.xerez" target="_blank" rel="noopener noreferrer" className="bg-black hover:bg-gray-800 text-white rounded-full p-2 transition-all duration-300 hover:scale-110" title="TikTok"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.1 1.82 2.89 2.89 0 0 1 2.31-4.64 2.86 2.86 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.54-.05z"/></svg></a>
@@ -162,7 +156,7 @@ export default function Home() {
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/blog'); setMobileMenuOpen(false); }}>Blog</Button>
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { navigate('/calendar'); setMobileMenuOpen(false); }}>Eventos</Button>
             <Button variant="ghost" className="w-full text-left text-[#003366] hover:bg-[#F5F5F5] text-sm" onClick={() => { document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>FAQ</Button>
-            {isAuthenticated && <Button variant="ghost" className="w-full text-left text-[#D4AF37] hover:bg-[#D4AF37]/10 text-sm font-bold" onClick={() => { navigate('/admin/documents'); setMobileMenuOpen(false); }}>Panel Admin</Button>}
+
             <Button className="w-full bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-sm font-bold" onClick={() => { document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}>Únete</Button>
             <div className="flex gap-2 pt-2">
               <a href="https://www.facebook.com/profile.php?id=61572445883496" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 transition-all duration-300" title="Facebook"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
@@ -711,21 +705,6 @@ export default function Home() {
               </p>
             )}
           </div>
-        </div>
-      </section>
-
-      {/* Acceso Administrador */}
-      <section className="py-12 bg-gradient-to-r from-[#003366] to-[#001a33]">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Administración</h2>
-          <p className="text-gray-300 mb-6">¿Eres administrador de IPA Xerez?</p>
-          <button 
-            onClick={() => navigate('/admin/dashboard')} 
-            className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] font-bold px-8 py-3 flex items-center gap-3 mx-auto rounded-lg transition-all duration-300 hover:scale-105 transform cursor-pointer shadow-lg hover:shadow-xl"
-          >
-            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA" className="h-8 w-auto" />
-            <span>Acceder al Panel de Administración</span>
-          </button>
         </div>
       </section>
 

@@ -14,33 +14,16 @@ import InstallGuide from "./pages/InstallGuide";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
-import BlogAdmin from "./pages/BlogAdmin";
 import Calendar from "./pages/Calendar";
 import EventDetail from "./pages/EventDetail";
-import NewsletterAdmin from "./pages/NewsletterAdmin";
 import Unsubscribe from "./pages/Unsubscribe";
 import MembersArea from "./pages/MembersArea";
-import AdminDocuments from "./pages/AdminDocuments";
-import AdminSeed from "./pages/AdminSeed";
 import Inscription from "./pages/Inscription";
-import AdminDashboard from "./pages/AdminDashboard";
-import MembersAdmin from "./pages/MembersAdmin";
 
-function AdminIndex() {
-  return <Redirect to="/admin/dashboard" />;
-}
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      {/* Admin routes - must be before generic routes */}
-      <Route path={"/admin/dashboard"} component={AdminDashboard} />
-      <Route path={"/admin/blog"} component={BlogAdmin} />
-      <Route path={"/admin/members"} component={MembersAdmin} />
-      <Route path={"/admin/newsletter"} component={NewsletterAdmin} />
-      <Route path={"/admin/documents"} component={AdminDocuments} />
-      <Route path={"/admin/seed"} component={AdminSeed} />
-      <Route path={"/admin"} component={AdminIndex} />
       
       {/* Public routes */}
       <Route path={"/"} component={Home} />
