@@ -1,4 +1,4 @@
-import { AXIOS_TIMEOUT_MS, COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { AXIOS_TIMEOUT_MS } from "@shared/const";
 import { ForbiddenError } from "@shared/_core/errors";
 import axios, { type AxiosInstance } from "axios";
 import { parse as parseCookieHeader } from "cookie";
@@ -38,29 +38,15 @@ class OAuthService {
     }
   }
 
-  private decodeState(state: string): string {
-    try {
-      // State contiene solo la ruta de retorno (base64 encoded)
-      // El redirectUri se construye aquí
-      const decoded = atob(state);
-      // Retornar el redirectUri completo
-      return `${typeof window !== "undefined" ? window.location.origin : "https://ipaxerez.manus.space"}/api/oauth/callback`;
-    } catch (e) {
-      console.error('[OAuth] Error decoding state:', e);
-      // Fallback a la URL por defecto
-      return 'https://ipaxerez.manus.space/api/oauth/callback';
-    }
-  }
-
   async getTokenByCode(
     code: string,
-    state: string
+    redirectUri: string
   ): Promise<ExchangeTokenResponse> {
     const payload: ExchangeTokenRequest = {
       clientId: ENV.appId,
       grantType: "authorization_code",
       code,
-      redirectUri: this.decodeState(state),
+      redirectUri,
     };
 
     const { data } = await this.client.post<ExchangeTokenResponse>(
@@ -118,20 +104,20 @@ class SDKServer {
     )
       return "microsoft";
     if (set.has("REGISTERED_PLATFORM_GITHUB")) return "github";
-    const first = Array.from(set)[0];
-    return first ? first.toLowerCase() : null;
+    if (set.has("REGISTERED_PLATFORM_WECHAT")) return "wechat";
+    return null;
   }
 
   /**
-   * Exchange OAuth authorization code for access token
+   * Exchange authorization code for access token
    * @example
-   * const tokenResponse = await sdk.exchangeCodeForToken(code, state);
+   * const tokenResponse = await sdk.exchangeCodeForToken(code, redirectUri);
    */
   async exchangeCodeForToken(
     code: string,
-    state: string
+    redirectUri: string
   ): Promise<ExchangeTokenResponse> {
-    return this.oauthService.getTokenByCode(code, state);
+    return this.oauthService.getTokenByCode(code, redirectUri);
   }
 
   /**
@@ -139,178 +125,84 @@ class SDKServer {
    * @example
    * const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
    */
-  async getUserInfo(accessToken: string): Promise<GetUserInfoResponse> {
-    const data = await this.oauthService.getUserInfoByToken({
-      accessToken,
-    } as ExchangeTokenResponse);
-    const loginMethod = this.deriveLoginMethod(
-      (data as any)?.platforms,
-      (data as any)?.platform ?? data.platform ?? null
-    );
-    return {
-      ...(data as any),
-      platform: loginMethod,
-      loginMethod,
-    } as GetUserInfoResponse;
-  }
-
-  private parseCookies(cookieHeader: string | undefined) {
-    if (!cookieHeader) {
-      return new Map<string, string>();
-    }
-
-    const parsed = parseCookieHeader(cookieHeader);
-    return new Map(Object.entries(parsed));
-  }
-
-  private getSessionSecret() {
-    const secret = ENV.cookieSecret;
-    return new TextEncoder().encode(secret);
+  async getUserInfo(
+    token: ExchangeTokenResponse
+  ): Promise<GetUserInfoResponse> {
+    return this.oauthService.getUserInfoByToken(token);
   }
 
   /**
-   * Create a session token for a Manus user openId
-   * @example
-   * const sessionToken = await sdk.createSessionToken(userInfo.openId);
+   * Create a session token for a user
    */
   async createSessionToken(
     openId: string,
-    options: { expiresInMs?: number; name?: string } = {}
-  ): Promise<string> {
-    return this.signSession(
-      {
-        openId,
-        appId: ENV.appId,
-        name: options.name || "",
-      },
-      options
-    );
-  }
-
-  async signSession(
-    payload: SessionPayload,
-    options: { expiresInMs?: number } = {}
-  ): Promise<string> {
-    const issuedAt = Date.now();
-    const expiresInMs = options.expiresInMs ?? ONE_YEAR_MS;
-    const expirationSeconds = Math.floor((issuedAt + expiresInMs) / 1000);
-    const secretKey = this.getSessionSecret();
-
-    return new SignJWT({
-      openId: payload.openId,
-      appId: payload.appId,
-      name: payload.name,
-    })
-      .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-      .setExpirationTime(expirationSeconds)
-      .sign(secretKey);
-  }
-
-  async verifySession(
-    cookieValue: string | undefined | null
-  ): Promise<{ openId: string; appId: string; name: string } | null> {
-    if (!cookieValue) {
-      console.warn("[Auth] Missing session cookie");
-      return null;
+    options: {
+      name: string;
+      expiresInMs: number;
     }
+  ): Promise<string> {
+    const secret = new TextEncoder().encode(ENV.jwtSecret);
+    const now = Math.floor(Date.now() / 1000);
+
+    const token = await new SignJWT({
+      openId,
+      name: options.name,
+      appId: ENV.appId,
+    })
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt(now)
+      .setExpirationTime(now + Math.floor(options.expiresInMs / 1000))
+      .sign(secret);
+
+    return token;
+  }
+
+  /**
+   * Verify and decode a JWT session token
+   */
+  async verifySessionToken(token: string): Promise<SessionPayload> {
+    const secret = new TextEncoder().encode(ENV.jwtSecret);
+    const verified = await jwtVerify(token, secret);
+    return verified.payload as unknown as SessionPayload;
+  }
+
+  /**
+   * Authenticate a request using session cookie
+   */
+  async authenticateRequest(req: Request): Promise<User | null> {
+    const cookieHeader = req.headers.cookie;
+    if (!cookieHeader) return null;
+
+    const cookies = parseCookieHeader(cookieHeader);
+    const sessionToken = cookies["manus-session"];
+
+    if (!sessionToken) return null;
 
     try {
-      const secretKey = this.getSessionSecret();
-      const { payload } = await jwtVerify(cookieValue, secretKey, {
-        algorithms: ["HS256"],
-      });
-      const { openId, appId, name } = payload as Record<string, unknown>;
-
-      if (
-        !isNonEmptyString(openId) ||
-        !isNonEmptyString(appId) ||
-        !isNonEmptyString(name)
-      ) {
-        console.warn("[Auth] Session payload missing required fields");
-        return null;
-      }
-
-      return {
-        openId,
-        appId,
-        name,
-      };
+      const payload = await this.verifySessionToken(sessionToken);
+      const user = await db.getUserByOpenId(payload.openId);
+      return user || null;
     } catch (error) {
-      console.warn("[Auth] Session verification failed", String(error));
+      if (error instanceof ForbiddenError) {
+        console.warn("[Auth] Invalid session token");
+      } else {
+        console.error("[Auth] Session verification failed:", error);
+      }
       return null;
     }
   }
 
+  /**
+   * Get user information using JWT (for GetUserInfoWithJwt flow)
+   */
   async getUserInfoWithJwt(
-    jwtToken: string
+    request: GetUserInfoWithJwtRequest
   ): Promise<GetUserInfoWithJwtResponse> {
-    const payload: GetUserInfoWithJwtRequest = {
-      jwtToken,
-      projectId: ENV.appId,
-    };
-
     const { data } = await this.client.post<GetUserInfoWithJwtResponse>(
       GET_USER_INFO_WITH_JWT_PATH,
-      payload
+      request
     );
-
-    const loginMethod = this.deriveLoginMethod(
-      (data as any)?.platforms,
-      (data as any)?.platform ?? data.platform ?? null
-    );
-    return {
-      ...(data as any),
-      platform: loginMethod,
-      loginMethod,
-    } as GetUserInfoWithJwtResponse;
-  }
-
-  async authenticateRequest(req: Request): Promise<User> {
-    // Regular authentication flow
-    const cookies = this.parseCookies(req.headers.cookie);
-    const sessionCookie = cookies.get(COOKIE_NAME);
-    
-    console.log('[Auth] Cookie header:', req.headers.cookie ? 'YES' : 'NO');
-    console.log('[Auth] Session cookie:', sessionCookie ? 'YES' : 'NO');
-    
-    const session = await this.verifySession(sessionCookie);
-
-    if (!session) {
-      throw ForbiddenError("Invalid session cookie");
-    }
-
-    const sessionUserId = session.openId;
-    const signedInAt = new Date();
-    let user = await db.getUserByOpenId(sessionUserId);
-
-    // If user not in DB, sync from OAuth server automatically
-    if (!user) {
-      try {
-        const userInfo = await this.getUserInfoWithJwt(sessionCookie ?? "");
-        await db.upsertUser({
-          openId: userInfo.openId,
-          name: userInfo.name || null,
-          email: userInfo.email ?? null,
-          loginMethod: userInfo.loginMethod ?? userInfo.platform ?? null,
-          lastSignedIn: signedInAt,
-        });
-        user = await db.getUserByOpenId(userInfo.openId);
-      } catch (error) {
-        console.error("[Auth] Failed to sync user from OAuth:", error);
-        throw ForbiddenError("Failed to sync user info");
-      }
-    }
-
-    if (!user) {
-      throw ForbiddenError("User not found");
-    }
-
-    await db.upsertUser({
-      openId: user.openId,
-      lastSignedIn: signedInAt,
-    });
-
-    return user;
+    return data;
   }
 }
 

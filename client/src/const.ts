@@ -6,8 +6,12 @@ export const getLoginUrl = (returnPath?: string) => {
   const appId = import.meta.env.VITE_APP_ID;
   const redirectUri = `${window.location.origin}/api/oauth/callback`;
   
-  // State simple: solo la ruta de retorno
-  const state = btoa(returnPath || "/");
+  // State contiene: { origin, returnPath } (JSON + base64)
+  // El servidor extrae origin para validar OAuth y redirigir correctamente
+  const state = btoa(JSON.stringify({
+    origin: window.location.origin,
+    returnPath: returnPath || "/"
+  }));
 
   const url = new URL(`${oauthPortalUrl}/app-auth`);
   url.searchParams.set("appId", appId);
