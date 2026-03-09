@@ -20,12 +20,15 @@ import Unsubscribe from "./pages/Unsubscribe";
 import MembersArea from "./pages/MembersArea";
 import Inscription from "./pages/Inscription";
 import Login from "./pages/Login";
-import AdminPanel from "./components/AdminPanel";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
+      
+      {/* Admin routes */}
+      <Route path={"/admin"} component={AdminDashboard} />
       
       {/* Public routes */}
       <Route path={"/login"} component={Login} />
@@ -65,7 +68,6 @@ function App() {
           <PWAUpdateNotification />
           <PWAAndroidInstall />
           <PWAInstallPrompt />
-          <AdminPanel />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

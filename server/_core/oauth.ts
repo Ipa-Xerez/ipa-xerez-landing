@@ -95,8 +95,11 @@ export function registerOAuthRoutes(app: Express) {
       const cookieOptions = getSessionCookieOptions(req);
       res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
 
-      // Redirigir al origin y returnPath correctos
-      const finalRedirectUrl = `${origin}${returnPath}`;
+      // Determinar la ruta de redirección
+      // Si el usuario es administrador, redirigir a /admin
+      const ADMIN_EMAIL = "ipaagrupacionxerez@gmail.com";
+      const finalReturnPath = userInfo.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? "/admin" : returnPath;
+      const finalRedirectUrl = `${origin}${finalReturnPath}`;
       console.log("[OAuth] Redirecting to:", finalRedirectUrl);
       res.redirect(302, finalRedirectUrl);
     } catch (error) {
