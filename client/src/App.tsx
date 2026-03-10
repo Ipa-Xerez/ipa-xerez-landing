@@ -30,6 +30,8 @@ function Router() {
       <Route path={"/evento/:id"} component={EventDetail} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />
+      <Route path="/admin-blog" element={<AdminBlog />} />
+
 
       <Route path={"/inscripcion"} component={Inscription} />
       <Route path={"/404"} component={NotFound} />
