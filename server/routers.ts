@@ -359,7 +359,36 @@ export const appRouter = router({
       .mutation(({ input }) => db.cancelEventRegistration(input.registrationId)),
   }),
 
-
+  blog: router({
+    getAll: publicProcedure.query(() => db.getBlogPosts()),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(({ input }) => db.getBlogPostById(input.id)),
+    create: publicProcedure
+      .input(z.object({
+        title: z.string(),
+        excerpt: z.string().optional(),
+        content: z.string(),
+        imageUrl: z.string().nullable().optional(),
+        category: z.string().optional(),
+        tags: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createBlogPost(input)),
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        excerpt: z.string().optional(),
+        content: z.string().optional(),
+        imageUrl: z.string().nullable().optional(),
+        category: z.string().optional(),
+        tags: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.updateBlogPost(input.id, input)),
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteBlogPost(input.id)),
+  }),
 
 })
 export type AppRouter = typeof appRouter;
