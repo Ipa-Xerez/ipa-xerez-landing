@@ -17,9 +17,8 @@ import EventDetail from "./pages/EventDetail";
 import Unsubscribe from "./pages/Unsubscribe";
 import AdminBlog from "./pages/AdminBlog";
 import BlogPost from "./pages/BlogPost";
-
-
-
+import Login from "./pages/Login";
+import MembersArea from "./pages/MembersArea";
 import Inscription from "./pages/Inscription";
 
 function Router() {
@@ -34,14 +33,13 @@ function Router() {
       <Route path={"/evento/:id"} component={EventDetail} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />
-      <Route path="/admin-blog" element={<AdminBlog />} />
-      <Route path="/blog/:id" element={<BlogPost />} />
-
-  
-
-
-
       <Route path={"/inscripcion"} component={Inscription} />
+      <Route path="/blog/:id" element={<BlogPost />} />
+      
+      {/* Admin routes */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin-blog" element={<AdminBlog />} />
+      <Route path="/socios" element={<MembersArea />} />
       <Route path={"/404"} component={NotFound} />
       
       {/* Final fallback route */}
