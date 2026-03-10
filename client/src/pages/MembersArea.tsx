@@ -8,7 +8,7 @@ import { useLocation } from "wouter";
 import DocumentsTable from "@/components/DocumentsTable";
 
 function EstatutosSection() {
-  const estatutosQuery = trpc.documents.getByType.useQuery({ documentType: "estatutos" });
+  const estatutosQuery = trpc.documents.getByType.useQuery({ type: "estatutos" });
 
   if (estatutosQuery.isLoading) {
     return (
@@ -39,7 +39,7 @@ function EstatutosSection() {
 }
 
 function DocumentTypeSection({ type, label }: { type: string; label: string }) {
-  const documentsQuery = trpc.documents.getByType.useQuery({ documentType: type });
+  const documentsQuery = trpc.documents.getByType.useQuery({ type });
 
   if (documentsQuery.isLoading) {
     return (
@@ -90,7 +90,10 @@ export default function MembersArea() {
   const [loginError, setLoginError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const validateMemberMutation = trpc.members.validateMemberNumber.useMutation();
+  const validateMemberQuery = trpc.members.validateMemberNumber.useQuery(
+    { memberNumber },
+    { enabled: false }
+  );
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,15 +101,12 @@ export default function MembersArea() {
     setIsLoading(true);
 
     try {
-      const result = await validateMemberMutation.mutateAsync({
-        memberNumber: memberNumber.trim(),
-      });
-
-      if (result.success && result.member) {
-        setCurrentMember(result.member);
+      const result = await validateMemberQuery.refetch();
+      if (result.data) {
+        setCurrentMember(result.data);
         setIsLoggedIn(true);
       } else {
-        setLoginError(result.message || "Número de socio no encontrado. Por favor verifica tu número.");
+        setLoginError("Número de socio no encontrado. Por favor verifica tu número.");
       }
     } catch (error: any) {
       setLoginError(error.message || "Error al validar el número de socio");
