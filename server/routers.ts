@@ -414,7 +414,7 @@ export const appRouter = router({
       .input(z.object({ memberNumber: z.string() }))
       .query(({ input }) => db.getIpaMemberByNumber(input.memberNumber)),
     getAll: publicProcedure.query(() => db.getAllIpaMembers()),
-    create: protectedProcedure
+    create: publicProcedure
       .input(z.object({
         memberNumber: z.string(),
         fullName: z.string(),
@@ -423,7 +423,7 @@ export const appRouter = router({
         status: z.enum(["active", "inactive", "suspended"]).optional(),
       }))
       .mutation(({ input }) => db.createIpaMember(input)),
-    update: protectedProcedure
+    update: publicProcedure
       .input(z.object({
         id: z.number(),
         fullName: z.string().optional(),
@@ -435,7 +435,7 @@ export const appRouter = router({
         const { id, ...data } = input;
         return db.updateIpaMember(id, data);
       }),
-    delete: protectedProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteIpaMember(input.id)),
   }),
