@@ -913,6 +913,38 @@ export async function createIpaMember(member: InsertIpaMember): Promise<IpaMembe
   }
 }
 
+export async function updateIpaMember(id: number, updates: Partial<InsertIpaMember>): Promise<IpaMember | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update IPA member: database not available");
+    return null;
+  }
+
+  try {
+    await db.update(ipaMembers).set(updates).where(eq(ipaMembers.id, id));
+    return getIpaMemberById(id);
+  } catch (error) {
+    console.error("[Database] Failed to update IPA member:", error);
+    throw error;
+  }
+}
+
+export async function getIpaMemberById(id: number): Promise<IpaMember | null> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get IPA member: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.select().from(ipaMembers).where(eq(ipaMembers.id, id)).limit(1);
+    return result[0] || null;
+  } catch (error) {
+    console.error("[Database] Failed to get IPA member:", error);
+    throw error;
+  }
+}
+
 export async function deleteIpaMember(id: number): Promise<boolean> {
   const db = await getDb();
   if (!db) {

@@ -15,8 +15,13 @@ import Gallery from "./pages/Gallery";
 import Calendar from "./pages/Calendar";
 import EventDetail from "./pages/EventDetail";
 import Unsubscribe from "./pages/Unsubscribe";
-
+import AdminBlog from "./pages/AdminBlog";
+import BlogPost from "./pages/BlogPost";
+import Login from "./pages/Login";
+import MembersArea from "./pages/MembersArea";
 import Inscription from "./pages/Inscription";
+import Blog from "./pages/Blog";
+import AdminPanel from "./pages/AdminPanel";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -30,8 +35,15 @@ function Router() {
       <Route path={"/evento/:id"} component={EventDetail} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />
-
-      <Route path={"/inscripcion"} component={Inscription} />
+      <Route path={"inscripcion"} component={Inscription} />
+      <Route path="/blog" component={Blog} />
+      <Route path="/blog/:id" component={BlogPost} />
+      
+      {/* Admin routes */}
+      <Route path="/login" component={Login} />
+      <Route path="/admin" component={AdminPanel} />
+      <Route path="/admin-blog" component={AdminBlog} />
+      <Route path="/socios" component={MembersArea} />
       <Route path={"/404"} component={NotFound} />
       
       {/* Final fallback route */}

@@ -360,34 +360,121 @@ export const appRouter = router({
   }),
 
   blog: router({
-    getAll: publicProcedure.query(() => db.getBlogPosts()),
+    list: publicProcedure.query(() => db.getBlogPosts()),
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(({ input }) => db.getBlogPostById(input.id)),
-    create: publicProcedure
+    getBySlug: publicProcedure
+      .input(z.object({ slug: z.string() }))
+      .query(({ input }) => db.getBlogPostBySlug(input.slug)),
+    create: protectedProcedure
       .input(z.object({
         title: z.string(),
-        excerpt: z.string().optional(),
+        excerpt: z.string(),
         content: z.string(),
-        imageUrl: z.string().nullable().optional(),
+        image: z.string().optional(),
         category: z.string().optional(),
         tags: z.string().optional(),
       }))
-      .mutation(({ input }) => db.createBlogPost(input)),
-    update: publicProcedure
+      .mutation(async ({ input }) => {
+        const slug = input.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+        return db.createBlogPost({
+          title: input.title,
+          slug,
+          excerpt: input.excerpt,
+          content: input.content,
+          image: input.image,
+          category: input.category,
+          tags: input.tags,
+          isPublished: 1,
+          publishedAt: new Date(),
+        });
+      }),
+    update: protectedProcedure
       .input(z.object({
         id: z.number(),
         title: z.string().optional(),
         excerpt: z.string().optional(),
         content: z.string().optional(),
-        imageUrl: z.string().nullable().optional(),
+        image: z.string().optional(),
         category: z.string().optional(),
         tags: z.string().optional(),
       }))
-      .mutation(({ input }) => db.updateBlogPost(input.id, input)),
-    delete: publicProcedure
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateBlogPost(id, data);
+      }),
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteBlogPost(input.id)),
+  }),
+
+  members: router({
+    validateMemberNumber: publicProcedure
+      .input(z.object({ memberNumber: z.string() }))
+      .query(({ input }) => db.getIpaMemberByNumber(input.memberNumber)),
+    getAll: protectedProcedure.query(() => db.getAllIpaMembers()),
+    create: protectedProcedure
+      .input(z.object({
+        memberNumber: z.string(),
+        fullName: z.string(),
+        email: z.string().email().optional(),
+        phone: z.string().optional(),
+        status: z.enum(["active", "inactive", "suspended"]).optional(),
+      }))
+      .mutation(({ input }) => db.createIpaMember(input)),
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        fullName: z.string().optional(),
+        email: z.string().email().optional(),
+        phone: z.string().optional(),
+        status: z.enum(["active", "inactive", "suspended"]).optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateIpaMember(id, data);
+      }),
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteIpaMember(input.id)),
+  }),
+
+  documents: router({
+    getAll: protectedProcedure.query(() => db.getPrivateDocuments()),
+    getByType: protectedProcedure
+      .input(z.object({ type: z.string() }))
+      .query(({ input }) => db.getPrivateDocumentsByType(input.type)),
+    create: protectedProcedure
+      .input(z.object({
+        title: z.string(),
+        description: z.string().optional(),
+        documentType: z.string(),
+        fileUrl: z.string(),
+        fileName: z.string(),
+        isPublic: z.number().optional(),
+      }))
+      .mutation(({ input, ctx }) => {
+        return db.createPrivateDocument({
+          ...input,
+          uploadedBy: ctx.user?.id,
+        });
+      }),
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        description: z.string().optional(),
+        documentType: z.string().optional(),
+        isPublic: z.number().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updatePrivateDocument(id, data);
+      }),
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deletePrivateDocument(input.id)),
   }),
 
 })
