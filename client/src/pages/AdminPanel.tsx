@@ -458,9 +458,7 @@ export default function AdminPanel() {
                 <thead>
                   <tr style={{ background: "#f0f0f0", borderBottom: "2px solid #ddd" }}>
                     <th style={{ padding: 12, textAlign: "left" }}>Número</th>
-                    <th style={{ padding: 12, textAlign: "left" }}>Nombre</th>
-                    <th style={{ padding: 12, textAlign: "left" }}>Email</th>
-                    <th style={{ padding: 12, textAlign: "left" }}>Teléfono</th>
+                    <th style={{ padding: 12, textAlign: "left" }}>Nombre Completo</th>
                     <th style={{ padding: 12, textAlign: "left" }}>Acciones</th>
                   </tr>
                 </thead>
@@ -468,9 +466,7 @@ export default function AdminPanel() {
                   {membersList.data.map((member: any) => (
                     <tr key={member.id} style={{ borderBottom: "1px solid #eee" }}>
                       <td style={{ padding: 12 }}>{member.memberNumber}</td>
-                      <td style={{ padding: 12 }}>{member.name}</td>
-                      <td style={{ padding: 12 }}>{member.email}</td>
-                      <td style={{ padding: 12 }}>{member.phone}</td>
+                      <td style={{ padding: 12 }}>{member.fullName}</td>
                       <td style={{ padding: 12 }}>
                         <button
                           onClick={() => handleDeleteMember(member.id)}

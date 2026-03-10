@@ -1,0 +1,45 @@
+{
+  "query": "SELECT id, member_number, full_name, email, phone FROM ipa_members LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, member_number, full_name, email, phone FROM ipa_members LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "member_number": "36729",
+      "full_name": "ARGÜEZ JURADO, Maria del Carmen",
+      "email": "NULL",
+      "phone": "NULL"
+    },
+    {
+      "id": "3",
+      "member_number": "13676",
+      "full_name": "ARROYO ROMERO, María Pilar",
+      "email": "NULL",
+      "phone": "NULL"
+    },
+    {
+      "id": "5",
+      "member_number": "38068",
+      "full_name": "BENÍTEZ GARCÍA, Manuel",
+      "email": "NULL",
+      "phone": "NULL"
+    },
+    {
+      "id": "7",
+      "member_number": "39329",
+      "full_name": "BURBANO PEÑA, Christian Eduardo",
+      "email": "NULL",
+      "phone": "NULL"
+    },
+    {
+      "id": "8",
+      "member_number": "38470",
+      "full_name": "CALVENTE CEBALLOS, Fernando",
+      "email": "NULL",
+      "phone": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tmember_number\tfull_name\temail\tphone\n1\t36729\tARGÜEZ JURADO, Maria del Carmen\tNULL\tNULL\n3\t13676\tARROYO ROMERO, María Pilar\tNULL\tNULL\n5\t38068\tBENÍTEZ GARCÍA, Manuel\tNULL\tNULL\n7\t39329\tBURBANO PEÑA, Christian Eduardo\tNULL\tNULL\n8\t38470\tCALVENTE CEBALLOS, Fernando\tNULL\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 362
+}
