@@ -413,7 +413,7 @@ export const appRouter = router({
     validateMemberNumber: publicProcedure
       .input(z.object({ memberNumber: z.string() }))
       .query(({ input }) => db.getIpaMemberByNumber(input.memberNumber)),
-    getAll: protectedProcedure.query(() => db.getAllIpaMembers()),
+    getAll: publicProcedure.query(() => db.getAllIpaMembers()),
     create: protectedProcedure
       .input(z.object({
         memberNumber: z.string(),
