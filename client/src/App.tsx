@@ -12,35 +12,25 @@ import { PWAInstallPrompt } from "./components/PWAInstallPrompt";
 import Home from "./pages/Home";
 import InstallGuide from "./pages/InstallGuide";
 import Gallery from "./pages/Gallery";
-import Blog from "./pages/Blog";
-import BlogDetail from "./pages/BlogDetail";
 import Calendar from "./pages/Calendar";
 import EventDetail from "./pages/EventDetail";
 import Unsubscribe from "./pages/Unsubscribe";
-import MembersArea from "./pages/MembersArea";
+
 import Inscription from "./pages/Inscription";
-import Login from "./pages/Login";
-import AdminDashboard from "./pages/AdminDashboard";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       
-      {/* Admin routes */}
-      <Route path={"/admin"} component={AdminDashboard} />
-      
       {/* Public routes */}
-      <Route path={"/login"} component={Login} />
       <Route path={"/"} component={Home} />
       <Route path={"/gallery"} component={Gallery} />
-      <Route path={"/blog"} component={Blog} />
-      <Route path={"/blog/:slug"} component={BlogDetail} />
       <Route path={"/calendar"} component={Calendar} />
       <Route path={"/evento/:id"} component={EventDetail} />
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />
-      <Route path={"/socios"} component={MembersArea} />
+
       <Route path={"/inscripcion"} component={Inscription} />
       <Route path={"/404"} component={NotFound} />
       
