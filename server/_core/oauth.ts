@@ -61,7 +61,8 @@ export function registerOAuthRoutes(app: Express) {
         console.log("[OAuth] Token exchange successful");
         
         console.log("[OAuth] Getting user info...");
-        userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
+        // Obtener información del usuario
+        userInfo = await sdk.getUserInfo((tokenResponse as any).accessToken || tokenResponse);
         console.log("[OAuth] User info retrieved:", { openId: userInfo.openId, email: userInfo.email });
 
         if (!userInfo.openId) {
