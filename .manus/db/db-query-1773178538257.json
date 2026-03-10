@@ -1,0 +1,58 @@
+{
+  "query": "SELECT id, title, document_type, file_name FROM private_documents ORDER BY document_type;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, document_type, file_name FROM private_documents ORDER BY document_type;",
+  "rows": [
+    {
+      "id": "26",
+      "title": "Estatutos Ipa Xerez 2025",
+      "document_type": "estatutos",
+      "file_name": "Estatutos IPA Xerez 4.0.pdf"
+    },
+    {
+      "id": "27",
+      "title": "Estatutos Ipa España 2025",
+      "document_type": "estatutos",
+      "file_name": "Estatutos IPA España 2025.pdf"
+    },
+    {
+      "id": "60003",
+      "title": "Reglamento de Asociacion y Régimen de Asociados 2025",
+      "document_type": "estatutos",
+      "file_name": "Reglamento de asociación y régimen de los asociados 2025_signed.pdf"
+    },
+    {
+      "id": "30001",
+      "title": "LSV y Reglamento General de Circulacion",
+      "document_type": "guias_manuales",
+      "file_name": "4_6046193004958457467.pdf"
+    },
+    {
+      "id": "28",
+      "title": "Reglamento Disciplinario Ipa España 2025",
+      "document_type": "otros_documentos",
+      "file_name": "Reglamento Disciplinario IPA España 2025_signed.pdf"
+    },
+    {
+      "id": "29",
+      "title": "Reglamento de Organizacion Territorial Ipa España 2025",
+      "document_type": "otros_documentos",
+      "file_name": "Reglamento organización territorial 2025_signed (1).pdf"
+    },
+    {
+      "id": "60001",
+      "title": "Reglamento de Organizacion Economico Financiera 2025",
+      "document_type": "otros_documentos",
+      "file_name": "Reglamento de organización económica y financiera 2025_signed.pdf"
+    },
+    {
+      "id": "60002",
+      "title": "Reglameento del Consejo de Garantias Estatutarias 2025",
+      "document_type": "otros_documentos",
+      "file_name": "Reglamento del Consejo de Garantias Estatutarias 2025_signed (1).pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tdocument_type\tfile_name\n26\tEstatutos Ipa Xerez 2025\testatutos\tEstatutos IPA Xerez 4.0.pdf\n27\tEstatutos Ipa España 2025\testatutos\tEstatutos IPA España 2025.pdf\n60003\tReglamento de Asociacion y Régimen de Asociados 2025\testatutos\tReglamento de asociación y régimen de los asociados 2025_signed.pdf\n30001\tLSV y Reglamento General de Circulacion\tguias_manuales\t4_6046193004958457467.pdf\n28\tReglamento Disciplinario Ipa España 2025\totros_documentos\tReglamento Disciplinario IPA España 2025_signed.pdf\n29\tReglamento de Organizacion Territorial Ipa España 2025\totros_documentos\tReglamento organización territorial 2025_signed (1).pdf\n60001\tReglamento de Organizacion Economico Financiera 2025\totros_documentos\tReglamento de organización económica y financiera 2025_signed.pdf\n60002\tReglameento del Consejo de Garantias Estatutarias 2025\totros_documentos\tReglamento del Consejo de Garantias Estatutarias 2025_signed (1).pdf\n",
+  "stderr": "",
+  "execution_time_ms": 381
+}

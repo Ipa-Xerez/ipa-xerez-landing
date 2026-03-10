@@ -441,8 +441,8 @@ export const appRouter = router({
   }),
 
   documents: router({
-    getAll: protectedProcedure.query(() => db.getPrivateDocuments()),
-    getByType: protectedProcedure
+    getAll: publicProcedure.query(() => db.getPrivateDocuments()),
+    getByType: publicProcedure
       .input(z.object({ type: z.string() }))
       .query(({ input }) => db.getPrivateDocumentsByType(input.type)),
     create: protectedProcedure
