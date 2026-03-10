@@ -15,6 +15,8 @@ import Gallery from "./pages/Gallery";
 import Calendar from "./pages/Calendar";
 import EventDetail from "./pages/EventDetail";
 import Unsubscribe from "./pages/Unsubscribe";
+import AdminBlog from "./pages/AdminBlog";
+
 
 import Inscription from "./pages/Inscription";
 
@@ -31,6 +33,8 @@ function Router() {
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />
       <Route path="/admin-blog" element={<AdminBlog />} />
+  
+
 
 
       <Route path={"/inscripcion"} component={Inscription} />
