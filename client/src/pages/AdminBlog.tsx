@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { trpc } from "../utils/trpc";
+import { trpc } from "../lib/trpc";
 
 export default function AdminBlog() {
   const [code, setCode] = useState("");
@@ -30,7 +30,7 @@ export default function AdminBlog() {
     setNewArticle({ title: "", excerpt: "", content: "", image: "" });
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     await deleteArticle.mutateAsync({ id });
     blogList.refetch();
   };

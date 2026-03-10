@@ -921,8 +921,7 @@ export async function updateIpaMember(id: number, updates: Partial<InsertIpaMemb
   }
 
   try {
-    const result = await db.update(ipaMembers).set(updates).where(eq(ipaMembers.id, id));
-    if (result.rowsAffected === 0) return null;
+    await db.update(ipaMembers).set(updates).where(eq(ipaMembers.id, id));
     return getIpaMemberById(id);
   } catch (error) {
     console.error("[Database] Failed to update IPA member:", error);

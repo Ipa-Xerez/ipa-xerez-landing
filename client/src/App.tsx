@@ -34,12 +34,12 @@ function Router() {
       <Route path={"/unsubscribe"} component={Unsubscribe} />
       <Route path={"/install"} component={InstallGuide} />
       <Route path={"/inscripcion"} component={Inscription} />
-      <Route path="/blog/:id" element={<BlogPost />} />
+      <Route path="/blog/:id" component={BlogPost} />
       
       {/* Admin routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/admin-blog" element={<AdminBlog />} />
-      <Route path="/socios" element={<MembersArea />} />
+      <Route path="/login" component={Login} />
+      <Route path="/admin-blog" component={AdminBlog} />
+      <Route path="/socios" component={MembersArea} />
       <Route path={"/404"} component={NotFound} />
       
       {/* Final fallback route */}

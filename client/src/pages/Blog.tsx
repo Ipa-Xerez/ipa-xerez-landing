@@ -1,5 +1,5 @@
-import { trpc } from "../utils/trpc";
-import { Link } from "react-router-dom";
+import { trpc } from "../lib/trpc";
+import { Link, useLocation } from "wouter";
 
 export default function Blog() {
   const { data: posts, isLoading } = trpc.blog.list.useQuery();
@@ -37,7 +37,7 @@ export default function Blog() {
           )}
 
           <Link
-            to={`/blog/${post.id}`}
+            href={`/blog/${post.id}`}
             style={{
               display: "inline-block",
               marginTop: 10,

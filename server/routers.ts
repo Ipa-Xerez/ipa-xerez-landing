@@ -360,7 +360,7 @@ export const appRouter = router({
   }),
 
   blog: router({
-    list: publicProcedure.query(() => db.getPublishedBlogPosts()),
+    list: publicProcedure.query(() => db.getBlogPosts()),
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(({ input }) => db.getBlogPostById(input.id)),

@@ -1,9 +1,9 @@
-import { useParams } from "react-router-dom";
-import { trpc } from "../utils/trpc";
+import { useRoute } from "wouter";
+import { trpc } from "../lib/trpc";
 
 export default function BlogPost() {
-  const { id } = useParams();
-  const { data: post, isLoading } = trpc.blog.getOne.useQuery({ id: id! });
+  const [match, params] = useRoute("/blog/:id");
+  const { data: post, isLoading } = trpc.blog.getById.useQuery({ id: parseInt(params?.id || "0") });
 
   if (isLoading) {
     return <div style={{ padding: 40 }}>Cargando artículo...</div>;
