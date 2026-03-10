@@ -18,10 +18,10 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
 
   if (!isUnauthorized) return;
 
-  // No redirigir a login si ya estamos en una ruta admin protegida
+  // No redirigir a login si ya estamos en una ruta admin protegida o en socios
   const currentPath = window.location.pathname;
-  if (currentPath.startsWith('/admin')) {
-    console.warn('[Auth] Unauthorized in admin area, but staying on page');
+  if (currentPath.startsWith('/admin') || currentPath === '/socios') {
+    console.warn('[Auth] Unauthorized in protected area, but staying on page');
     return;
   }
 
