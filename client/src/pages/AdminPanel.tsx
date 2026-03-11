@@ -36,6 +36,8 @@ export default function AdminPanel() {
     image: "",
     slug: "",
   });
+  const [blogImageFile, setBlogImageFile] = useState<File | null>(null);
+  const [blogImagePreview, setBlogImagePreview] = useState<string>("");
   const [editingBlogId, setEditingBlogId] = useState<number | null>(null);
 
   // Members state
@@ -46,6 +48,8 @@ export default function AdminPanel() {
     phone: "",
     joinDate: new Date().toISOString().split("T")[0],
   });
+  const [memberImageFile, setMemberImageFile] = useState<File | null>(null);
+  const [memberImagePreview, setMemberImagePreview] = useState<string>("");
   const [editingMemberId, setEditingMemberId] = useState<number | null>(null);
 
   // Documents state
@@ -55,6 +59,7 @@ export default function AdminPanel() {
     documentType: "private",
     url: "",
   });
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [editingDocId, setEditingDocId] = useState<number | null>(null);
 
   const handleLogin = () => {
@@ -77,6 +82,19 @@ export default function AdminPanel() {
   };
 
   // Blog handlers
+  const handleBlogImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setBlogImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBlogImagePreview(reader.result as string);
+        setNewBlogArticle({ ...newBlogArticle, image: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleCreateBlog = async () => {
     if (!newBlogArticle.title.trim()) {
       alert("El título es requerido");
@@ -90,6 +108,8 @@ export default function AdminPanel() {
         image: newBlogArticle.image,
       });
       setNewBlogArticle({ title: "", excerpt: "", content: "", image: "", slug: "" });
+      setBlogImageFile(null);
+      setBlogImagePreview("");
       blogList.refetch();
       alert("Artículo creado exitosamente");
     } catch (error) {
@@ -112,6 +132,18 @@ export default function AdminPanel() {
   };
 
   // Members handlers
+  const handleMemberImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setMemberImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMemberImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleCreateMember = async () => {
     if (!newMember.memberNumber.trim() || !newMember.name.trim()) {
       alert("Número de socio y nombre son requeridos");
@@ -121,14 +153,16 @@ export default function AdminPanel() {
       await createMember.mutateAsync({
         memberNumber: newMember.memberNumber,
         fullName: newMember.name,
-        email: newMember.email,
+        email: newMember.email || "",
         phone: newMember.phone,
       });
       setNewMember({ memberNumber: "", name: "", email: "", phone: "", joinDate: new Date().toISOString().split("T")[0] });
+      setMemberImageFile(null);
+      setMemberImagePreview("");
       membersList.refetch();
       alert("Socio agregado exitosamente");
     } catch (error) {
-      alert("Error al agregar socio");
+      alert("Error al agregar socio: " + (error instanceof Error ? error.message : "Error desconocido"));
       console.error(error);
     }
   };
@@ -147,6 +181,18 @@ export default function AdminPanel() {
   };
 
   // Documents handlers
+  const handleDocumentFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setDocumentFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewDocument({ ...newDocument, url: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleCreateDocument = async () => {
     if (!newDocument.title.trim() || !newDocument.url.trim()) {
       alert("Título y URL son requeridos");
@@ -333,13 +379,25 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>URL de Imagen:</label>
-              <input
-                type="text"
-                value={newBlogArticle.image}
-                onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
+              <label>Imagen del Artículo:</label>
+              <div style={{ display: "flex", gap: 10, marginTop: 5 }}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBlogImageChange}
+                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                />
+                <input
+                  type="text"
+                  placeholder="O ingresa URL"
+                  value={newBlogArticle.image}
+                  onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
+                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                />
+              </div>
+              {blogImagePreview && (
+                <img src={blogImagePreview} alt="Preview" style={{ maxWidth: "100%", maxHeight: 200, marginTop: 10, borderRadius: 4 }} />
+              )}
             </div>
             <button
               onClick={handleCreateBlog}
@@ -518,13 +576,24 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>URL del Documento:</label>
-              <input
-                type="text"
-                value={newDocument.url}
-                onChange={(e) => setNewDocument({ ...newDocument, url: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
+              <label>Archivo del Documento:</label>
+              <div style={{ display: "flex", gap: 10, marginTop: 5 }}>
+                <input
+                  type="file"
+                  onChange={handleDocumentFileChange}
+                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                />
+                <input
+                  type="text"
+                  placeholder="O ingresa URL"
+                  value={newDocument.url}
+                  onChange={(e) => setNewDocument({ ...newDocument, url: e.target.value })}
+                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                />
+              </div>
+              {documentFile && (
+                <p style={{ marginTop: 10, color: "#666" }}>Archivo seleccionado: {documentFile.name}</p>
+              )}
             </div>
             <button
               onClick={handleCreateDocument}

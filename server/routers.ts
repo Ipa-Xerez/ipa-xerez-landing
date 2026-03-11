@@ -383,9 +383,9 @@ export const appRouter = router({
           slug,
           excerpt: input.excerpt,
           content: input.content,
-          image: input.image,
-          category: input.category,
-          tags: input.tags,
+          image: input.image || null,
+          category: input.category || null,
+          tags: input.tags || null,
           isPublished: 1,
           publishedAt: new Date(),
         });
@@ -414,20 +414,20 @@ export const appRouter = router({
       .input(z.object({ memberNumber: z.string() }))
       .query(({ input }) => db.getIpaMemberByNumber(input.memberNumber)),
     getAll: publicProcedure.query(() => db.getAllIpaMembers()),
-    create: publicProcedure
+    create: protectedProcedure
       .input(z.object({
         memberNumber: z.string(),
         fullName: z.string(),
-        email: z.string().email().optional(),
+        email: z.string().email().optional().or(z.literal("")),
         phone: z.string().optional(),
         status: z.enum(["active", "inactive", "suspended"]).optional(),
       }))
       .mutation(({ input }) => db.createIpaMember(input)),
-    update: publicProcedure
+    update: protectedProcedure
       .input(z.object({
         id: z.number(),
         fullName: z.string().optional(),
-        email: z.string().email().optional(),
+        email: z.string().email().optional().or(z.literal("")),
         phone: z.string().optional(),
         status: z.enum(["active", "inactive", "suspended"]).optional(),
       }))
@@ -435,14 +435,14 @@ export const appRouter = router({
         const { id, ...data } = input;
         return db.updateIpaMember(id, data);
       }),
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteIpaMember(input.id)),
   }),
 
   documents: router({
-    getAll: publicProcedure.query(() => db.getPrivateDocuments()),
-    getByType: publicProcedure
+    getAll: protectedProcedure.query(() => db.getPrivateDocuments()),
+    getByType: protectedProcedure
       .input(z.object({ type: z.string() }))
       .query(({ input }) => db.getPrivateDocumentsByType(input.type)),
     create: protectedProcedure
@@ -454,10 +454,10 @@ export const appRouter = router({
         fileName: z.string(),
         isPublic: z.number().optional(),
       }))
-      .mutation(({ input, ctx }) => {
+      .mutation(({ input }) => {
         return db.createPrivateDocument({
           ...input,
-          uploadedBy: ctx.user?.id,
+          uploadedBy: 1, // Admin user ID
         });
       }),
     update: protectedProcedure
