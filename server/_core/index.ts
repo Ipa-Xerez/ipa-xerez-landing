@@ -174,32 +174,7 @@ async function startServer() {
   });
 
   // Proxy endpoint para servir imágenes desde S3 sin problemas de CORS
-  app.get("/api/gallery/image-proxy", async (req, res) => {
-    try {
-      const imageUrl = req.query.url as string;
-      if (!imageUrl) {
-        return res.status(400).json({ error: "URL parameter required" });
-      }
-      
-      console.log(`[Gallery] Proxying image: ${imageUrl}`);
-      const response = await fetch(imageUrl);
-      
-      if (!response.ok) {
-        console.error(`[Gallery] Failed to fetch image: ${response.status}`);
-        return res.status(response.status).json({ error: "Failed to fetch image" });
-      }
-      
-      res.set("Content-Type", response.headers.get("content-type") || "image/jpeg");
-      res.set("Cache-Control", "public, max-age=86400");
-      res.set("Access-Control-Allow-Origin", "*");
-      
-      const buffer = await response.arrayBuffer();
-      res.send(Buffer.from(buffer));
-    } catch (error) {
-      console.error("[Gallery] Error proxying image:", error);
-      res.status(500).json({ error: "Failed to proxy image" });
-    }
-  });
+  // Endpoint proxy eliminado - las imágenes se cargan directamente desde el navegador
 
   // tRPC API
   registerLocalAuthRoutes(app);
