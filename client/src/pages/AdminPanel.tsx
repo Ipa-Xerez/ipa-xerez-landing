@@ -127,7 +127,7 @@ export default function AdminPanel() {
         excerpt: cleanText(newBlogArticle.excerpt),
         content: cleanText(newBlogArticle.content),
         author: cleanText(newBlogArticle.author),
-        image: newBlogArticle.image,
+        image: undefined,
       });
       setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
       setBlogImageFile(null);
