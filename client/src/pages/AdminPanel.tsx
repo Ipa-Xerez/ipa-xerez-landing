@@ -573,7 +573,7 @@ export default function AdminPanel() {
             </div>
             </div>
             <button
-              onClick={handleCreateBlog}
+              onClick={editingBlogId ? handleSaveBlog : handleCreateBlog}
               style={{
                 padding: "10px 20px",
                 background: "#003366",
@@ -584,8 +584,25 @@ export default function AdminPanel() {
                 fontSize: 16,
               }}
             >
-              Crear Artículo
+              {editingBlogId ? "Guardar Cambios" : "Crear Artículo"}
             </button>
+            {editingBlogId && (
+              <button
+                onClick={handleCancelEditBlog}
+                style={{
+                  padding: "10px 20px",
+                  background: "#999",
+                  color: "white",
+                  border: "none",
+                  borderRadius: 4,
+                  cursor: "pointer",
+                  fontSize: 16,
+                  marginLeft: 10,
+                }}
+              >
+                Cancelar
+              </button>
+            )}
           </div>
 
           <h3>Artículos Publicados</h3>
@@ -598,6 +615,19 @@ export default function AdminPanel() {
                   <h4>{post.title}</h4>
                   <p style={{ color: "#666", marginBottom: 10 }}>{post.excerpt}</p>
                   <div style={{ display: "flex", gap: 10 }}>
+                    <button
+                      onClick={() => handleEditBlog(post)}
+                      style={{
+                        padding: "6px 12px",
+                        background: "#0066cc",
+                        color: "white",
+                        border: "none",
+                        borderRadius: 4,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Editar
+                    </button>
                     <button
                       onClick={() => handleDeleteBlog(post.id)}
                       style={{
@@ -673,7 +703,7 @@ export default function AdminPanel() {
               />
             </div>
             <button
-              onClick={handleCreateMember}
+              onClick={editingMemberId ? handleSaveMember : handleCreateMember}
               style={{
                 padding: "10px 20px",
                 background: "#003366",
@@ -684,8 +714,25 @@ export default function AdminPanel() {
                 fontSize: 16,
               }}
             >
-              Agregar Socio
+              {editingMemberId ? "Guardar Cambios" : "Agregar Socio"}
             </button>
+            {editingMemberId && (
+              <button
+                onClick={handleCancelEditMember}
+                style={{
+                  padding: "10px 20px",
+                  background: "#999",
+                  color: "white",
+                  border: "none",
+                  borderRadius: 4,
+                  cursor: "pointer",
+                  fontSize: 16,
+                  marginLeft: 10,
+                }}
+              >
+                Cancelar
+              </button>
+            )}
           </div>
 
           <h3>Lista de Socios</h3>
@@ -706,7 +753,20 @@ export default function AdminPanel() {
                     <tr key={member.id} style={{ borderBottom: "1px solid #eee" }}>
                       <td style={{ padding: 12 }}>{member.memberNumber}</td>
                       <td style={{ padding: 12 }}>{member.fullName}</td>
-                      <td style={{ padding: 12 }}>
+                      <td style={{ padding: 12, display: "flex", gap: 10 }}>
+                        <button
+                          onClick={() => handleEditMember(member)}
+                          style={{
+                            padding: "6px 12px",
+                            background: "#0066cc",
+                            color: "white",
+                            border: "none",
+                            borderRadius: 4,
+                            cursor: "pointer",
+                          }}
+                        >
+                          Editar
+                        </button>
                         <button
                           onClick={() => handleDeleteMember(member.id)}
                           style={{
@@ -785,7 +845,7 @@ export default function AdminPanel() {
               />
             </div>
             <button
-              onClick={handleCreateDocument}
+              onClick={editingDocId ? handleSaveDocument : handleCreateDocument}
               style={{
                 padding: "10px 20px",
                 background: "#003366",
@@ -796,8 +856,25 @@ export default function AdminPanel() {
                 fontSize: 16,
               }}
             >
-              Agregar Documento
+              {editingDocId ? "Guardar Cambios" : "Agregar Documento"}
             </button>
+            {editingDocId && (
+              <button
+                onClick={handleCancelEditDocument}
+                style={{
+                  padding: "10px 20px",
+                  background: "#999",
+                  color: "white",
+                  border: "none",
+                  borderRadius: 4,
+                  cursor: "pointer",
+                  fontSize: 16,
+                  marginLeft: 10,
+                }}
+              >
+                Cancelar
+              </button>
+            )}
           </div>
 
           <h3>Documentos</h3>
@@ -828,6 +905,19 @@ export default function AdminPanel() {
                     >
                       Ver
                     </a>
+                    <button
+                      onClick={() => handleEditDocument(doc)}
+                      style={{
+                        padding: "6px 12px",
+                        background: "#0066cc",
+                        color: "white",
+                        border: "none",
+                        borderRadius: 4,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Editar
+                    </button>
                     <button
                       onClick={() => handleDeleteDocument(doc.id)}
                       style={{
