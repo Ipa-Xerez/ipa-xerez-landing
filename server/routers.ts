@@ -367,7 +367,7 @@ export const appRouter = router({
     getBySlug: publicProcedure
       .input(z.object({ slug: z.string() }))
       .query(({ input }) => db.getBlogPostBySlug(input.slug)),
-    create: protectedProcedure
+    create: publicProcedure
       .input(z.object({
         title: z.string(),
         excerpt: z.string(),
@@ -390,7 +390,7 @@ export const appRouter = router({
           publishedAt: new Date(),
         });
       }),
-    update: protectedProcedure
+    update: publicProcedure
       .input(z.object({
         id: z.number(),
         title: z.string().optional(),
@@ -404,7 +404,7 @@ export const appRouter = router({
         const { id, ...data } = input;
         return db.updateBlogPost(id, data);
       }),
-    delete: protectedProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteBlogPost(input.id)),
   }),
