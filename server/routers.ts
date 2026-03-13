@@ -377,18 +377,27 @@ export const appRouter = router({
         tags: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const slug = input.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-        return db.createBlogPost({
-          title: input.title,
-          slug,
-          excerpt: input.excerpt,
-          content: input.content,
-          image: input.image || null,
-          category: input.category || null,
-          tags: input.tags || null,
-          isPublished: 1,
-          publishedAt: new Date(),
-        });
+        try {
+          console.log('[Blog] Router create called with:', { title: input.title, hasImage: !!input.image });
+          const slug = input.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+          console.log('[Blog] Generated slug:', slug);
+          const result = await db.createBlogPost({
+            title: input.title,
+            slug,
+            excerpt: input.excerpt,
+            content: input.content,
+            image: input.image || null,
+            category: input.category || null,
+            tags: input.tags || null,
+            isPublished: 1,
+            publishedAt: new Date(),
+          });
+          console.log('[Blog] Router create success');
+          return result;
+        } catch (error) {
+          console.error('[Blog] Router create error:', error);
+          throw error;
+        }
       }),
     update: publicProcedure
       .input(z.object({
