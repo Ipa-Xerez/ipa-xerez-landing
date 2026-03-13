@@ -29,37 +29,54 @@ export default function Gallery() {
   const [allImages, setAllImages] = useState<GalleryImage[]>([]);
   const [categories, setCategories] = useState<GalleryCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Fetch categories
-  const categoriesQuery = trpc.gallery.getCategories.useQuery();
+  const { data: categoriesData, isLoading: categoriesLoading, error: categoriesError } = trpc.gallery.getCategories.useQuery();
 
   // Fetch all images from all categories
   useEffect(() => {
     const loadGallery = async () => {
       try {
         setIsLoading(true);
+        setError(null);
         
         // Get categories
-        if (categoriesQuery.data) {
-          setCategories(categoriesQuery.data);
+        if (categoriesData && categoriesData.length > 0) {
+          setCategories(categoriesData);
           
           // Get all images from all categories
           const allImagesData: GalleryImage[] = [];
-          for (const category of categoriesQuery.data) {
-            const images = await trpc.gallery.getImagesByCategory.query({ categoryId: category.id });
-            allImagesData.push(...images);
+          for (const category of categoriesData) {
+            try {
+              const images = await trpc.gallery.getImagesByCategory.query({ categoryId: category.id });
+              allImagesData.push(...images);
+            } catch (err) {
+              console.error(`Error loading images for category ${category.id}:`, err);
+            }
           }
           setAllImages(allImagesData);
+          
+          if (allImagesData.length === 0) {
+            setError("No hay imágenes en la galería");
+          }
+        } else if (categoriesData && categoriesData.length === 0) {
+          setError("No hay categorías en la galería");
+          setCategories([]);
+          setAllImages([]);
         }
       } catch (error) {
         console.error("Error loading gallery:", error);
+        setError("Error al cargar la galería");
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadGallery();
-  }, [categoriesQuery.data]);
+    if (!categoriesLoading && categoriesData) {
+      loadGallery();
+    }
+  }, [categoriesData, categoriesLoading]);
 
   const filteredImages = selectedCategory === "all" 
     ? allImages 
@@ -106,12 +123,37 @@ export default function Gallery() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImage, currentIndex]);
 
-  if (isLoading) {
+  if (isLoading || categoriesLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#003366] mx-auto mb-4"></div>
           <p className="text-[#003366]">Cargando galería...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || categoriesError) {
+    return (
+      <div className="min-h-screen bg-white">
+        <nav className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-md">
+          <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AgkWeOTDyZirPRUK.png" alt="IPA Xerez" className="h-12 w-auto" />
+              <span className="font-heading text-[#003366] text-xl hidden sm:inline font-bold">IPA Xerez</span>
+            </div>
+            <div className="flex gap-2 md:gap-4 items-center">
+              <Button variant="ghost" className="text-[#003366] hover:bg-[#F5F5F5] text-sm md:text-base" onClick={() => navigate('/')}>Inicio</Button>
+              <Button className="bg-[#D4AF37] text-[#003366] hover:bg-[#FFD700] text-sm md:text-base font-bold" onClick={() => navigate('/')}>Volver</Button>
+            </div>
+          </div>
+        </nav>
+        <div className="container mx-auto px-4 py-12 text-center">
+          <p className="text-red-600 text-lg">{error || categoriesError?.message || "Error al cargar la galería"}</p>
+          <Button className="mt-4 bg-[#003366] text-white hover:bg-[#002244]" onClick={() => navigate('/')}>
+            Volver al inicio
+          </Button>
         </div>
       </div>
     );
