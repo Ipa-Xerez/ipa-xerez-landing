@@ -33,6 +33,7 @@ export default function AdminPanel() {
     title: "",
     excerpt: "",
     content: "",
+    author: "",
     image: "",
     slug: "",
   });
@@ -105,9 +106,10 @@ export default function AdminPanel() {
         title: newBlogArticle.title,
         excerpt: newBlogArticle.excerpt,
         content: newBlogArticle.content,
+        author: newBlogArticle.author,
         image: newBlogArticle.image,
       });
-      setNewBlogArticle({ title: "", excerpt: "", content: "", image: "", slug: "" });
+      setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
       setBlogImageFile(null);
       setBlogImagePreview("");
       blogList.refetch();
@@ -376,6 +378,16 @@ export default function AdminPanel() {
                 value={newBlogArticle.content}
                 onChange={(e) => setNewBlogArticle({ ...newBlogArticle, content: e.target.value })}
                 style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 150 }}
+              />
+            </div>
+            <div style={{ marginBottom: 15 }}>
+              <label>Autor (opcional):</label>
+              <input
+                type="text"
+                placeholder="Nombre del autor"
+                value={newBlogArticle.author}
+                onChange={(e) => setNewBlogArticle({ ...newBlogArticle, author: e.target.value })}
+                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
               />
             </div>
             <div style={{ marginBottom: 15 }}>
