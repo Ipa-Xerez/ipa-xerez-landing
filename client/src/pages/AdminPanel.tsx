@@ -101,6 +101,28 @@ export default function AdminPanel() {
     }
   };
 
+  const uploadImageToS3 = async (file: File): Promise<string> => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await fetch('/api/upload-image', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error al subir imagen');
+      }
+      
+      const data = await response.json();
+      return data.url;
+    } catch (error) {
+      console.error('Error uploading to S3:', error);
+      throw error;
+    }
+  };
+
   const cleanText = (text: string): string => {
     if (!text) return "";
     return text.replace(/\r\n/g, "\n").replace(/\n+/g, "\n").trim();
@@ -120,19 +142,28 @@ export default function AdminPanel() {
       return;
     }
     try {
+      let imageUrl = newBlogArticle.image;
+      
+      // Si hay un archivo de imagen, subirlo a S3
+      if (blogImageFile) {
+        console.log("[Blog] Subiendo imagen a S3...");
+        imageUrl = await uploadImageToS3(blogImageFile);
+        console.log("[Blog] Imagen subida:", imageUrl);
+      }
+      
       console.log("[Blog] Enviando datos:", {
         title: newBlogArticle.title.substring(0, 50),
         excerptLen: newBlogArticle.excerpt.length,
         contentLen: newBlogArticle.content.length,
         author: newBlogArticle.author,
-        imageUrl: newBlogArticle.image,
+        imageUrl: imageUrl,
       });
       await createBlog.mutateAsync({
         title: cleanText(newBlogArticle.title),
         excerpt: cleanText(newBlogArticle.excerpt),
         content: cleanText(newBlogArticle.content),
         author: cleanText(newBlogArticle.author),
-        image: newBlogArticle.image || "",
+        image: imageUrl || "",
       });
       setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
       setBlogImageFile(null);
@@ -395,19 +426,34 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label htmlFor="blog-image-url">Imagen del Artículo (URL):</label>
-              <input
-                id="blog-image-url"
-                name="blog-image-url"
-                type="text"
-                placeholder="Ingresa la URL de la imagen"
-                value={newBlogArticle.image}
-                onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
+            <div style={{ marginBottom: 15 }}>
+              <label htmlFor="blog-image">Imagen del Artículo:</label>
+              <div style={{ display: "flex", gap: 10, marginTop: 5 }}>
+                <input
+                  id="blog-image"
+                  name="blog-image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBlogImageChange}
+                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                />
+                <input
+                  id="blog-image-url"
+                  name="blog-image-url"
+                  type="text"
+                  placeholder="O ingresa URL"
+                  value={newBlogArticle.image}
+                  onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
+                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                />
+              </div>
+              {blogImagePreview && (
+                <img src={blogImagePreview} alt="Preview" style={{ maxWidth: "100%", maxHeight: 200, marginTop: 10, borderRadius: 4 }} />
+              )}
               <small style={{ color: "#666", marginTop: 5, display: "block" }}>
-                Usa URLs de imágenes (ej: https://ejemplo.com/imagen.jpg)
+                Sube un archivo o ingresa una URL de imagen
               </small>
+            </div>
             </div>
             <button
               onClick={handleCreateBlog}
