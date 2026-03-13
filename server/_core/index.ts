@@ -4,6 +4,7 @@ import { createServer } from "http";
 import net from "net";
 import multer from "multer";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import superjson from "superjson";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { registerLocalAuthRoutes } from "./localAuth";
@@ -127,6 +128,48 @@ async function startServer() {
     } catch (error) {
       console.error("[Upload] Error:", error);
       res.status(500).json({ error: "Upload failed" });
+    }
+  });
+
+  // API endpoint para obtener todas las imágenes
+  app.get("/api/gallery/images", async (req, res) => {
+    try {
+      console.log("[Gallery] Fetching all images");
+      const { getDb } = await import("../db");
+      const { galleryImages } = await import("../../drizzle/schema");
+      const db = await getDb();
+      if (!db) {
+        console.error("[Gallery] Database not available");
+        return res.status(500).json({ error: "Database not available" });
+      }
+      const images = await db.select().from(galleryImages);
+      console.log(`[Gallery] Found ${images.length} total images`);
+      res.json(images || []);
+    } catch (error) {
+      console.error("[Gallery] Error fetching gallery images:", error);
+      res.status(500).json({ error: "Failed to fetch images" });
+    }
+  });
+
+  // API endpoint para obtener imágenes por categoría
+  app.get("/api/gallery/images/:categoryId", async (req, res) => {
+    try {
+      const categoryId = parseInt(req.params.categoryId);
+      console.log(`[Gallery] Fetching images for category ${categoryId}`);
+      const { getDb } = await import("../db");
+      const { galleryImages } = await import("../../drizzle/schema");
+      const { eq } = await import("drizzle-orm");
+      const db = await getDb();
+      if (!db) {
+        console.error("[Gallery] Database not available");
+        return res.status(500).json({ error: "Database not available" });
+      }
+      const images = await db.select().from(galleryImages).where(eq(galleryImages.categoryId, categoryId));
+      console.log(`[Gallery] Found ${images.length} images for category ${categoryId}`);
+      res.json(images || []);
+    } catch (error) {
+      console.error("[Gallery] Error fetching gallery images:", error);
+      res.status(500).json({ error: "Failed to fetch images" });
     }
   });
 

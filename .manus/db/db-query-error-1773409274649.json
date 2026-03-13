@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO gallery_categories (name, slug, description, displayOrder) VALUES \n('Viajes', 'viajes', 'Viajes e intercambios internacionales de IPA Xerez', 1),\n('Eventos', 'eventos', 'Eventos y actividades locales de IPA Xerez', 2),\n('Cultura', 'cultura', 'Visitas culturales y patrimonio español', 3);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute INSERT INTO gallery_categories (name, slug, description, displayOrder) VALUES \n('Viajes', 'viajes', 'Viajes e intercambios internacionales de IPA Xerez', 1),\n('Eventos', 'eventos', 'Eventos y actividades locales de IPA Xerez', 2),\n('Cultura', 'cultura', 'Visitas culturales y patrimonio español', 3);",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'displayOrder' in 'field list'"
+  ]
+}

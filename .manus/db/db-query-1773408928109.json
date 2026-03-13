@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE gallery_images SET image_url = '/20250927_102334.jpg' WHERE image_url = '/20250929_120000.jpg'; UPDATE gallery_images SET image_url = '/20250927_103519.jpg' WHERE image_url = '/20250929_150000.jpg'; UPDATE gallery_images SET image_url = '/20250927_105157.jpg' WHERE image_url = '/20251001_140000.jpg'; UPDATE gallery_images SET image_url = '/20250927_144428.jpg' WHERE image_url = '/20250928_080000.jpg';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute UPDATE gallery_images SET image_url = '/20250927_102334.jpg' WHERE image_url = '/20250929_120000.jpg'; UPDATE gallery_images SET image_url = '/20250927_103519.jpg' WHERE image_url = '/20250929_150000.jpg'; UPDATE gallery_images SET image_url = '/20250927_105157.jpg' WHERE image_url = '/20251001_140000.jpg'; UPDATE gallery_images SET image_url = '/20250927_144428.jpg' WHERE image_url = '/20250928_080000.jpg';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 550
+}

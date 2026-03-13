@@ -1,0 +1,32 @@
+{
+  "query": "SELECT id, name, slug FROM gallery_categories; SELECT id, title, image_url, category_id FROM gallery_images LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, name, slug FROM gallery_categories; SELECT id, title, image_url, category_id FROM gallery_images LIMIT 5;",
+  "rows": [
+    {
+      "id": "5",
+      "name": "Viajes",
+      "slug": "viajes"
+    },
+    {
+      "id": "6",
+      "name": "Eventos",
+      "slug": "eventos"
+    },
+    {
+      "id": "7",
+      "name": "Cultura",
+      "slug": "cultura"
+    }
+  ],
+  "messages": [
+    "id\ttitle\timage_url\tcategory_id",
+    "9\tViaje a Nueva York - Día de la Hispanidad\t/20250929_120000.jpg\t1",
+    "10\tGrupo en Times Square\t/20250929_150000.jpg\t1",
+    "11\tDelegación en Estatua de la Libertad\t/20251001_140000.jpg\t1",
+    "12\tGrupo en Aeropuerto Internacional\t/20250928_080000.jpg\t1",
+    "13\tDelegación IPA Xerez\t/20251008_150027(0).jpg\t1"
+  ],
+  "stdout": "id\tname\tslug\n5\tViajes\tviajes\n6\tEventos\teventos\n7\tCultura\tcultura\nid\ttitle\timage_url\tcategory_id\n9\tViaje a Nueva York - Día de la Hispanidad\t/20250929_120000.jpg\t1\n10\tGrupo en Times Square\t/20250929_150000.jpg\t1\n11\tDelegación en Estatua de la Libertad\t/20251001_140000.jpg\t1\n12\tGrupo en Aeropuerto Internacional\t/20250928_080000.jpg\t1\n13\tDelegación IPA Xerez\t/20251008_150027(0).jpg\t1\n",
+  "stderr": "",
+  "execution_time_ms": 406
+}

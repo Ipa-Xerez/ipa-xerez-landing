@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { X, ChevronLeft, ChevronRight, Share2, ZoomIn } from "lucide-react";
 import { useLocation } from "wouter";
@@ -27,56 +27,30 @@ export default function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState<"all" | number>("all");
   const [isZoomed, setIsZoomed] = useState(false);
   const [allImages, setAllImages] = useState<GalleryImage[]>([]);
-  const [categories, setCategories] = useState<GalleryCategory[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetch categories
-  const { data: categoriesData, isLoading: categoriesLoading, error: categoriesError } = trpc.gallery.getCategories.useQuery();
+  // Fetch categories using tRPC
+  const { data: categoriesData = [], isLoading: categoriesLoading, error: categoriesError } = trpc.gallery.getCategories.useQuery();
 
-  // Fetch all images from all categories
+  const categories: GalleryCategory[] = categoriesData || [];
+
+  // Fetch all images using REST API
   useEffect(() => {
-    const loadGallery = async () => {
+    const loadImages = async () => {
       try {
-        setIsLoading(true);
-        setError(null);
-        
-        // Get categories
-        if (categoriesData && categoriesData.length > 0) {
-          setCategories(categoriesData);
-          
-          // Get all images from all categories
-          const allImagesData: GalleryImage[] = [];
-          for (const category of categoriesData) {
-            try {
-              const images = await trpc.gallery.getImagesByCategory.query({ categoryId: category.id });
-              allImagesData.push(...images);
-            } catch (err) {
-              console.error(`Error loading images for category ${category.id}:`, err);
-            }
+        const res = await fetch("/api/gallery/images");
+        if (res.ok) {
+          const images = await res.json();
+          if (Array.isArray(images)) {
+            setAllImages(images);
           }
-          setAllImages(allImagesData);
-          
-          if (allImagesData.length === 0) {
-            setError("No hay imágenes en la galería");
-          }
-        } else if (categoriesData && categoriesData.length === 0) {
-          setError("No hay categorías en la galería");
-          setCategories([]);
-          setAllImages([]);
         }
       } catch (error) {
-        console.error("Error loading gallery:", error);
-        setError("Error al cargar la galería");
-      } finally {
-        setIsLoading(false);
+        console.error("Error loading gallery images:", error);
       }
     };
 
-    if (!categoriesLoading && categoriesData) {
-      loadGallery();
-    }
-  }, [categoriesData, categoriesLoading]);
+    loadImages();
+  }, []);
 
   const filteredImages = selectedCategory === "all" 
     ? allImages 
@@ -102,7 +76,7 @@ export default function Gallery() {
     setIsZoomed(false);
   };
 
-  // Navegación por teclado
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!selectedImage) return;
@@ -123,7 +97,10 @@ export default function Gallery() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImage, currentIndex]);
 
-  if (isLoading || categoriesLoading) {
+  const isLoading = categoriesLoading;
+  const error = categoriesError;
+
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
@@ -134,7 +111,7 @@ export default function Gallery() {
     );
   }
 
-  if (error || categoriesError) {
+  if (error) {
     return (
       <div className="min-h-screen bg-white">
         <nav className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-md">
@@ -150,7 +127,7 @@ export default function Gallery() {
           </div>
         </nav>
         <div className="container mx-auto px-4 py-12 text-center">
-          <p className="text-red-600 text-lg">{error || categoriesError?.message || "Error al cargar la galería"}</p>
+          <p className="text-red-600 text-lg">{error?.message || "Error al cargar la galería"}</p>
           <Button className="mt-4 bg-[#003366] text-white hover:bg-[#002244]" onClick={() => navigate('/')}>
             Volver al inicio
           </Button>
@@ -222,6 +199,9 @@ export default function Gallery() {
                   src={image.imageUrl}
                   alt={image.title}
                   className="w-full h-64 object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Imagen+no+disponible';
+                  }}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition flex items-end p-4">
                   <div className="text-white opacity-0 group-hover:opacity-100 transition">
@@ -252,6 +232,9 @@ export default function Gallery() {
                 src={selectedImage.imageUrl}
                 alt={selectedImage.title}
                 className={`w-full h-auto ${isZoomed ? "max-h-none" : "max-h-[80vh]"} object-contain transition-transform`}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=Imagen+no+disponible';
+                }}
               />
             </div>
 
