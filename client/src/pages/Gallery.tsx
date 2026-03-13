@@ -50,7 +50,7 @@ export default function Gallery() {
 
   // Función para obtener URL proxy de imagen
   const getImageUrl = (originalUrl: string) => {
-    return `/api/gallery/image-proxy?url=${encodeURIComponent(originalUrl)}`;
+    return originalUrl; // Devolver URL original sin proxy
   };
 
   const filteredImages = selectedCategory === "all" 
@@ -230,7 +230,7 @@ export default function Gallery() {
             {/* Image container */}
             <div className="relative w-full max-w-4xl">
               <img
-                src={getImageUrl(selectedImage.imageUrl)}
+                src={selectedImage.imageUrl}
                 alt={selectedImage.title}
                 className={`w-full h-auto ${isZoomed ? "max-h-none" : "max-h-[80vh]"} object-contain transition-transform`}
                 onError={(e) => {
