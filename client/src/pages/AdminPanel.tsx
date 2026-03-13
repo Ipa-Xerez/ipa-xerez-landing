@@ -376,8 +376,10 @@ export default function AdminPanel() {
           <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
             <h3>Crear Nuevo Artículo</h3>
             <div style={{ marginBottom: 15 }}>
-              <label>Título:</label>
+              <label htmlFor="blog-title">Título:</label>
               <input
+                id="blog-title"
+                name="blog-title"
                 type="text"
                 value={newBlogArticle.title}
                 onChange={(e) => setNewBlogArticle({ ...newBlogArticle, title: e.target.value })}
@@ -385,24 +387,30 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Extracto:</label>
+              <label htmlFor="blog-excerpt">Extracto:</label>
               <textarea
+                id="blog-excerpt"
+                name="blog-excerpt"
                 value={newBlogArticle.excerpt}
                 onChange={(e) => setNewBlogArticle({ ...newBlogArticle, excerpt: e.target.value })}
                 style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 80 }}
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Contenido:</label>
+              <label htmlFor="blog-content">Contenido:</label>
               <textarea
+                id="blog-content"
+                name="blog-content"
                 value={newBlogArticle.content}
                 onChange={(e) => setNewBlogArticle({ ...newBlogArticle, content: e.target.value })}
                 style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 150 }}
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Autor (opcional):</label>
+              <label htmlFor="blog-author">Autor (opcional):</label>
               <input
+                id="blog-author"
+                name="blog-author"
                 type="text"
                 placeholder="Nombre del autor"
                 value={newBlogArticle.author}
@@ -411,15 +419,19 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Imagen del Artículo:</label>
+              <label htmlFor="blog-image">Imagen del Artículo:</label>
               <div style={{ display: "flex", gap: 10, marginTop: 5 }}>
                 <input
+                  id="blog-image"
+                  name="blog-image"
                   type="file"
                   accept="image/*"
                   onChange={handleBlogImageChange}
                   style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
                 />
                 <input
+                  id="blog-image-url"
+                  name="blog-image-url"
                   type="text"
                   placeholder="O ingresa URL"
                   value={newBlogArticle.image}
