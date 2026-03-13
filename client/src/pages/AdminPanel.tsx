@@ -189,6 +189,52 @@ export default function AdminPanel() {
     }
   };
 
+  const handleEditBlog = (blog: any) => {
+    setEditingBlogId(blog.id);
+    setNewBlogArticle({
+      title: blog.title,
+      excerpt: blog.excerpt,
+      content: blog.content,
+      author: blog.author || "",
+      image: blog.image || "",
+      slug: blog.slug,
+    });
+    setBlogImagePreview(blog.image || "");
+  };
+
+  const handleSaveBlog = async () => {
+    if (!editingBlogId) return;
+    try {
+      let imageUrl = newBlogArticle.image;
+      if (blogImageFile) {
+        imageUrl = await uploadImageToS3(blogImageFile);
+      }
+      await updateBlog.mutateAsync({
+        id: editingBlogId,
+        title: cleanText(newBlogArticle.title),
+        excerpt: cleanText(newBlogArticle.excerpt),
+        content: cleanText(newBlogArticle.content),
+        author: cleanText(newBlogArticle.author),
+        image: imageUrl || "",
+      });
+      setEditingBlogId(null);
+      setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
+      setBlogImageFile(null);
+      setBlogImagePreview("");
+      blogList.refetch();
+      alert("Artículo actualizado exitosamente");
+    } catch (error) {
+      alert("Error al actualizar artículo");
+    }
+  };
+
+  const handleCancelEditBlog = () => {
+    setEditingBlogId(null);
+    setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
+    setBlogImageFile(null);
+    setBlogImagePreview("");
+  };
+
   // Members handlers
   const handleMemberImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -242,6 +288,41 @@ export default function AdminPanel() {
     }
   };
 
+  const handleEditMember = (member: any) => {
+    setEditingMemberId(member.id);
+    setNewMember({
+      memberNumber: member.memberNumber,
+      name: member.fullName,
+      email: member.email || "",
+      phone: member.phone || "",
+      joinDate: member.joinDate || new Date().toISOString().split("T")[0],
+    });
+  };
+
+  const handleSaveMember = async () => {
+    if (!editingMemberId) return;
+    try {
+      await updateMember.mutateAsync({
+        id: editingMemberId,
+        memberNumber: newMember.memberNumber,
+        fullName: newMember.name,
+        email: newMember.email,
+        phone: newMember.phone,
+      });
+      setEditingMemberId(null);
+      setNewMember({ memberNumber: "", name: "", email: "", phone: "", joinDate: new Date().toISOString().split("T")[0] });
+      membersList.refetch();
+      alert("Socio actualizado exitosamente");
+    } catch (error) {
+      alert("Error al actualizar socio");
+    }
+  };
+
+  const handleCancelEditMember = () => {
+    setEditingMemberId(null);
+    setNewMember({ memberNumber: "", name: "", email: "", phone: "", joinDate: new Date().toISOString().split("T")[0] });
+  };
+
   // Documents handlers
   const handleCreateDocument = async () => {
     if (!newDocument.title.trim()) {
@@ -281,6 +362,42 @@ export default function AdminPanel() {
         console.error(error);
       }
     }
+  };
+
+  const handleEditDocument = (doc: any) => {
+    setEditingDocId(doc.id);
+    setNewDocument({
+      title: doc.title,
+      description: doc.description || "",
+      documentType: doc.isPublic ? "public" : "private",
+      url: doc.fileUrl,
+    });
+  };
+
+  const handleSaveDocument = async () => {
+    if (!editingDocId) return;
+    try {
+      await updateDocument.mutateAsync({
+        id: editingDocId,
+        title: newDocument.title,
+        description: newDocument.description,
+        documentType: newDocument.documentType,
+        fileUrl: newDocument.url,
+        fileName: newDocument.url.split("/").pop() || "documento",
+        isPublic: newDocument.documentType === "public" ? 1 : 0,
+      });
+      setEditingDocId(null);
+      setNewDocument({ title: "", description: "", documentType: "private", url: "" });
+      documentsList.refetch();
+      alert("Documento actualizado exitosamente");
+    } catch (error) {
+      alert("Error al actualizar documento");
+    }
+  };
+
+  const handleCancelEditDocument = () => {
+    setEditingDocId(null);
+    setNewDocument({ title: "", description: "", documentType: "private", url: "" });
   };
 
   if (!authenticated) {

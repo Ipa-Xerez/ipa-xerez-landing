@@ -407,6 +407,7 @@ export const appRouter = router({
         title: z.string().optional(),
         excerpt: z.string().optional(),
         content: z.string().optional(),
+        author: z.string().optional(),
         image: z.string().optional(),
         category: z.string().optional(),
         tags: z.string().optional(),
@@ -437,6 +438,7 @@ export const appRouter = router({
     update: publicProcedure
       .input(z.object({
         id: z.number(),
+        memberNumber: z.string().optional(),
         fullName: z.string().optional(),
         email: z.string().email().optional().or(z.literal("")),
         phone: z.string().optional(),
@@ -477,6 +479,8 @@ export const appRouter = router({
         title: z.string().optional(),
         description: z.string().optional(),
         documentType: z.string().optional(),
+        fileUrl: z.string().optional(),
+        fileName: z.string().optional(),
         isPublic: z.number().optional(),
       }))
       .mutation(({ input }) => {
