@@ -86,11 +86,16 @@ export default function AdminPanel() {
   const handleBlogImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Check file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("La imagen es demasiado grande. Máximo 5MB.");
+        return;
+      }
       setBlogImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
+        // Only use for preview, not for sending to server
         setBlogImagePreview(reader.result as string);
-        setNewBlogArticle({ ...newBlogArticle, image: reader.result as string });
       };
       reader.readAsDataURL(file);
     }
@@ -120,14 +125,14 @@ export default function AdminPanel() {
         excerptLen: newBlogArticle.excerpt.length,
         contentLen: newBlogArticle.content.length,
         author: newBlogArticle.author,
-        hasImage: !!newBlogArticle.image,
+        imageUrl: newBlogArticle.image,
       });
       await createBlog.mutateAsync({
         title: cleanText(newBlogArticle.title),
         excerpt: cleanText(newBlogArticle.excerpt),
         content: cleanText(newBlogArticle.content),
         author: cleanText(newBlogArticle.author),
-        image: newBlogArticle.image,
+        image: newBlogArticle.image || "",
       });
       setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
       setBlogImageFile(null);
@@ -167,15 +172,19 @@ export default function AdminPanel() {
   };
 
   const handleCreateMember = async () => {
-    if (!newMember.memberNumber.trim() || !newMember.name.trim()) {
-      alert("Número de socio y nombre son requeridos");
+    if (!newMember.memberNumber.trim()) {
+      alert("El número de socio es requerido");
+      return;
+    }
+    if (!newMember.name.trim()) {
+      alert("El nombre es requerido");
       return;
     }
     try {
       await createMember.mutateAsync({
         memberNumber: newMember.memberNumber,
         fullName: newMember.name,
-        email: newMember.email || "",
+        email: newMember.email,
         phone: newMember.phone,
       });
       setNewMember({ memberNumber: "", name: "", email: "", phone: "", joinDate: new Date().toISOString().split("T")[0] });
@@ -184,7 +193,7 @@ export default function AdminPanel() {
       membersList.refetch();
       alert("Socio agregado exitosamente");
     } catch (error) {
-      alert("Error al agregar socio: " + (error instanceof Error ? error.message : "Error desconocido"));
+      alert("Error al agregar socio");
       console.error(error);
     }
   };
@@ -203,21 +212,13 @@ export default function AdminPanel() {
   };
 
   // Documents handlers
-  const handleDocumentFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setDocumentFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewDocument({ ...newDocument, url: reader.result as string });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const handleCreateDocument = async () => {
-    if (!newDocument.title.trim() || !newDocument.url.trim()) {
-      alert("Título y URL son requeridos");
+    if (!newDocument.title.trim()) {
+      alert("El título es requerido");
+      return;
+    }
+    if (!newDocument.url.trim()) {
+      alert("La URL es requerida");
       return;
     }
     try {
@@ -226,9 +227,10 @@ export default function AdminPanel() {
         description: newDocument.description,
         documentType: newDocument.documentType,
         fileUrl: newDocument.url,
-        fileName: newDocument.url.split('/').pop() || 'document',
+        fileName: newDocument.url.split('/').pop() || 'documento',
       });
       setNewDocument({ title: "", description: "", documentType: "private", url: "" });
+      setDocumentFile(null);
       documentsList.refetch();
       alert("Documento agregado exitosamente");
     } catch (error) {
@@ -252,58 +254,34 @@ export default function AdminPanel() {
 
   if (!authenticated) {
     return (
-      <div style={{ padding: 40, maxWidth: 400, margin: "0 auto", marginTop: 60 }}>
-        <h2 style={{ textAlign: "center", marginBottom: 30 }}>Panel de Administración</h2>
-        <p style={{ color: "#666", marginBottom: 20, textAlign: "center" }}>
-          Ingresa el código para acceder al panel de administración
-        </p>
+      <div style={{ padding: 40, maxWidth: 400, margin: "0 auto", marginTop: 100 }}>
+        <h2>Acceso Administrador</h2>
+        <p>Introduce el código de administrador para acceder al panel.</p>
         <input
+          id="admin-code"
+          name="admin-code"
           type="password"
-          placeholder="Código de acceso"
+          placeholder="Introduce el código"
           value={code}
           onChange={(e) => setCode(e.target.value)}
+          style={{ width: "100%", padding: 10, marginTop: 10, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
           onKeyPress={(e) => e.key === "Enter" && handleLogin()}
-          style={{
-            width: "100%",
-            padding: 12,
-            marginTop: 10,
-            boxSizing: "border-box",
-            border: "1px solid #ccc",
-            borderRadius: 4,
-          }}
         />
         <button
           onClick={handleLogin}
           style={{
             marginTop: 20,
-            padding: 12,
+            padding: 10,
             width: "100%",
             background: "#003366",
             color: "white",
-            cursor: "pointer",
             border: "none",
             borderRadius: 4,
-            fontSize: 16,
-            fontWeight: "bold",
-          }}
-        >
-          Acceder
-        </button>
-        <button
-          onClick={handleBackToHome}
-          style={{
-            marginTop: 10,
-            padding: 12,
-            width: "100%",
-            background: "#f0f0f0",
-            color: "#333",
             cursor: "pointer",
-            border: "1px solid #ccc",
-            borderRadius: 4,
             fontSize: 16,
           }}
         >
-          Volver al Sitio
+          Entrar
         </button>
       </div>
     );
@@ -311,7 +289,6 @@ export default function AdminPanel() {
 
   return (
     <div style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
-      {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 30 }}>
         <h1>Panel de Administración</h1>
         <div style={{ display: "flex", gap: 10 }}>
@@ -319,13 +296,14 @@ export default function AdminPanel() {
             onClick={handleBackToHome}
             style={{
               padding: "8px 16px",
-              background: "#f0f0f0",
-              border: "1px solid #ccc",
+              background: "#666",
+              color: "white",
+              border: "none",
               borderRadius: 4,
               cursor: "pointer",
             }}
           >
-            Volver al Sitio
+            Volver al sitio
           </button>
           <button
             onClick={handleLogout}
@@ -338,21 +316,19 @@ export default function AdminPanel() {
               cursor: "pointer",
             }}
           >
-            Cerrar Sesión
+            Cerrar sesión
           </button>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 30, borderBottom: "2px solid #ddd" }}>
+      <div style={{ display: "flex", gap: 20, borderBottom: "2px solid #ddd", marginBottom: 30 }}>
         {(["blog", "socios", "documentos"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
-              padding: "12px 24px",
-              background: activeTab === tab ? "#003366" : "transparent",
-              color: activeTab === tab ? "white" : "#333",
+              padding: "10px 20px",
+              background: "transparent",
               border: "none",
               cursor: "pointer",
               fontSize: 16,
@@ -419,29 +395,19 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label htmlFor="blog-image">Imagen del Artículo:</label>
-              <div style={{ display: "flex", gap: 10, marginTop: 5 }}>
-                <input
-                  id="blog-image"
-                  name="blog-image"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBlogImageChange}
-                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
-                />
-                <input
-                  id="blog-image-url"
-                  name="blog-image-url"
-                  type="text"
-                  placeholder="O ingresa URL"
-                  value={newBlogArticle.image}
-                  onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
-                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
-                />
-              </div>
-              {blogImagePreview && (
-                <img src={blogImagePreview} alt="Preview" style={{ maxWidth: "100%", maxHeight: 200, marginTop: 10, borderRadius: 4 }} />
-              )}
+              <label htmlFor="blog-image-url">Imagen del Artículo (URL):</label>
+              <input
+                id="blog-image-url"
+                name="blog-image-url"
+                type="text"
+                placeholder="Ingresa la URL de la imagen"
+                value={newBlogArticle.image}
+                onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
+                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
+              />
+              <small style={{ color: "#666", marginTop: 5, display: "block" }}>
+                Usa URLs de imágenes (ej: https://ejemplo.com/imagen.jpg)
+              </small>
             </div>
             <button
               onClick={handleCreateBlog}
@@ -500,8 +466,10 @@ export default function AdminPanel() {
           <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
             <h3>Agregar Nuevo Socio</h3>
             <div style={{ marginBottom: 15 }}>
-              <label>Número de Socio:</label>
+              <label htmlFor="member-number">Número de Socio:</label>
               <input
+                id="member-number"
+                name="member-number"
                 type="text"
                 value={newMember.memberNumber}
                 onChange={(e) => setNewMember({ ...newMember, memberNumber: e.target.value })}
@@ -509,8 +477,10 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Nombre:</label>
+              <label htmlFor="member-name">Nombre:</label>
               <input
+                id="member-name"
+                name="member-name"
                 type="text"
                 value={newMember.name}
                 onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
@@ -518,8 +488,10 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Email:</label>
+              <label htmlFor="member-email">Email:</label>
               <input
+                id="member-email"
+                name="member-email"
                 type="email"
                 value={newMember.email}
                 onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
@@ -527,8 +499,10 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Teléfono:</label>
+              <label htmlFor="member-phone">Teléfono:</label>
               <input
+                id="member-phone"
+                name="member-phone"
                 type="text"
                 value={newMember.phone}
                 onChange={(e) => setNewMember({ ...newMember, phone: e.target.value })}
@@ -603,8 +577,10 @@ export default function AdminPanel() {
           <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
             <h3>Agregar Nuevo Documento</h3>
             <div style={{ marginBottom: 15 }}>
-              <label>Título:</label>
+              <label htmlFor="doc-title">Título:</label>
               <input
+                id="doc-title"
+                name="doc-title"
                 type="text"
                 value={newDocument.title}
                 onChange={(e) => setNewDocument({ ...newDocument, title: e.target.value })}
@@ -612,32 +588,38 @@ export default function AdminPanel() {
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Descripción:</label>
+              <label htmlFor="doc-description">Descripción:</label>
               <textarea
+                id="doc-description"
+                name="doc-description"
                 value={newDocument.description}
                 onChange={(e) => setNewDocument({ ...newDocument, description: e.target.value })}
                 style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 80 }}
               />
             </div>
             <div style={{ marginBottom: 15 }}>
-              <label>Archivo del Documento:</label>
-              <div style={{ display: "flex", gap: 10, marginTop: 5 }}>
-                <input
-                  type="file"
-                  onChange={handleDocumentFileChange}
-                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
-                />
-                <input
-                  type="text"
-                  placeholder="O ingresa URL"
-                  value={newDocument.url}
-                  onChange={(e) => setNewDocument({ ...newDocument, url: e.target.value })}
-                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
-                />
-              </div>
-              {documentFile && (
-                <p style={{ marginTop: 10, color: "#666" }}>Archivo seleccionado: {documentFile.name}</p>
-              )}
+              <label htmlFor="doc-type">Tipo de Documento:</label>
+              <select
+                id="doc-type"
+                name="doc-type"
+                value={newDocument.documentType}
+                onChange={(e) => setNewDocument({ ...newDocument, documentType: e.target.value })}
+                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
+              >
+                <option value="private">Privado</option>
+                <option value="public">Público</option>
+              </select>
+            </div>
+            <div style={{ marginBottom: 15 }}>
+              <label htmlFor="doc-url">URL del Documento:</label>
+              <input
+                id="doc-url"
+                name="doc-url"
+                type="text"
+                value={newDocument.url}
+                onChange={(e) => setNewDocument({ ...newDocument, url: e.target.value })}
+                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
+              />
             </div>
             <button
               onClick={handleCreateDocument}
@@ -655,7 +637,7 @@ export default function AdminPanel() {
             </button>
           </div>
 
-          <h3>Documentos Privados</h3>
+          <h3>Documentos</h3>
           {documentsList.isLoading ? (
             <p>Cargando documentos...</p>
           ) : documentsList.data && documentsList.data.length > 0 ? (
@@ -664,27 +646,44 @@ export default function AdminPanel() {
                 <div key={doc.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #003366" }}>
                   <h4>{doc.title}</h4>
                   <p style={{ color: "#666", marginBottom: 10 }}>{doc.description}</p>
-                  <a href={doc.url} target="_blank" rel="noopener noreferrer" style={{ color: "#003366", textDecoration: "underline", marginRight: 15 }}>
-                    Ver Documento
-                  </a>
-                  <button
-                    onClick={() => handleDeleteDocument(doc.id)}
-                    style={{
-                      padding: "6px 12px",
-                      background: "#ff4444",
-                      color: "white",
-                      border: "none",
-                      borderRadius: 4,
-                      cursor: "pointer",
-                    }}
-                  >
-                    Eliminar
-                  </button>
+                  <small style={{ color: "#999" }}>Tipo: {doc.documentType}</small>
+                  <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+                    <a
+                      href={doc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: "6px 12px",
+                        background: "#003366",
+                        color: "white",
+                        border: "none",
+                        borderRadius: 4,
+                        cursor: "pointer",
+                        textDecoration: "none",
+                        display: "inline-block",
+                      }}
+                    >
+                      Ver
+                    </a>
+                    <button
+                      onClick={() => handleDeleteDocument(doc.id)}
+                      style={{
+                        padding: "6px 12px",
+                        background: "#ff4444",
+                        color: "white",
+                        border: "none",
+                        borderRadius: 4,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p>No hay documentos privados.</p>
+            <p>No hay documentos registrados.</p>
           )}
         </div>
       )}
