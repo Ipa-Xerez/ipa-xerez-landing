@@ -495,6 +495,9 @@ export const appRouter = router({
     getCategories: publicProcedure.query(async () => {
       return db.getGalleryCategories();
     }),
+    getAllImages: publicProcedure.query(async () => {
+      return db.getAllGalleryImages();
+    }),
     getCategoryBySlug: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
       return db.getGalleryCategoryBySlug(input.slug);
     }),

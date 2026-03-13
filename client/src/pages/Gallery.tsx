@@ -33,24 +33,14 @@ export default function Gallery() {
 
   const categories: GalleryCategory[] = categoriesData || [];
 
-  // Fetch all images using REST API
+  // Fetch all images using tRPC
+  const { data: imagesData = [], isLoading: imagesLoading } = trpc.gallery.getAllImages.useQuery();
+  
   useEffect(() => {
-    const loadImages = async () => {
-      try {
-        const res = await fetch("/api/gallery/images");
-        if (res.ok) {
-          const images = await res.json();
-          if (Array.isArray(images)) {
-            setAllImages(images);
-          }
-        }
-      } catch (error) {
-        console.error("Error loading gallery images:", error);
-      }
-    };
-
-    loadImages();
-  }, []);
+    if (imagesData && Array.isArray(imagesData)) {
+      setAllImages(imagesData);
+    }
+  }, [imagesData]);
 
   const filteredImages = selectedCategory === "all" 
     ? allImages 
@@ -97,7 +87,7 @@ export default function Gallery() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImage, currentIndex]);
 
-  const isLoading = categoriesLoading;
+  const isLoading = categoriesLoading || imagesLoading;
   const error = categoriesError;
 
   if (isLoading) {

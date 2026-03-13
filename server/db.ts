@@ -1235,6 +1235,19 @@ export async function getGalleryCategoryBySlug(slug: string) {
   }
 }
 
+export async function getAllGalleryImages() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  try {
+    const { galleryImages } = await import("../drizzle/schema");
+    return db.select().from(galleryImages)
+      .orderBy(galleryImages.displayOrder);
+  } catch (error) {
+    console.error("[Gallery] Error getting all images:", error);
+    throw error;
+  }
+}
+
 export async function getGalleryImagesByCategory(categoryId: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
