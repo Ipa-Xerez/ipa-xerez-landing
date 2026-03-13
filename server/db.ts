@@ -517,18 +517,24 @@ export async function createBlogPost(data: any) {
   if (!db) throw new Error("Database not available");
 
   try {
-    const result = await db.insert(blogPosts).values({
+    const values: any = {
       title: data.title,
       slug: data.slug || data.title.toLowerCase().replace(/\s+/g, "-"),
       excerpt: data.excerpt,
       content: data.content,
-      author: data.author,
       image: data.image,
       category: data.category,
       tags: data.tags ? JSON.stringify(data.tags) : null,
       isPublished: data.isPublished ?? 1,
       publishedAt: data.publishedAt || new Date(),
-    });
+    };
+    
+    // Only add author if provided
+    if (data.author) {
+      values.author = data.author;
+    }
+    
+    const result = await db.insert(blogPosts).values(values);
     return result;
   } catch (error) {
     console.error("[Blog] Error creating post:", error);
