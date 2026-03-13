@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO gallery_categories (name, description, slug, display_order) VALUES \n('Viajes Internacionales', 'Fotos de viajes y eventos internacionales de IPA', 'viajes', 1),\n('Eventos Locales', 'Eventos y reuniones de IPA Xerez', 'eventos-locales', 2),\n('Cultura y Patrimonio', 'Visitas a lugares de interés cultural en Jerez', 'cultura', 3),\n('Actividades Sociales', 'Actividades de camaradería y convivencia', 'actividades', 4);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute INSERT INTO gallery_categories (name, description, slug, display_order) VALUES \n('Viajes Internacionales', 'Fotos de viajes y eventos internacionales de IPA', 'viajes', 1),\n('Eventos Locales', 'Eventos y reuniones de IPA Xerez', 'eventos-locales', 2),\n('Cultura y Patrimonio', 'Visitas a lugares de interés cultural en Jerez', 'cultura', 3),\n('Actividades Sociales', 'Actividades de camaradería y convivencia', 'actividades', 4);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 377
+}
