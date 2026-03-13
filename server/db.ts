@@ -517,13 +517,15 @@ export async function createBlogPost(data: any) {
   if (!db) throw new Error("Database not available");
 
   try {
+    console.log("[Blog] Creating post with data:", { title: data.title, excerptLen: data.excerpt?.length, contentLen: data.content?.length, hasImage: !!data.image });
+    
     const values: any = {
       title: data.title,
       slug: data.slug || data.title.toLowerCase().replace(/\s+/g, "-"),
       excerpt: data.excerpt,
       content: data.content,
-      image: data.image,
-      category: data.category,
+      image: data.image || null,
+      category: data.category || null,
       tags: data.tags ? JSON.stringify(data.tags) : null,
       isPublished: data.isPublished ?? 1,
       publishedAt: data.publishedAt || new Date(),
@@ -534,7 +536,9 @@ export async function createBlogPost(data: any) {
       values.author = data.author;
     }
     
+    console.log("[Blog] About to insert values");
     const result = await db.insert(blogPosts).values(values);
+    console.log("[Blog] Post created successfully");
     return result;
   } catch (error) {
     console.error("[Blog] Error creating post:", error);
