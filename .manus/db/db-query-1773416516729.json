@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE gallery_images SET image_url = CONCAT('https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/', SUBSTRING_INDEX(image_url, '/', -1)) WHERE image_url LIKE '%files.manuscdn.com%' OR image_url LIKE '%/20%' OR image_url LIKE '%IMG-%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute UPDATE gallery_images SET image_url = CONCAT('https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/', SUBSTRING_INDEX(image_url, '/', -1)) WHERE image_url LIKE '%files.manuscdn.com%' OR image_url LIKE '%/20%' OR image_url LIKE '%IMG-%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 393
+}

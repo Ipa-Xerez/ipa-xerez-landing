@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE gallery_images SET image_url = CONCAT('https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/image_', id, '_', MD5(title), '.jpg') WHERE image_url NOT LIKE 'https://d2xsxph8kpxj0f.cloudfront.net%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute UPDATE gallery_images SET image_url = CONCAT('https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/image_', id, '_', MD5(title), '.jpg') WHERE image_url NOT LIKE 'https://d2xsxph8kpxj0f.cloudfront.net%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 354
+}

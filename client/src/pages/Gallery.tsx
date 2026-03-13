@@ -37,10 +37,21 @@ export default function Gallery() {
   const { data: imagesData = [], isLoading: imagesLoading } = trpc.gallery.getAllImages.useQuery();
   
   useEffect(() => {
-    if (imagesData && Array.isArray(imagesData)) {
-      setAllImages(imagesData);
+    if (imagesData && Array.isArray(imagesData) && imagesData.length > 0) {
+      // Solo actualizar si realmente hay datos nuevos
+      setAllImages(prev => {
+        if (prev.length === imagesData.length && prev[0]?.id === imagesData[0]?.id) {
+          return prev; // No cambiar si es el mismo contenido
+        }
+        return imagesData;
+      });
     }
-  }, [imagesData]);
+  }, [imagesData.length]); // Solo depender de la longitud para evitar loops
+
+  // Función para obtener URL proxy de imagen
+  const getImageUrl = (originalUrl: string) => {
+    return `/api/gallery/image-proxy?url=${encodeURIComponent(originalUrl)}`;
+  };
 
   const filteredImages = selectedCategory === "all" 
     ? allImages 
@@ -186,11 +197,11 @@ export default function Gallery() {
                 onClick={() => setSelectedImage(image)}
               >
                 <img
-                  src={image.imageUrl}
+                  src={getImageUrl(image.imageUrl)}
                   alt={image.title}
                   className="w-full h-64 object-cover"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Imagen+no+disponible';
+                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ccc%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2216%22%3EImagen no disponible%3C/text%3E%3C/svg%3E';
                   }}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition flex items-end p-4">
@@ -219,11 +230,11 @@ export default function Gallery() {
             {/* Image container */}
             <div className="relative w-full max-w-4xl">
               <img
-                src={selectedImage.imageUrl}
+                src={getImageUrl(selectedImage.imageUrl)}
                 alt={selectedImage.title}
                 className={`w-full h-auto ${isZoomed ? "max-h-none" : "max-h-[80vh]"} object-contain transition-transform`}
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=Imagen+no+disponible';
+                  (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23ccc%22 width=%22600%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2220%22%3EImagen no disponible%3C/text%3E%3C/svg%3E';
                 }}
               />
             </div>

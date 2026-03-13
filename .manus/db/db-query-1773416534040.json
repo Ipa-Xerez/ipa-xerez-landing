@@ -1,0 +1,14 @@
+{
+  "query": "SELECT id, image_url FROM gallery_images LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, image_url FROM gallery_images LIMIT 1;",
+  "rows": [
+    {
+      "id": "9",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250503_165049_c59bbe61.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\timage_url\n9\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250503_165049_c59bbe61.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 366
+}

@@ -1,0 +1,60 @@
+{
+  "query": "SELECT id, title, image_url FROM gallery_images LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, image_url FROM gallery_images LIMIT 10;",
+  "rows": [
+    {
+      "id": "9",
+      "title": "Viaje a Nueva York - Día de la Hispanidad",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250503_165049_c59bbe61.jpg"
+    },
+    {
+      "id": "10",
+      "title": "Grupo en Times Square",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250927_102334_144f352e.jpg"
+    },
+    {
+      "id": "11",
+      "title": "Delegación en Estatua de la Libertad",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250927_103519_24d7ba07.jpg"
+    },
+    {
+      "id": "12",
+      "title": "Grupo en Aeropuerto Internacional",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250927_105157_0eaa6357.jpg"
+    },
+    {
+      "id": "13",
+      "title": "Delegación IPA Xerez",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250927_144428_ed1874d4.jpg"
+    },
+    {
+      "id": "14",
+      "title": "Paseos en Camello en Marruecos",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251008_150017_d1bc8d64.jpg"
+    },
+    {
+      "id": "15",
+      "title": "Medina Azul de Chefchaouen",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251008_150027(0)_e4b3f6f5.jpg"
+    },
+    {
+      "id": "16",
+      "title": "Grupo en Alcazaba de Almería",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251010_103523_6ff3ae44.jpg"
+    },
+    {
+      "id": "17",
+      "title": "Artesanía Tradicional Marroquí",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251010_104741_165627c4.jpg"
+    },
+    {
+      "id": "18",
+      "title": "Itinerario Marruecos",
+      "image_url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251010_125254_260a24bb.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\timage_url\n9\tViaje a Nueva York - Día de la Hispanidad\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250503_165049_c59bbe61.jpg\n10\tGrupo en Times Square\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250927_102334_144f352e.jpg\n11\tDelegación en Estatua de la Libertad\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250927_103519_24d7ba07.jpg\n12\tGrupo en Aeropuerto Internacional\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250927_105157_0eaa6357.jpg\n13\tDelegación IPA Xerez\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20250927_144428_ed1874d4.jpg\n14\tPaseos en Camello en Marruecos\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251008_150017_d1bc8d64.jpg\n15\tMedina Azul de Chefchaouen\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251008_150027(0)_e4b3f6f5.jpg\n16\tGrupo en Alcazaba de Almería\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251010_103523_6ff3ae44.jpg\n17\tArtesanía Tradicional Marroquí\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251010_104741_165627c4.jpg\n18\tItinerario Marruecos\thttps://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/20251010_125254_260a24bb.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 526
+}
