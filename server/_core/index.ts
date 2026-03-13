@@ -2,12 +2,16 @@ import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
+import multer from "multer";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { registerLocalAuthRoutes } from "./localAuth";
 import { registerOAuthRoutes } from "./oauth";
 import { serveStatic, setupVite } from "./vite";
+
+// Configure multer for file uploads
+const upload = multer({ storage: multer.memoryStorage() });
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -80,6 +84,26 @@ async function startServer() {
   await initializeMembers();
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+
+  // Image upload endpoint
+  app.post("/api/upload-image", upload.single("file"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No file provided" });
+      }
+
+      // For now, return a placeholder URL
+      // In production, this would upload to S3
+      const filename = `${Date.now()}-${req.file.originalname}`;
+      const url = `https://images.example.com/${filename}`;
+
+      console.log("[Upload] File uploaded:", filename);
+      res.json({ url });
+    } catch (error) {
+      console.error("[Upload] Error:", error);
+      res.status(500).json({ error: "Upload failed" });
+    }
+  });
 
   // tRPC API
   registerLocalAuthRoutes(app);
