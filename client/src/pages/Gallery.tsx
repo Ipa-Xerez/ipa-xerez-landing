@@ -33,20 +33,21 @@ export default function Gallery() {
 
   const categories: GalleryCategory[] = categoriesData || [];
 
-  // Fetch all images using tRPC
-  const { data: imagesData = [], isLoading: imagesLoading } = trpc.gallery.getAllImages.useQuery();
+  // Fetch all images using direct fetch (no cache)
+  const [imagesLoading, setImagesLoading] = useState(false);
   
   useEffect(() => {
-    if (imagesData && Array.isArray(imagesData) && imagesData.length > 0) {
-      // Solo actualizar si realmente hay datos nuevos
-      setAllImages(prev => {
-        if (prev.length === imagesData.length && prev[0]?.id === imagesData[0]?.id) {
-          return prev; // No cambiar si es el mismo contenido
+    setImagesLoading(true);
+    fetch('/api/gallery/images?t=' + Date.now())
+      .then(res => res.json())
+      .then(data => {
+        if (data && Array.isArray(data)) {
+          setAllImages(data);
         }
-        return imagesData;
-      });
-    }
-  }, [imagesData.length]); // Solo depender de la longitud para evitar loops
+      })
+      .catch(err => console.error('Error fetching images:', err))
+      .finally(() => setImagesLoading(false));
+  }, []); // Solo ejecutar una vez al montar
 
   // Función para obtener URL proxy de imagen
   const getImageUrl = (originalUrl: string) => {
