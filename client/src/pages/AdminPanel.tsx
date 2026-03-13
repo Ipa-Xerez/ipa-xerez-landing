@@ -96,17 +96,37 @@ export default function AdminPanel() {
     }
   };
 
+  const cleanText = (text: string): string => {
+    if (!text) return "";
+    return text.replace(/\r\n/g, "\n").replace(/\n+/g, "\n").trim();
+  };
+
   const handleCreateBlog = async () => {
     if (!newBlogArticle.title.trim()) {
       alert("El título es requerido");
       return;
     }
+    if (!newBlogArticle.excerpt.trim()) {
+      alert("El extracto es requerido");
+      return;
+    }
+    if (!newBlogArticle.content.trim()) {
+      alert("El contenido es requerido");
+      return;
+    }
     try {
-      await createBlog.mutateAsync({
-        title: newBlogArticle.title,
-        excerpt: newBlogArticle.excerpt,
-        content: newBlogArticle.content,
+      console.log("[Blog] Enviando datos:", {
+        title: newBlogArticle.title.substring(0, 50),
+        excerptLen: newBlogArticle.excerpt.length,
+        contentLen: newBlogArticle.content.length,
         author: newBlogArticle.author,
+        hasImage: !!newBlogArticle.image,
+      });
+      await createBlog.mutateAsync({
+        title: cleanText(newBlogArticle.title),
+        excerpt: cleanText(newBlogArticle.excerpt),
+        content: cleanText(newBlogArticle.content),
+        author: cleanText(newBlogArticle.author),
         image: newBlogArticle.image,
       });
       setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
@@ -115,8 +135,8 @@ export default function AdminPanel() {
       blogList.refetch();
       alert("Artículo creado exitosamente");
     } catch (error) {
-      alert("Error al crear artículo");
-      console.error(error);
+      console.error("[Blog] Error al crear artículo:", error);
+      alert("Error al crear artículo: " + (error instanceof Error ? error.message : "Error desconocido"));
     }
   };
 
