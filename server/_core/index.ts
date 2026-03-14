@@ -173,9 +173,6 @@ async function startServer() {
     }
   });
 
-  // Proxy endpoint para servir imágenes desde S3 sin problemas de CORS
-  // Endpoint proxy eliminado - las imágenes se cargan directamente desde el navegador
-
   // tRPC API
   registerLocalAuthRoutes(app);
   console.log("✅ LocalAuth registrado correctamente");

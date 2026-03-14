@@ -33,26 +33,14 @@ export default function Gallery() {
 
   const categories: GalleryCategory[] = categoriesData || [];
 
-  // Fetch all images using direct fetch (no cache)
-  const [imagesLoading, setImagesLoading] = useState(false);
+  // Fetch all images using tRPC
+  const { data: imagesData = [], isLoading: imagesLoading } = trpc.gallery.getAllImages.useQuery();
   
   useEffect(() => {
-    setImagesLoading(true);
-    fetch('/api/gallery/images?t=' + Date.now())
-      .then(res => res.json())
-      .then(data => {
-        if (data && Array.isArray(data)) {
-          setAllImages(data);
-        }
-      })
-      .catch(err => console.error('Error fetching images:', err))
-      .finally(() => setImagesLoading(false));
-  }, []); // Solo ejecutar una vez al montar
-
-  // Función para obtener URL proxy de imagen
-  const getImageUrl = (originalUrl: string) => {
-    return originalUrl; // Devolver URL original sin proxy
-  };
+    if (imagesData && Array.isArray(imagesData)) {
+      setAllImages(imagesData);
+    }
+  }, [imagesData]);
 
   const filteredImages = selectedCategory === "all" 
     ? allImages 
@@ -198,11 +186,11 @@ export default function Gallery() {
                 onClick={() => setSelectedImage(image)}
               >
                 <img
-                  src={getImageUrl(image.imageUrl)}
+                  src={image.imageUrl}
                   alt={image.title}
                   className="w-full h-64 object-cover"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ccc%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2216%22%3EImagen no disponible%3C/text%3E%3C/svg%3E';
+                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Imagen+no+disponible';
                   }}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition flex items-end p-4">
@@ -235,7 +223,7 @@ export default function Gallery() {
                 alt={selectedImage.title}
                 className={`w-full h-auto ${isZoomed ? "max-h-none" : "max-h-[80vh]"} object-contain transition-transform`}
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23ccc%22 width=%22600%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2220%22%3EImagen no disponible%3C/text%3E%3C/svg%3E';
+                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=Imagen+no+disponible';
                 }}
               />
             </div>
