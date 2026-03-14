@@ -11,7 +11,7 @@ interface BreadcrumbsProps {
   className?: string;
 }
 
-export default function Breadcrumbs({ items = [], className = "" }: BreadcrumbsProps) {
+export default function Breadcrumbs({ items, className = "" }: BreadcrumbsProps) {
   const [, navigate] = useLocation();
 
   return (
@@ -23,7 +23,7 @@ export default function Breadcrumbs({ items = [], className = "" }: BreadcrumbsP
         Inicio
       </button>
       
-      {items && items.map((item, index) => (
+      {items.map((item, index) => (
         <div key={index} className="flex items-center gap-2">
           <ChevronRight className="w-4 h-4 text-gray-400" />
           {item.href ? (

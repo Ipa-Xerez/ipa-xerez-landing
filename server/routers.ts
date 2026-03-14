@@ -453,7 +453,7 @@ export const appRouter = router({
       .mutation(({ input }) => db.deleteIpaMember(input.id)),
   }),
 
-   documents: router({
+  documents: router({
     getAll: publicProcedure.query(() => db.getPrivateDocuments()),
     getByType: publicProcedure
       .input(z.object({ type: z.string() }))
@@ -491,52 +491,6 @@ export const appRouter = router({
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deletePrivateDocument(input.id)),
   }),
-  gallery: router({
-    getCategories: publicProcedure.query(async () => {
-      return db.getGalleryCategories();
-    }),
-    getAllImages: publicProcedure.query(async () => {
-      return db.getAllGalleryImages();
-    }),
-    getCategoryBySlug: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
-      return db.getGalleryCategoryBySlug(input.slug);
-    }),
-    getImagesByCategory: publicProcedure.input(z.object({ categoryId: z.number() })).query(async ({ input }) => {
-      return db.getGalleryImagesByCategory(input.categoryId);
-    }),
-    createCategory: adminProcedure.input(z.object({
-      name: z.string().min(1),
-      description: z.string().optional(),
-      slug: z.string().min(1),
-      displayOrder: z.number().optional(),
-    })).mutation(async ({ input }) => {
-      return db.createGalleryCategory(input);
-    }),
-    createImage: adminProcedure.input(z.object({
-      categoryId: z.number(),
-      title: z.string().min(1),
-      description: z.string().optional(),
-      imageUrl: z.string().url(),
-      s3Key: z.string().optional(),
-      displayOrder: z.number().optional(),
-    })).mutation(async ({ input }) => {
-      return db.createGalleryImage(input);
-    }),
-    updateImage: adminProcedure.input(z.object({
-      id: z.number(),
-      title: z.string().optional(),
-      description: z.string().optional(),
-      displayOrder: z.number().optional(),
-    })).mutation(async ({ input }) => {
-      const { id, ...data } = input;
-      return db.updateGalleryImage(id, data);
-    }),
-    deleteImage: adminProcedure.input(z.object({ id: z.number() })).mutation(async ({ input }) => {
-      return db.deleteGalleryImage(input.id);
-    }),
-    deleteCategory: adminProcedure.input(z.object({ id: z.number() })).mutation(async ({ input }) => {
-      return db.deleteGalleryCategory(input.id);
-    }),
-  }),
+
 })
 export type AppRouter = typeof appRouter;

@@ -1,9 +1,0 @@
-{
-  "query": "DELETE FROM gallery_images; DELETE FROM gallery_categories;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute DELETE FROM gallery_images; DELETE FROM gallery_categories;",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 434
-}

@@ -1,9 +1,0 @@
-{
-  "query": "UPDATE gallery_images SET image_url = CONCAT('https://picsum.photos/600/400?random=', id) WHERE image_url LIKE '/%';",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute UPDATE gallery_images SET image_url = CONCAT('https://picsum.photos/600/400?random=', id) WHERE image_url LIKE '/%';",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 389
-}
