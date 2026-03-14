@@ -1,0 +1,35 @@
+{
+  "query": "SELECT id, title, image_url FROM gallery_images LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, image_url FROM gallery_images LIMIT 5;",
+  "rows": [
+    {
+      "id": "9",
+      "title": "Viaje a Nueva York - Día de la Hispanidad",
+      "image_url": "/images/image_9.jpg"
+    },
+    {
+      "id": "10",
+      "title": "Grupo en Times Square",
+      "image_url": "/images/image_10.jpg"
+    },
+    {
+      "id": "11",
+      "title": "Delegación en Estatua de la Libertad",
+      "image_url": "/images/image_11.jpg"
+    },
+    {
+      "id": "12",
+      "title": "Grupo en Aeropuerto Internacional",
+      "image_url": "/images/image_12.jpg"
+    },
+    {
+      "id": "13",
+      "title": "Delegación IPA Xerez",
+      "image_url": "/images/image_13.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\timage_url\n9\tViaje a Nueva York - Día de la Hispanidad\t/images/image_9.jpg\n10\tGrupo en Times Square\t/images/image_10.jpg\n11\tDelegación en Estatua de la Libertad\t/images/image_11.jpg\n12\tGrupo en Aeropuerto Internacional\t/images/image_12.jpg\n13\tDelegación IPA Xerez\t/images/image_13.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 363
+}
