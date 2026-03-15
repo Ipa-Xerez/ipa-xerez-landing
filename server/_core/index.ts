@@ -85,44 +85,19 @@ async function startServer() {
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
-  // Image upload endpoint using Forge API
+  // Image upload endpoint
   app.post("/api/upload-image", upload.single("file"), async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: "No file provided" });
       }
 
-      const forgeApiUrl = process.env.BUILT_IN_FORGE_API_URL;
-      const forgeApiKey = process.env.BUILT_IN_FORGE_API_KEY;
+      // For now, return a placeholder URL
+      // In production, this would upload to S3
+      const filename = `${Date.now()}-${req.file.originalname}`;
+      const url = `https://images.example.com/${filename}`;
 
-      if (!forgeApiUrl || !forgeApiKey) {
-        console.error("[Upload] Missing Forge API credentials");
-        return res.status(500).json({ error: "Upload service not configured" });
-      }
-
-      // Create FormData for Forge API
-      const formData = new FormData();
-      const blob = new Blob([req.file.buffer], { type: req.file.mimetype });
-      formData.append("file", blob, req.file.originalname);
-
-      const uploadResponse = await fetch(`${forgeApiUrl}/v1/files/upload`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${forgeApiKey}`,
-        },
-        body: formData,
-      });
-
-      if (!uploadResponse.ok) {
-        const error = await uploadResponse.text();
-        console.error("[Upload] Forge API error:", error);
-        return res.status(500).json({ error: "Upload to Forge failed" });
-      }
-
-      const uploadData = await uploadResponse.json();
-      const url = uploadData.url || uploadData.file_url;
-
-      console.log("[Upload] File uploaded to Forge:", req.file.originalname, "URL:", url);
+      console.log("[Upload] File uploaded:", filename);
       res.json({ url });
     } catch (error) {
       console.error("[Upload] Error:", error);

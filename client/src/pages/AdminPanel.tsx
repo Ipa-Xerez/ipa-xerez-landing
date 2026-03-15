@@ -2,7 +2,7 @@ import { useState } from "react";
 import { trpc } from "../lib/trpc";
 import { useLocation } from "wouter";
 
-type TabType = "blog" | "socios" | "documentos" | "galeria";
+type TabType = "blog" | "socios" | "documentos";
 
 export default function AdminPanel() {
   const [code, setCode] = useState("");
@@ -27,21 +27,6 @@ export default function AdminPanel() {
   const createDocument = trpc.documents.create.useMutation();
   const updateDocument = trpc.documents.update.useMutation();
   const deleteDocument = trpc.documents.delete.useMutation();
-
-  // Gallery state (declared early for use in queries)
-  const [selectedGalleryCategory, setSelectedGalleryCategory] = useState<number | null>(null);
-
-  // Gallery queries and mutations
-  const galleryCategories = trpc.gallery.getCategories.useQuery(undefined, { enabled: authenticated });
-  const createGalleryCategory = trpc.gallery.createCategory.useMutation();
-  const createGalleryImage = trpc.gallery.createImage.useMutation();
-  const updateGalleryImage = trpc.gallery.updateImage.useMutation();
-  const deleteGalleryImage = trpc.gallery.deleteImage.useMutation();
-  const deleteGalleryCategory = trpc.gallery.deleteCategory.useMutation();
-  const getGalleryImages = trpc.gallery.getImagesByCategory.useQuery(
-    { categoryId: selectedGalleryCategory || 0 },
-    { enabled: authenticated && !!selectedGalleryCategory }
-  );
 
   // Blog state
   const [newBlogArticle, setNewBlogArticle] = useState({
@@ -77,21 +62,6 @@ export default function AdminPanel() {
   });
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [editingDocId, setEditingDocId] = useState<number | null>(null);
-
-  // Gallery state
-  const [newGalleryCategory, setNewGalleryCategory] = useState({
-    name: "",
-    description: "",
-    slug: "",
-  });
-  const [newGalleryImage, setNewGalleryImage] = useState({
-    title: "",
-    description: "",
-    imageUrl: "",
-  });
-  const [galleryImageFile, setGalleryImageFile] = useState<File | null>(null);
-  const [galleryImagePreview, setGalleryImagePreview] = useState<string>("");
-  const [editingGalleryImageId, setEditingGalleryImageId] = useState<number | null>(null);
 
   const handleLogin = () => {
     if (code === "31907") {
@@ -430,102 +400,6 @@ export default function AdminPanel() {
     setNewDocument({ title: "", description: "", documentType: "private", url: "" });
   };
 
-  // Gallery handlers
-  const handleCreateGalleryCategory = async () => {
-    if (!newGalleryCategory.name || !newGalleryCategory.slug) {
-      alert("Por favor completa el nombre y slug de la categoría");
-      return;
-    }
-    try {
-      await createGalleryCategory.mutateAsync(newGalleryCategory);
-      setNewGalleryCategory({ name: "", description: "", slug: "" });
-      galleryCategories.refetch();
-      alert("Categoría creada exitosamente");
-    } catch (error) {
-      alert("Error al crear categoría");
-    }
-  };
-
-  const handleGalleryImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        alert("La imagen es demasiado grande. Máximo 10MB.");
-        return;
-      }
-      setGalleryImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setGalleryImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleCreateGalleryImage = async () => {
-    if (!selectedGalleryCategory) {
-      alert("Por favor selecciona una categoría");
-      return;
-    }
-    if (!newGalleryImage.title) {
-      alert("Por favor ingresa un título para la imagen");
-      return;
-    }
-    
-    try {
-      let imageUrl = newGalleryImage.imageUrl;
-      
-      if (galleryImageFile) {
-        imageUrl = await uploadImageToS3(galleryImageFile);
-      }
-      
-      if (!imageUrl) {
-        alert("Por favor sube una imagen o ingresa una URL");
-        return;
-      }
-      
-      await createGalleryImage.mutateAsync({
-        categoryId: selectedGalleryCategory,
-        title: newGalleryImage.title,
-        description: newGalleryImage.description,
-        imageUrl: imageUrl,
-      });
-      
-      setNewGalleryImage({ title: "", description: "", imageUrl: "" });
-      setGalleryImageFile(null);
-      setGalleryImagePreview("");
-      getGalleryImages.refetch();
-      alert("Imagen subida exitosamente");
-    } catch (error) {
-      alert("Error al subir imagen");
-    }
-  };
-
-  const handleDeleteGalleryImage = async (id: number) => {
-    if (confirm("¿Estás seguro de que quieres eliminar esta imagen?")) {
-      try {
-        await deleteGalleryImage.mutateAsync({ id });
-        getGalleryImages.refetch();
-        alert("Imagen eliminada exitosamente");
-      } catch (error) {
-        alert("Error al eliminar imagen");
-      }
-    }
-  };
-
-  const handleDeleteGalleryCategory = async (id: number) => {
-    if (confirm("¿Estás seguro de que quieres eliminar esta categoría y todas sus imágenes?")) {
-      try {
-        await deleteGalleryCategory.mutateAsync({ id });
-        setSelectedGalleryCategory(null);
-        galleryCategories.refetch();
-        alert("Categoría eliminada exitosamente");
-      } catch (error) {
-        alert("Error al eliminar categoría");
-      }
-    }
-  };
-
   if (!authenticated) {
     return (
       <div style={{ padding: 40, maxWidth: 400, margin: "0 auto", marginTop: 100 }}>
@@ -596,7 +470,7 @@ export default function AdminPanel() {
       </div>
 
       <div style={{ display: "flex", gap: 20, borderBottom: "2px solid #ddd", marginBottom: 30 }}>
-        {(["blog", "socios", "documentos", "galeria"] as const).map((tab) => (
+        {(["blog", "socios", "documentos"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -614,7 +488,6 @@ export default function AdminPanel() {
             {tab === "blog" && "📝 Blog"}
             {tab === "socios" && "👥 Socios"}
             {tab === "documentos" && "📄 Documentos"}
-            {tab === "galeria" && "🖼️ Galería"}
           </button>
         ))}
       </div>
@@ -1064,212 +937,6 @@ export default function AdminPanel() {
             </div>
           ) : (
             <p>No hay documentos registrados.</p>
-          )}
-        </div>
-      )}
-
-      {/* Galería Tab */}
-      {activeTab === "galeria" && (
-        <div>
-          <h2>Gestión de Galería</h2>
-
-          <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
-            <h3>Crear Nueva Categoría</h3>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="gallery-cat-name">Nombre de la Categoría:</label>
-              <input
-                id="gallery-cat-name"
-                name="gallery-cat-name"
-                type="text"
-                value={newGalleryCategory.name}
-                onChange={(e) => setNewGalleryCategory({ ...newGalleryCategory, name: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="gallery-cat-slug">Slug (URL amigable):</label>
-              <input
-                id="gallery-cat-slug"
-                name="gallery-cat-slug"
-                type="text"
-                value={newGalleryCategory.slug}
-                onChange={(e) => setNewGalleryCategory({ ...newGalleryCategory, slug: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="gallery-cat-desc">Descripción (opcional):</label>
-              <textarea
-                id="gallery-cat-desc"
-                name="gallery-cat-desc"
-                value={newGalleryCategory.description}
-                onChange={(e) => setNewGalleryCategory({ ...newGalleryCategory, description: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 60 }}
-              />
-            </div>
-            <button
-              onClick={handleCreateGalleryCategory}
-              style={{
-                padding: "10px 20px",
-                background: "#003366",
-                color: "white",
-                border: "none",
-                borderRadius: 4,
-                cursor: "pointer",
-                fontSize: 16,
-              }}
-            >
-              Crear Categoría
-            </button>
-          </div>
-
-          <h3>Categorías</h3>
-          {galleryCategories.isLoading ? (
-            <p>Cargando categorías...</p>
-          ) : galleryCategories.data && galleryCategories.data.length > 0 ? (
-            <div style={{ display: "grid", gap: 15, marginBottom: 30 }}>
-              {galleryCategories.data.map((category: any) => (
-                <div key={category.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #003366", cursor: "pointer" }}>
-                  <h4 onClick={() => setSelectedGalleryCategory(category.id)} style={{ margin: 0, marginBottom: 10, color: selectedGalleryCategory === category.id ? "#003366" : "#333" }}>
-                    {category.name}
-                  </h4>
-                  <p style={{ color: "#666", marginBottom: 10, fontSize: 14 }}>{category.description}</p>
-                  <div style={{ display: "flex", gap: 10 }}>
-                    <button
-                      onClick={() => setSelectedGalleryCategory(category.id)}
-                      style={{
-                        padding: "6px 12px",
-                        background: selectedGalleryCategory === category.id ? "#003366" : "#0066cc",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                        fontSize: 14,
-                      }}
-                    >
-                      {selectedGalleryCategory === category.id ? "Seleccionada" : "Seleccionar"}
-                    </button>
-                    <button
-                      onClick={() => handleDeleteGalleryCategory(category.id)}
-                      style={{
-                        padding: "6px 12px",
-                        background: "#ff4444",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                        fontSize: 14,
-                      }}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No hay categorías creadas.</p>
-          )}
-
-          {selectedGalleryCategory && (
-            <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
-              <h3>Subir Imagen a Categoría</h3>
-              <div style={{ marginBottom: 15 }}>
-                <label htmlFor="gallery-img-title">Título de la Imagen:</label>
-                <input
-                  id="gallery-img-title"
-                  name="gallery-img-title"
-                  type="text"
-                  value={newGalleryImage.title}
-                  onChange={(e) => setNewGalleryImage({ ...newGalleryImage, title: e.target.value })}
-                  style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-                />
-              </div>
-              <div style={{ marginBottom: 15 }}>
-                <label htmlFor="gallery-img-desc">Descripción (opcional):</label>
-                <textarea
-                  id="gallery-img-desc"
-                  name="gallery-img-desc"
-                  value={newGalleryImage.description}
-                  onChange={(e) => setNewGalleryImage({ ...newGalleryImage, description: e.target.value })}
-                  style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 60 }}
-                />
-              </div>
-              <div style={{ marginBottom: 15 }}>
-                <label htmlFor="gallery-img-file">Subir Imagen:</label>
-                <input
-                  id="gallery-img-file"
-                  name="gallery-img-file"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleGalleryImageChange}
-                  style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-                />
-                {galleryImagePreview && (
-                  <div style={{ marginTop: 10 }}>
-                    <img src={galleryImagePreview} alt="Preview" style={{ maxWidth: "100%", maxHeight: 200, borderRadius: 4 }} />
-                  </div>
-                )}
-              </div>
-              <div style={{ marginBottom: 15 }}>
-                <label htmlFor="gallery-img-url">O ingresa una URL de imagen:</label>
-                <input
-                  id="gallery-img-url"
-                  name="gallery-img-url"
-                  type="text"
-                  value={newGalleryImage.imageUrl}
-                  onChange={(e) => setNewGalleryImage({ ...newGalleryImage, imageUrl: e.target.value })}
-                  placeholder="https://ejemplo.com/imagen.jpg"
-                  style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-                />
-              </div>
-              <button
-                onClick={handleCreateGalleryImage}
-                style={{
-                  padding: "10px 20px",
-                  background: "#003366",
-                  color: "white",
-                  border: "none",
-                  borderRadius: 4,
-                  cursor: "pointer",
-                  fontSize: 16,
-                }}
-              >
-                Subir Imagen
-              </button>
-            </div>
-          )}
-
-          {selectedGalleryCategory && getGalleryImages.data && getGalleryImages.data.length > 0 && (
-            <div>
-              <h3>Imágenes de la Categoría</h3>
-              <div style={{ display: "grid", gap: 15, gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
-                {getGalleryImages.data.map((image: any) => (
-                  <div key={image.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #003366" }}>
-                    <img src={image.imageUrl} alt={image.title} style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 4, marginBottom: 10 }} />
-                    <h4 style={{ margin: 0, marginBottom: 5 }}>{image.title}</h4>
-                    <p style={{ color: "#666", marginBottom: 10, fontSize: 14 }}>{image.description}</p>
-                    <div style={{ display: "flex", gap: 10 }}>
-                      <button
-                        onClick={() => handleDeleteGalleryImage(image.id)}
-                        style={{
-                          padding: "6px 12px",
-                          background: "#ff4444",
-                          color: "white",
-                          border: "none",
-                          borderRadius: 4,
-                          cursor: "pointer",
-                          fontSize: 14,
-                          flex: 1,
-                        }}
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           )}
         </div>
       )}
