@@ -13,7 +13,7 @@ import { trpc } from "@/lib/trpc";
 import ImageCarousel from "@/components/ImageCarousel";
 
 const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/WdCcjBwVsNlQtuaX.jpg";
-const SERVICE1 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/qryPxOwfcjeRuuhi.png";
+const SERVICE1 = "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/mujeres-policia-ipa_4a639a77.png";
 const SERVICE2 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/wzfjUxFoBpcdYQUa.png";
 const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EIOozMpBSiOenCLv.png";
 const SERVICE4 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/XQLbepsewhNLSlYB.png";
