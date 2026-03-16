@@ -2,12 +2,21 @@ import { useState } from "react";
 import { trpc } from "../lib/trpc";
 import { useLocation } from "wouter";
 
-type TabType = "blog" | "socios" | "documentos";
+type TabType = "blog" | "socios" | "documentos" | "galeria";
 
 export default function AdminPanel() {
   const [code, setCode] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>("blog");
+
+  // Gallery queries and mutations
+  const galleryCategories = trpc.gallery.getCategories.useQuery(undefined, { enabled: authenticated });
+  const galleryImages = trpc.gallery.getImages.useQuery(undefined, { enabled: authenticated });
+  const createGalleryCategory = trpc.gallery.createCategory.useMutation();
+  const updateGalleryCategory = trpc.gallery.updateCategory.useMutation();
+  const deleteGalleryCategory = trpc.gallery.deleteCategory.useMutation();
+  const createGalleryImage = trpc.gallery.createImage.useMutation();
+  const deleteGalleryImage = trpc.gallery.deleteImage.useMutation();
   const [, navigate] = useLocation();
 
   // Blog queries and mutations
@@ -62,6 +71,15 @@ export default function AdminPanel() {
   });
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [editingDocId, setEditingDocId] = useState<number | null>(null);
+
+  // Gallery state
+  const [newGalleryCategory, setNewGalleryCategory] = useState({ name: "" });
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [galleryImageFile, setGalleryImageFile] = useState<File | null>(null);
+  const [galleryImagePreview, setGalleryImagePreview] = useState<string>("");
+  const [newGalleryImage, setNewGalleryImage] = useState({ title: "", description: "", image: "" });
+  const [editingImageId, setEditingImageId] = useState<number | null>(null);}
 
   const handleLogin = () => {
     if (code === "31907") {
@@ -470,7 +488,7 @@ export default function AdminPanel() {
       </div>
 
       <div style={{ display: "flex", gap: 20, borderBottom: "2px solid #ddd", marginBottom: 30 }}>
-        {(["blog", "socios", "documentos"] as const).map((tab) => (
+        {(["blog", "socios", "documentos", "galeria"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -488,6 +506,7 @@ export default function AdminPanel() {
             {tab === "blog" && "📝 Blog"}
             {tab === "socios" && "👥 Socios"}
             {tab === "documentos" && "📄 Documentos"}
+            {tab === "galeria" && "🖼️ Galería"}
           </button>
         ))}
       </div>
@@ -938,6 +957,216 @@ export default function AdminPanel() {
           ) : (
             <p>No hay documentos registrados.</p>
           )}
+        </div>
+      )}
+
+      {/* Gallery Tab */}
+      {activeTab === "galeria" && (
+        <div>
+          <h2>Gestión de Galería</h2>
+
+          {/* Create Category Section */}
+          <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
+            <h3>Crear Nueva Sección</h3>
+            <div style={{ marginBottom: 15 }}>
+              <label style={{ display: "block", marginBottom: 5, fontWeight: "bold" }}>Nombre de la Sección:</label>
+              <input
+                type="text"
+                placeholder="Ej: Ruta del Rif - Actividad IPA Xerez - Septiembre 2025"
+                value={newGalleryCategory.name}
+                onChange={(e) => setNewGalleryCategory({ name: e.target.value })}
+                style={{ width: "100%", padding: 10, border: "1px solid #ccc", borderRadius: 4, boxSizing: "border-box" }}
+              />
+            </div>
+            <button
+              onClick={async () => {
+                if (!newGalleryCategory.name.trim()) {
+                  alert("El nombre de la sección es requerido");
+                  return;
+                }
+                try {
+                  await createGalleryCategory.mutateAsync({ name: newGalleryCategory.name });
+                  setNewGalleryCategory({ name: "" });
+                  galleryCategories.refetch();
+                  alert("Sección creada exitosamente");
+                } catch (error) {
+                  alert("Error al crear sección");
+                }
+              }}
+              style={{
+                padding: "10px 20px",
+                background: "#003366",
+                color: "white",
+                border: "none",
+                borderRadius: 4,
+                cursor: "pointer",
+                fontSize: 14,
+              }}
+            >
+              Crear Sección
+            </button>
+          </div>
+
+          {/* Sections List */}
+          <div style={{ marginBottom: 30 }}>
+            <h3>Secciones Existentes</h3>
+            {galleryCategories.isLoading ? (
+              <p>Cargando secciones...</p>
+            ) : galleryCategories.data && galleryCategories.data.length > 0 ? (
+              <div style={{ display: "grid", gap: 15 }}>
+                {galleryCategories.data.map((category: any) => {
+                  const categoryImages = galleryImages.data?.filter((img: any) => img.categoryId === category.id) || [];
+                  return (
+                    <div key={category.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #d4af37" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                        <div>
+                          <h4>{category.name}</h4>
+                          <small style={{ color: "#666" }}>{categoryImages.length} imágenes</small>
+                        </div>
+                        <button
+                          onClick={() => {
+                            if (confirm("¿Estás seguro de que quieres eliminar esta sección y todas sus imágenes?")) {
+                              deleteGalleryCategory.mutate({ id: category.id }, {
+                                onSuccess: () => {
+                                  galleryCategories.refetch();
+                                  galleryImages.refetch();
+                                  alert("Sección eliminada");
+                                },
+                              });
+                            }
+                          }}
+                          style={{
+                            padding: "6px 12px",
+                            background: "#ff4444",
+                            color: "white",
+                            border: "none",
+                            borderRadius: 4,
+                            cursor: "pointer",
+                          }}
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+
+                      {/* Images in this category */}
+                      {categoryImages.length > 0 && (
+                        <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #ddd" }}>
+                          <small style={{ fontWeight: "bold", color: "#333" }}>Imágenes:</small>
+                          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: 10, marginTop: 10 }}>
+                            {categoryImages.map((image: any) => (
+                              <div key={image.id} style={{ position: "relative", borderRadius: 4, overflow: "hidden" }}>
+                                <img
+                                  src={image.image}
+                                  alt={image.title}
+                                  style={{ width: "100%", height: "100px", objectFit: "cover" }}
+                                />
+                                <button
+                                  onClick={() => {
+                                    if (confirm("¿Eliminar esta imagen?")) {
+                                      deleteGalleryImage.mutate({ id: image.id }, {
+                                        onSuccess: () => {
+                                          galleryImages.refetch();
+                                          alert("Imagen eliminada");
+                                        },
+                                      });
+                                    }
+                                  }}
+                                  style={{
+                                    position: "absolute",
+                                    top: 0,
+                                    right: 0,
+                                    background: "rgba(255, 68, 68, 0.9)",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: 0,
+                                    cursor: "pointer",
+                                    padding: "4px 8px",
+                                    fontSize: "12px",
+                                  }}
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Add image to category */}
+                      <div style={{ marginTop: 15, paddingTop: 15, borderTop: "1px solid #ddd" }}>
+                        <small style={{ fontWeight: "bold", color: "#333" }}>Agregar imagen:</small>
+                        <div style={{ display: "flex", gap: 10, marginTop: 10, flexWrap: "wrap" }}>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setGalleryImageFile(file);
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                  setGalleryImagePreview(reader.result as string);
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }}
+                            style={{ flex: 1, minWidth: "150px" }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Título de la imagen"
+                            value={newGalleryImage.title}
+                            onChange={(e) => setNewGalleryImage({ ...newGalleryImage, title: e.target.value })}
+                            style={{ flex: 1, minWidth: "150px", padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                          />
+                          <button
+                            onClick={async () => {
+                              if (!galleryImageFile) {
+                                alert("Selecciona una imagen");
+                                return;
+                              }
+                              if (!newGalleryImage.title.trim()) {
+                                alert("Ingresa un título para la imagen");
+                                return;
+                              }
+                              try {
+                                const imageUrl = await uploadImageToS3(galleryImageFile);
+                                await createGalleryImage.mutateAsync({
+                                  categoryId: category.id,
+                                  title: newGalleryImage.title,
+                                  description: newGalleryImage.description,
+                                  image: imageUrl,
+                                });
+                                setGalleryImageFile(null);
+                                setGalleryImagePreview("");
+                                setNewGalleryImage({ title: "", description: "", image: "" });
+                                galleryImages.refetch();
+                                alert("Imagen agregada exitosamente");
+                              } catch (error) {
+                                alert("Error al agregar imagen");
+                              }
+                            }}
+                            style={{
+                              padding: "8px 16px",
+                              background: "#0066cc",
+                              color: "white",
+                              border: "none",
+                              borderRadius: 4,
+                              cursor: "pointer",
+                            }}
+                          >
+                            Agregar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p>No hay secciones creadas. Crea una nueva sección arriba.</p>
+            )}
+          </div>
         </div>
       )}
     </div>

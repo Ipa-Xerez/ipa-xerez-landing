@@ -492,5 +492,30 @@ export const appRouter = router({
       .mutation(({ input }) => db.deletePrivateDocument(input.id)),
   }),
 
+  gallery: router({
+    getCategories: publicProcedure.query(() => db.getGalleryCategories()),
+    getImages: publicProcedure.query(() => db.getGalleryImages()),
+    createCategory: protectedProcedure
+      .input(z.object({ name: z.string() }))
+      .mutation(({ input }) => db.createGalleryCategory(input.name)),
+    updateCategory: protectedProcedure
+      .input(z.object({ id: z.number(), name: z.string() }))
+      .mutation(({ input }) => db.updateGalleryCategory(input.id, input.name)),
+    deleteCategory: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteGalleryCategory(input.id)),
+    createImage: protectedProcedure
+      .input(z.object({
+        categoryId: z.number(),
+        title: z.string(),
+        description: z.string().optional(),
+        image: z.string(),
+      }))
+      .mutation(({ input }) => db.createGalleryImage(input)),
+    deleteImage: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteGalleryImage(input.id)),
+  }),
+
 })
 export type AppRouter = typeof appRouter;
