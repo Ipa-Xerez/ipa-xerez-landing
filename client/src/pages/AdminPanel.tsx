@@ -1,35 +1,87 @@
 import { useState } from "react";
-import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, Images, FileText, Users } from "lucide-react";
+import { LogOut, Images, FileText, Users, Lock } from "lucide-react";
 import BenefitImagesAdmin from "./BenefitImagesAdmin";
 
 export default function AdminPanel() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const [code, setCode] = useState("");
+  const [authenticated, setAuthenticated] = useState(false);
   const [, navigate] = useLocation();
+  const [error, setError] = useState("");
 
-  // Check if user is admin
-  if (!isAuthenticated || user?.role !== "admin") {
+  const handleLogin = () => {
+    setError("");
+    if (code === "31907") {
+      setAuthenticated(true);
+      setCode("");
+    } else {
+      setError("Código incorrecto. Por favor intenta de nuevo.");
+      setCode("");
+    }
+  };
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+    setCode("");
+    setError("");
+  };
+
+  if (!authenticated) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Card className="p-8 max-w-md">
-          <h1 className="text-2xl font-bold mb-4">Acceso Denegado</h1>
-          <p className="text-gray-600 mb-6">Solo los administradores pueden acceder a esta página.</p>
-          <Button onClick={() => navigate("/")} className="w-full">
-            Volver al Inicio
-          </Button>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <Card className="p-8 max-w-md w-full shadow-lg">
+          <div className="flex items-center justify-center mb-6">
+            <div className="bg-indigo-600 p-3 rounded-lg">
+              <Lock className="w-6 h-6 text-white" />
+            </div>
+          </div>
+          
+          <h1 className="text-2xl font-bold text-center mb-2">Panel de Administración</h1>
+          <p className="text-gray-600 text-center mb-6">Ingresa tu código de acceso</p>
+
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 text-sm">{error}</p>
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Código de Acceso</label>
+              <Input
+                type="password"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleLogin()}
+                placeholder="Ingresa tu código"
+                className="w-full"
+              />
+            </div>
+
+            <Button
+              onClick={handleLogin}
+              disabled={!code}
+              className="w-full bg-indigo-600 hover:bg-indigo-700"
+            >
+              Acceder
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => navigate("/")}
+              className="w-full"
+            >
+              Volver al Inicio
+            </Button>
+          </div>
         </Card>
       </div>
     );
   }
-
-  const handleLogout = async () => {
-    await logout();
-    navigate("/");
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -38,7 +90,7 @@ export default function AdminPanel() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold">Panel de Administración</h1>
-            <p className="text-sm text-gray-600">Bienvenido, {user?.name || "Admin"}</p>
+            <p className="text-sm text-gray-600">Administrador conectado</p>
           </div>
           <Button
             variant="outline"
@@ -71,7 +123,7 @@ export default function AdminPanel() {
 
           {/* Benefit Images Tab */}
           <TabsContent value="benefit-images">
-            <BenefitImagesAdmin />
+            <BenefitImagesAdmin isAdminAuthenticated={authenticated} />
           </TabsContent>
 
           {/* Blog Tab */}

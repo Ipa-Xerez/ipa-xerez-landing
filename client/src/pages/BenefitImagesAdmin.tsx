@@ -8,7 +8,11 @@ import { Trash2, Upload, Edit2, AlertCircle } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
 
-export default function BenefitImagesAdmin() {
+interface BenefitImagesAdminProps {
+  isAdminAuthenticated?: boolean;
+}
+
+export default function BenefitImagesAdmin({ isAdminAuthenticated = false }: BenefitImagesAdminProps) {
   const { user, isAuthenticated } = useAuth();
   const [, navigate] = useLocation();
   const [isUploading, setIsUploading] = useState(false);
@@ -31,18 +35,18 @@ export default function BenefitImagesAdmin() {
   const updateMutation = trpc.benefitImages.update.useMutation();
   const deleteMutation = trpc.benefitImages.delete.useMutation();
 
-  // Check if user is admin
-  if (!isAuthenticated || user?.role !== "admin") {
+  // Check if user is admin (either OAuth or code-based auth)
+  const isAdmin = isAdminAuthenticated || (isAuthenticated && user?.role === "admin");
+
+  if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Card className="p-8 max-w-md">
-          <h1 className="text-2xl font-bold mb-4">Acceso Denegado</h1>
-          <p className="text-gray-600 mb-6">Solo los administradores pueden acceder a esta página.</p>
-          <Button onClick={() => navigate("/")} className="w-full">
-            Volver al Inicio
-          </Button>
-        </Card>
-      </div>
+      <Card className="p-8 max-w-md">
+        <h1 className="text-2xl font-bold mb-4">Acceso Denegado</h1>
+        <p className="text-gray-600 mb-6">Solo los administradores pueden acceder a esta página.</p>
+        <Button onClick={() => navigate("/")} className="w-full">
+          Volver al Inicio
+        </Button>
+      </Card>
     );
   }
 
