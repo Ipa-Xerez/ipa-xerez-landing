@@ -269,7 +269,7 @@ export default function Home() {
       {/* Dashboard Público - Estadísticas */}
       <section className="py-12 md:py-16 bg-gradient-to-b from-[#F5F5F5] to-white">
         <div className="container mx-auto px-4">
-          <h2 className="font-display text-3xl md:text-4xl text-[#003366] text-center mb-12 font-bold">IPA Xerez en Números</h2>
+          <h2 className="font-display text-3xl md:text-4xl text-[#003366] text-center mb-12 font-bold">I.P.A. en Números</h2>
           <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
             <Card className="border-0 shadow-lg text-center p-8 bg-white hover:shadow-xl transition-shadow">
               <Users className="w-12 h-12 text-[#D4AF37] mx-auto mb-4" />

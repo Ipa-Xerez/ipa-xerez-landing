@@ -450,37 +450,58 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Gallery Grid */}
+      {/* Gallery Grid - Grouped by Event */}
       <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredImages.map((image) => (
-              <div 
-                key={image.id}
-                onClick={() => setSelectedImage(image)}
-                className="group cursor-pointer rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-              >
-                <div className="relative overflow-hidden bg-gray-200 aspect-square">
-                  <img 
-                    src={image.src} 
-                    alt={image.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                      </svg>
+          {(() => {
+            // Group images by title (event)
+            const groupedImages = filteredImages.reduce((acc: any, image) => {
+              if (!acc[image.title]) {
+                acc[image.title] = [];
+              }
+              acc[image.title].push(image);
+              return acc;
+            }, {});
+
+            // Get unique event titles in order of appearance
+            const eventTitles = Object.keys(groupedImages);
+
+            return eventTitles.map((eventTitle, eventIndex) => (
+              <div key={eventIndex} className="mb-12">
+                <h2 className="font-heading text-2xl md:text-3xl text-[#003366] font-bold mb-6 pb-3 border-b-2 border-[#D4AF37]">
+                  {eventTitle}
+                </h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {groupedImages[eventTitle].map((image: GalleryImage) => (
+                    <div 
+                      key={image.id}
+                      onClick={() => setSelectedImage(image)}
+                      className="group cursor-pointer rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                    >
+                      <div className="relative overflow-hidden bg-gray-200 aspect-square">
+                        <img 
+                          src={image.src} 
+                          alt={image.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-heading text-lg text-[#003366] font-semibold mb-2">{image.title}</h3>
+                        <p className="text-gray-600 text-sm line-clamp-2">{image.description}</p>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-heading text-lg text-[#003366] font-semibold mb-2">{image.title}</h3>
-                  <p className="text-gray-600 text-sm line-clamp-2">{image.description}</p>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
+            ));
+          })()}
         </div>
       </section>
 
