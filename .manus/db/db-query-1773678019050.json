@@ -1,0 +1,142 @@
+{
+  "query": "SELECT gi.id, gi.category_id, gi.title, gc.name as category_name FROM gallery_images gi LEFT JOIN gallery_categories gc ON gi.category_id = gc.id ORDER BY gi.category_id, gi.title LIMIT 50",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT gi.id, gi.category_id, gi.title, gc.name as category_name FROM gallery_images gi LEFT JOIN gallery_categories gc ON gi.category_id = gc.id ORDER BY gi.category_id, gi.title LIMIT 50",
+  "rows": [
+    {
+      "id": "2",
+      "category_id": "2",
+      "title": "20260310_101521",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "3",
+      "category_id": "2",
+      "title": "20260310_101704",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "5",
+      "category_id": "2",
+      "title": "20260310_103815",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "6",
+      "category_id": "2",
+      "title": "20260310_105219",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "7",
+      "category_id": "2",
+      "title": "20260310_110529",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "8",
+      "category_id": "2",
+      "title": "20260310_110530",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "9",
+      "category_id": "2",
+      "title": "20260310_110644",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "10",
+      "category_id": "2",
+      "title": "20260310_110713",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "11",
+      "category_id": "2",
+      "title": "20260310_111236",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "12",
+      "category_id": "2",
+      "title": "20260310_111420",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "13",
+      "category_id": "2",
+      "title": "20260310_112124",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "14",
+      "category_id": "2",
+      "title": "20260310_112411",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "15",
+      "category_id": "2",
+      "title": "20260310_112506",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "16",
+      "category_id": "2",
+      "title": "20260310_112707",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "17",
+      "category_id": "2",
+      "title": "20260310_113632",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "18",
+      "category_id": "2",
+      "title": "20260310_113950",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "19",
+      "category_id": "2",
+      "title": "20260310_114036",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "20",
+      "category_id": "2",
+      "title": "20260310_114144",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "21",
+      "category_id": "2",
+      "title": "20260310_114412",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "4",
+      "category_id": "2",
+      "title": "20260310_114803",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "22",
+      "category_id": "2",
+      "title": "20260310_115049",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    },
+    {
+      "id": "1",
+      "category_id": "2",
+      "title": "Motoristas",
+      "category_name": "Memorial F7 Ana Navarro 2026"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcategory_id\ttitle\tcategory_name\n2\t2\t20260310_101521\tMemorial F7 Ana Navarro 2026\n3\t2\t20260310_101704\tMemorial F7 Ana Navarro 2026\n5\t2\t20260310_103815\tMemorial F7 Ana Navarro 2026\n6\t2\t20260310_105219\tMemorial F7 Ana Navarro 2026\n7\t2\t20260310_110529\tMemorial F7 Ana Navarro 2026\n8\t2\t20260310_110530\tMemorial F7 Ana Navarro 2026\n9\t2\t20260310_110644\tMemorial F7 Ana Navarro 2026\n10\t2\t20260310_110713\tMemorial F7 Ana Navarro 2026\n11\t2\t20260310_111236\tMemorial F7 Ana Navarro 2026\n12\t2\t20260310_111420\tMemorial F7 Ana Navarro 2026\n13\t2\t20260310_112124\tMemorial F7 Ana Navarro 2026\n14\t2\t20260310_112411\tMemorial F7 Ana Navarro 2026\n15\t2\t20260310_112506\tMemorial F7 Ana Navarro 2026\n16\t2\t20260310_112707\tMemorial F7 Ana Navarro 2026\n17\t2\t20260310_113632\tMemorial F7 Ana Navarro 2026\n18\t2\t20260310_113950\tMemorial F7 Ana Navarro 2026\n19\t2\t20260310_114036\tMemorial F7 Ana Navarro 2026\n20\t2\t20260310_114144\tMemorial F7 Ana Navarro 2026\n21\t2\t20260310_114412\tMemorial F7 Ana Navarro 2026\n4\t2\t20260310_114803\tMemorial F7 Ana Navarro 2026\n22\t2\t20260310_115049\tMemorial F7 Ana Navarro 2026\n1\t2\tMotoristas\tMemorial F7 Ana Navarro 2026\n",
+  "stderr": "",
+  "execution_time_ms": 492
+}

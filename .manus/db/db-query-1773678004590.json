@@ -1,0 +1,14 @@
+{
+  "query": "SELECT id, name FROM gallery_categories ORDER BY name",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, name FROM gallery_categories ORDER BY name",
+  "rows": [
+    {
+      "id": "2",
+      "name": "Memorial F7 Ana Navarro 2026"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\n2\tMemorial F7 Ana Navarro 2026\n",
+  "stderr": "",
+  "execution_time_ms": 372
+}
