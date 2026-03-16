@@ -141,6 +141,13 @@
       "when": 1773660386559,
       "tag": "0019_smiling_maddog",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1773673161426,
+      "tag": "0020_supreme_callisto",
+      "breakpoints": true
     }
   ]
 }
