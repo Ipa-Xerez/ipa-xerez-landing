@@ -5,13 +5,16 @@ import { ChevronLeft, ChevronRight, MapPin, Calendar as CalendarIcon } from "luc
 import { useLocation } from "wouter";
 import BackButton from "@/components/BackButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { trpc } from "@/lib/trpc";
+import { formatLocalDate } from "@/lib/dateUtils";
 
 interface Event {
-  id: string;
+  id: string | number;
   name: string;
-  date: string;
-  startDate: Date;
-  endDate: Date;
+  title?: string;
+  date: string | Date;
+  startDate?: Date;
+  endDate?: Date;
   location: string;
   country: string;
   type: "local" | "international";
@@ -22,8 +25,8 @@ interface Event {
 export default function Calendar() {
   const [, navigate] = useLocation();
   const [currentDate, setCurrentDate] = useState(new Date()); // Fecha actual
-  const [events, setEvents] = useState<Event[]>([]);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [events, setEvents] = useState<any[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Eventos locales de IPA Xerez
@@ -31,7 +34,7 @@ export default function Calendar() {
     {
       id: "police-week",
       name: "Police Week Washington 2026",
-      date: "11-17 Mayo 2026",
+      date: new Date(2026, 4, 11),
       startDate: new Date(2026, 4, 11),
       endDate: new Date(2026, 4, 17),
       location: "Washington D.C.",
@@ -43,7 +46,7 @@ export default function Calendar() {
     {
       id: "puy-du-fou",
       name: "Puy du Fou - Especial IPA",
-      date: "17-19 Abril 2026",
+      date: new Date(2026, 3, 17),
       startDate: new Date(2026, 3, 17),
       endDate: new Date(2026, 3, 19),
       location: "Torrejón de Ardoz, Francia",
@@ -59,7 +62,7 @@ export default function Calendar() {
     {
       id: "gimborn-crypto",
       name: "IBZ Gimborn Crypto Fundamentals",
-      date: "9-11 Marzo 2026",
+      date: new Date(2026, 2, 9),
       startDate: new Date(2026, 2, 9),
       endDate: new Date(2026, 2, 11),
       location: "Alemania",
@@ -70,7 +73,7 @@ export default function Calendar() {
     {
       id: "italy-congress",
       name: "IPA Italy National Congress 2026",
-      date: "4-8 Marzo 2026",
+      date: new Date(2026, 2, 4),
       startDate: new Date(2026, 2, 4),
       endDate: new Date(2026, 2, 8),
       location: "Italia",
@@ -81,7 +84,7 @@ export default function Calendar() {
     {
       id: "austria-hiking",
       name: "IPA Austria Hiking Week",
-      date: "14-21 Junio 2026",
+      date: new Date(2026, 5, 14),
       startDate: new Date(2026, 5, 14),
       endDate: new Date(2026, 5, 21),
       location: "Nassfeld, Austria",
@@ -92,7 +95,7 @@ export default function Calendar() {
     {
       id: "peru-friendship",
       name: "IPA Peru Friendship Week",
-      date: "2-6 Mayo 2026",
+      date: new Date(2026, 4, 2),
       startDate: new Date(2026, 4, 2),
       endDate: new Date(2026, 4, 6),
       location: "Perú",
@@ -102,11 +105,24 @@ export default function Calendar() {
     }
   ];
 
+  const { data: dbEvents, isLoading: isLoadingEvents } = trpc.events.getAll.useQuery();
+
   useEffect(() => {
-    // Combinar eventos locales e internacionales
-    setEvents([...localEvents, ...internationalEvents]);
-    setLoading(false);
-  }, []);
+    if (dbEvents) {
+      // Combinar eventos locales (hardcoded) con los de la base de datos
+      const combinedEvents = [
+        ...localEvents,
+        ...internationalEvents,
+        ...dbEvents.map(e => ({
+          ...e,
+          name: e.title,
+          type: "local"
+        }))
+      ];
+      setEvents(combinedEvents);
+      setLoading(false);
+    }
+  }, [dbEvents]);
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -118,10 +134,21 @@ export default function Calendar() {
 
   const getEventsForDay = (day: number) => {
     return events.filter(event => {
-      const eventStart = event.startDate;
-      const eventEnd = event.endDate;
-      const checkDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-      return checkDate >= eventStart && checkDate <= eventEnd;
+      const eventDate = new Date(event.date);
+      // Para eventos hardcoded usamos la fecha local, para DB usamos UTC
+      if (typeof event.id === 'string') {
+        return (
+          eventDate.getDate() === day &&
+          eventDate.getMonth() === currentDate.getMonth() &&
+          eventDate.getFullYear() === currentDate.getFullYear()
+        );
+      } else {
+        return (
+          eventDate.getUTCDate() === day &&
+          eventDate.getUTCMonth() === currentDate.getMonth() &&
+          eventDate.getUTCFullYear() === currentDate.getFullYear()
+        );
+      }
     });
   };
 
@@ -138,8 +165,12 @@ export default function Calendar() {
   const firstDay = getFirstDayOfMonth(currentDate);
   const days = [];
 
+  // Ajustar para que la semana empiece en Lunes (0=Dom, 1=Lun...)
+  // Si firstDay es 0 (Domingo), lo pasamos a 6. Si es > 0, restamos 1.
+  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
+
   // Agregar celdas vacías al inicio
-  for (let i = 0; i < firstDay; i++) {
+  for (let i = 0; i < adjustedFirstDay; i++) {
     days.push(null);
   }
 
@@ -148,7 +179,7 @@ export default function Calendar() {
     days.push(i);
   }
 
-  if (loading) {
+  if (loading || isLoadingEvents) {
     return <div className="min-h-screen flex items-center justify-center">Cargando eventos...</div>;
   }
 
@@ -268,7 +299,7 @@ export default function Calendar() {
                   <div className="flex items-start gap-2 text-sm">
                     <CalendarIcon className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-gray-700">{selectedEvent.date}</p>
+                      <p className="font-semibold text-gray-700">{formatLocalDate(selectedEvent.date)}</p>
                     </div>
                   </div>
 
@@ -308,8 +339,8 @@ export default function Calendar() {
                 <h4 className="font-bold text-[#003366] mb-4">Próximos Eventos</h4>
                 <div className="space-y-3 max-h-96 overflow-y-auto">
                   {events
-                    .filter(e => e.startDate >= currentDate)
-                    .sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
+                    .filter(e => new Date(e.date) >= new Date())
+                    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
                     .slice(0, 5)
                     .map(event => (
                       <div
@@ -318,7 +349,7 @@ export default function Calendar() {
                         onClick={() => setSelectedEvent(event)}
                       >
                         <p className="font-semibold text-sm text-[#003366] line-clamp-2">{event.name}</p>
-                        <p className="text-xs text-gray-600 mt-1">{event.date}</p>
+                        <p className="text-xs text-gray-600 mt-1">{formatLocalDate(event.date)}</p>
                       </div>
                     ))}
                 </div>

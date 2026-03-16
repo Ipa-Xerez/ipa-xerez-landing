@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
+import { formatLocalDate } from "@/lib/dateUtils";
 
 export default function EventsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -84,12 +85,7 @@ export default function EventsCarousel() {
             <div className="flex flex-wrap gap-4 text-sm">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>{new Date(currentEvent.date).toLocaleDateString("es-ES", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}</span>
+                <span>{formatLocalDate(currentEvent.date)}</span>
               </div>
               {currentEvent.location && (
                 <div className="flex items-center gap-2">
@@ -184,6 +180,7 @@ export default function EventsCarousel() {
                   {new Date(event.date).toLocaleDateString("es-ES", {
                     month: "short",
                     day: "numeric",
+                    timeZone: "UTC"
                   })}
                 </p>
               </div>

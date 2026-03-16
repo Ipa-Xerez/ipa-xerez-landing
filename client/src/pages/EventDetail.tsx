@@ -2,6 +2,7 @@ import { useRoute, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Clock, ArrowLeft, Share2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
+import { formatLocalDate } from "@/lib/dateUtils";
 
 const POLICE_WEEK_POSTER = "/poster-washington.jpg";
 
@@ -41,7 +42,7 @@ export default function EventDetail() {
   }
 
   const handleWhatsApp = () => {
-    const message = `Hola, me interesa la actividad de ${event.title} del ${new Date(event.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}.`;
+    const message = `Hola, me interesa la actividad de ${event.title} del ${new Date(event.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', timeZone: 'UTC' })}.`;
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/34675508110?text=${encodedMessage}`, '_blank');
   };
@@ -80,7 +81,7 @@ export default function EventDetail() {
                 <div className="flex items-start gap-3">
                   <Calendar className="w-5 h-5 text-[#D4AF37] mt-1" />
                   <div>
-                    <p className="font-bold text-[#003366]">{new Date(event.date).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <p className="font-bold text-[#003366]">{formatLocalDate(event.date)}</p>
                   </div>
                 </div>
 
@@ -108,7 +109,7 @@ export default function EventDetail() {
               </Button>
               <Button 
                 onClick={() => {
-                  const text = `Mira este evento de IPA Xerez: ${event.title} - ${new Date(event.date).toLocaleDateString('es-ES')}`;
+                  const text = `Mira este evento de IPA Xerez: ${event.title} - ${new Date(event.date).toLocaleDateString('es-ES', { timeZone: 'UTC' })}`;
                   const url = window.location.href;
                   navigator.share?.({ title: event.title, text, url }) || 
                   window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
