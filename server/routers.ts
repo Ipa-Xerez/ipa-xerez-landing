@@ -490,42 +490,7 @@ export const appRouter = router({
     delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deletePrivateDocument(input.id)),
-   }),
-  benefitImages: router({
-    getAll: publicProcedure.query(() => db.getBenefitImages()),
-    getById: publicProcedure
-      .input(z.object({ id: z.number() }))
-      .query(({ input }) => db.getBenefitImageById(input.id)),
-    create: adminProcedure
-      .input(z.object({
-        name: z.string(),
-        imageUrl: z.string(),
-        imageKey: z.string(),
-        description: z.string().optional(),
-        position: z.number().optional(),
-        isActive: z.number().optional(),
-      }))
-      .mutation(({ input, ctx }) => db.createBenefitImage({
-        ...input,
-        uploadedBy: ctx.user?.id,
-      })),
-    update: adminProcedure
-      .input(z.object({
-        id: z.number(),
-        name: z.string().optional(),
-        imageUrl: z.string().optional(),
-        imageKey: z.string().optional(),
-        description: z.string().optional(),
-        position: z.number().optional(),
-        isActive: z.number().optional(),
-      }))
-      .mutation(({ input }) => {
-        const { id, ...data } = input;
-        return db.updateBenefitImage(id, data);
-      }),
-    delete: adminProcedure
-      .input(z.object({ id: z.number() }))
-      .mutation(({ input }) => db.deleteBenefitImage(input.id)),
   }),
+
 })
 export type AppRouter = typeof appRouter;

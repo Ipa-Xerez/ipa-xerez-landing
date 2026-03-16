@@ -22,7 +22,6 @@ import MembersArea from "./pages/MembersArea";
 import Inscription from "./pages/Inscription";
 import Blog from "./pages/Blog";
 import AdminPanel from "./pages/AdminPanel";
-import BenefitImagesAdmin from "./pages/BenefitImagesAdmin";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -44,7 +43,6 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/admin" component={AdminPanel} />
       <Route path="/admin-blog" component={AdminBlog} />
-      <Route path="/admin-benefit-images" component={BenefitImagesAdmin} />
       <Route path="/socios" component={MembersArea} />
       <Route path={"/404"} component={NotFound} />
       

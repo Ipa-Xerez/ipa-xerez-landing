@@ -1,6 +1,6 @@
 import { eq, gte, lte, and, count, countDistinct, desc, or, like, inArray, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator, eventRegistrations, InsertEventRegistration, EventRegistration, ipaMembers, InsertIpaMember, IpaMember, privateDocuments, InsertPrivateDocument, PrivateDocument, memberAccessLogs, InsertMemberAccessLog, benefitImages, BenefitImage, InsertBenefitImage } from "../drizzle/schema";
+import { InsertUser, users, events, InsertEvent, Event, contacts, InsertContact, Contact, newsletterSubscribers, InsertNewsletterSubscriber, NewsletterSubscriber, newsletterCampaigns, InsertNewsletterCampaign, NewsletterCampaign, unsubscribeTokens, InsertUnsubscribeToken, UnsubscribeToken, newsletterOpens, newsletterClicks, blogPosts, BlogPost, InsertBlogPost, administrators, Administrator, InsertAdministrator, eventRegistrations, InsertEventRegistration, EventRegistration, ipaMembers, InsertIpaMember, IpaMember, privateDocuments, InsertPrivateDocument, PrivateDocument, memberAccessLogs, InsertMemberAccessLog } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 
@@ -1205,89 +1205,5 @@ export async function getMemberDownloadHistory(memberId: number) {
   } catch (error) {
     console.error("[Documents] Error getting member download history:", error);
     throw error;
-  }
-}
-
-
-// Benefit Images queries
-export async function createBenefitImage(image: InsertBenefitImage): Promise<BenefitImage | null> {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot create benefit image: database not available");
-    return null;
-  }
-
-  try {
-    const result = await db.insert(benefitImages).values(image);
-    const newImage = await db.select().from(benefitImages).where(eq(benefitImages.id, result[0].insertId as number)).limit(1);
-    return newImage.length > 0 ? newImage[0] : null;
-  } catch (error) {
-    console.error("[Database] Failed to create benefit image:", error);
-    throw error;
-  }
-}
-
-export async function getBenefitImages(): Promise<BenefitImage[]> {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot get benefit images: database not available");
-    return [];
-  }
-
-  try {
-    const result = await db.select().from(benefitImages).where(eq(benefitImages.isActive, 1)).orderBy(benefitImages.position);
-    return result;
-  } catch (error) {
-    console.error("[Database] Failed to get benefit images:", error);
-    return [];
-  }
-}
-
-export async function getBenefitImageById(id: number): Promise<BenefitImage | null> {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot get benefit image: database not available");
-    return null;
-  }
-
-  try {
-    const result = await db.select().from(benefitImages).where(eq(benefitImages.id, id)).limit(1);
-    return result.length > 0 ? result[0] : null;
-  } catch (error) {
-    console.error("[Database] Failed to get benefit image:", error);
-    return null;
-  }
-}
-
-export async function updateBenefitImage(id: number, image: Partial<InsertBenefitImage>): Promise<BenefitImage | null> {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot update benefit image: database not available");
-    return null;
-  }
-
-  try {
-    await db.update(benefitImages).set(image).where(eq(benefitImages.id, id));
-    const result = await db.select().from(benefitImages).where(eq(benefitImages.id, id)).limit(1);
-    return result.length > 0 ? result[0] : null;
-  } catch (error) {
-    console.error("[Database] Failed to update benefit image:", error);
-    return null;
-  }
-}
-
-export async function deleteBenefitImage(id: number): Promise<boolean> {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot delete benefit image: database not available");
-    return false;
-  }
-
-  try {
-    await db.delete(benefitImages).where(eq(benefitImages.id, id));
-    return true;
-  } catch (error) {
-    console.error("[Database] Failed to delete benefit image:", error);
-    return false;
   }
 }
