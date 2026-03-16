@@ -1,0 +1,142 @@
+{
+  "query": "SELECT id, category_id, title, image_url FROM gallery_images ORDER BY id",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, category_id, title, image_url FROM gallery_images ORDER BY id",
+  "rows": [
+    {
+      "id": "1",
+      "category_id": "2",
+      "title": "Motoristas",
+      "image_url": "https://images.example.com/1773674576076-1001723700.jpg"
+    },
+    {
+      "id": "2",
+      "category_id": "2",
+      "title": "20260310_101521",
+      "image_url": "https://images.example.com/1773676978784-20260310_101521.jpg"
+    },
+    {
+      "id": "3",
+      "category_id": "2",
+      "title": "20260310_101704",
+      "image_url": "https://images.example.com/1773676980212-20260310_101704.jpg"
+    },
+    {
+      "id": "4",
+      "category_id": "2",
+      "title": "20260310_114803",
+      "image_url": "https://images.example.com/1773676981442-20260310_114803.jpg"
+    },
+    {
+      "id": "5",
+      "category_id": "2",
+      "title": "20260310_103815",
+      "image_url": "https://images.example.com/1773677229371-20260310_103815.jpg"
+    },
+    {
+      "id": "6",
+      "category_id": "2",
+      "title": "20260310_105219",
+      "image_url": "https://images.example.com/1773677230595-20260310_105219.jpg"
+    },
+    {
+      "id": "7",
+      "category_id": "2",
+      "title": "20260310_110529",
+      "image_url": "https://images.example.com/1773677231838-20260310_110529.jpg"
+    },
+    {
+      "id": "8",
+      "category_id": "2",
+      "title": "20260310_110530",
+      "image_url": "https://images.example.com/1773677233028-20260310_110530.jpg"
+    },
+    {
+      "id": "9",
+      "category_id": "2",
+      "title": "20260310_110644",
+      "image_url": "https://images.example.com/1773677234243-20260310_110644.jpg"
+    },
+    {
+      "id": "10",
+      "category_id": "2",
+      "title": "20260310_110713",
+      "image_url": "https://images.example.com/1773677235480-20260310_110713.jpg"
+    },
+    {
+      "id": "11",
+      "category_id": "2",
+      "title": "20260310_111236",
+      "image_url": "https://images.example.com/1773677236210-20260310_111236.jpg"
+    },
+    {
+      "id": "12",
+      "category_id": "2",
+      "title": "20260310_111420",
+      "image_url": "https://images.example.com/1773677237520-20260310_111420.jpg"
+    },
+    {
+      "id": "13",
+      "category_id": "2",
+      "title": "20260310_112124",
+      "image_url": "https://images.example.com/1773677238710-20260310_112124.jpg"
+    },
+    {
+      "id": "14",
+      "category_id": "2",
+      "title": "20260310_112411",
+      "image_url": "https://images.example.com/1773677239677-20260310_112411.jpg"
+    },
+    {
+      "id": "15",
+      "category_id": "2",
+      "title": "20260310_112506",
+      "image_url": "https://images.example.com/1773677240469-20260310_112506.jpg"
+    },
+    {
+      "id": "16",
+      "category_id": "2",
+      "title": "20260310_112707",
+      "image_url": "https://images.example.com/1773677241196-20260310_112707.jpg"
+    },
+    {
+      "id": "17",
+      "category_id": "2",
+      "title": "20260310_113632",
+      "image_url": "https://images.example.com/1773677242098-20260310_113632.jpg"
+    },
+    {
+      "id": "18",
+      "category_id": "2",
+      "title": "20260310_113950",
+      "image_url": "https://images.example.com/1773677242658-20260310_113950.jpg"
+    },
+    {
+      "id": "19",
+      "category_id": "2",
+      "title": "20260310_114036",
+      "image_url": "https://images.example.com/1773677243319-20260310_114036.jpg"
+    },
+    {
+      "id": "20",
+      "category_id": "2",
+      "title": "20260310_114144",
+      "image_url": "https://images.example.com/1773677243961-20260310_114144.jpg"
+    },
+    {
+      "id": "21",
+      "category_id": "2",
+      "title": "20260310_114412",
+      "image_url": "https://images.example.com/1773677244619-20260310_114412.jpg"
+    },
+    {
+      "id": "22",
+      "category_id": "2",
+      "title": "20260310_115049",
+      "image_url": "https://images.example.com/1773677245774-20260310_115049.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcategory_id\ttitle\timage_url\n1\t2\tMotoristas\thttps://images.example.com/1773674576076-1001723700.jpg\n2\t2\t20260310_101521\thttps://images.example.com/1773676978784-20260310_101521.jpg\n3\t2\t20260310_101704\thttps://images.example.com/1773676980212-20260310_101704.jpg\n4\t2\t20260310_114803\thttps://images.example.com/1773676981442-20260310_114803.jpg\n5\t2\t20260310_103815\thttps://images.example.com/1773677229371-20260310_103815.jpg\n6\t2\t20260310_105219\thttps://images.example.com/1773677230595-20260310_105219.jpg\n7\t2\t20260310_110529\thttps://images.example.com/1773677231838-20260310_110529.jpg\n8\t2\t20260310_110530\thttps://images.example.com/1773677233028-20260310_110530.jpg\n9\t2\t20260310_110644\thttps://images.example.com/1773677234243-20260310_110644.jpg\n10\t2\t20260310_110713\thttps://images.example.com/1773677235480-20260310_110713.jpg\n11\t2\t20260310_111236\thttps://images.example.com/1773677236210-20260310_111236.jpg\n12\t2\t20260310_111420\thttps://images.example.com/1773677237520-20260310_111420.jpg\n13\t2\t20260310_112124\thttps://images.example.com/1773677238710-20260310_112124.jpg\n14\t2\t20260310_112411\thttps://images.example.com/1773677239677-20260310_112411.jpg\n15\t2\t20260310_112506\thttps://images.example.com/1773677240469-20260310_112506.jpg\n16\t2\t20260310_112707\thttps://images.example.com/1773677241196-20260310_112707.jpg\n17\t2\t20260310_113632\thttps://images.example.com/1773677242098-20260310_113632.jpg\n18\t2\t20260310_113950\thttps://images.example.com/1773677242658-20260310_113950.jpg\n19\t2\t20260310_114036\thttps://images.example.com/1773677243319-20260310_114036.jpg\n20\t2\t20260310_114144\thttps://images.example.com/1773677243961-20260310_114144.jpg\n21\t2\t20260310_114412\thttps://images.example.com/1773677244619-20260310_114412.jpg\n22\t2\t20260310_115049\thttps://images.example.com/1773677245774-20260310_115049.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 425
+}
