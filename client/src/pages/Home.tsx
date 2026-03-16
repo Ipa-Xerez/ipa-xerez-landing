@@ -15,7 +15,7 @@ import ImageCarousel from "@/components/ImageCarousel";
 const HERO_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/WdCcjBwVsNlQtuaX.jpg";
 const SERVICE1 = "https://d2xsxph8kpxj0f.cloudfront.net/310419663030391939/TPXNrRKBQNE8qaxNyKenmM/mujeres-policia-ipa_4a639a77.png";
 const SERVICE2 = "https://d2xsxph8kpxj0f.cloudfront.net/310519663421913799/33rfHvhFT7VuWDSaUcdyHg/file_0000000096347246b577bcaa7fd3942f_76a1f15e.png";
-const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EIOozMpBSiOenCLv.png";
+const SERVICE3 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/ZLqgMcqnfotEUgPf.webp";
 const SERVICE4 = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/XQLbepsewhNLSlYB.png";
 const POLICE_WEEK_POSTER = "/poster-washington.jpg";
 const INSCRIPTION_FORM = "/INSCRIPCION.pdf";
