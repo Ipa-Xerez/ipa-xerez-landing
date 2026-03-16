@@ -493,7 +493,6 @@ export const appRouter = router({
   }),
 
   gallery: router({
-    getAll: publicProcedure.query(() => db.getGalleryWithCategories()),
     getCategories: publicProcedure.query(() => db.getGalleryCategories()),
     getImages: publicProcedure.query(() => db.getGalleryImages()),
     createCategory: publicProcedure

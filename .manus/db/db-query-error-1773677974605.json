@@ -1,8 +1,0 @@
-{
-  "query": "SELECT DISTINCT category_id, category_name FROM gallery_categories ORDER BY category_name",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT DISTINCT category_id, category_name FROM gallery_categories ORDER BY category_name",
-  "returncode": 1,
-  "logs": [
-    "ERROR 1054 (42S22) at line 1: Unknown column 'category_id' in 'field list'"
-  ]
-}

@@ -1209,34 +1209,6 @@ export async function getMemberDownloadHistory(memberId: number) {
 }
 
 // Gallery queries
-export async function getGalleryWithCategories() {
-  const db = await getDb();
-  if (!db) return [];
-  try {
-    const { galleryImages, galleryCategories } = await import("../drizzle/schema");
-    const { eq } = await import("drizzle-orm");
-    
-    const images = await db
-      .select({
-        id: galleryImages.id,
-        categoryId: galleryImages.categoryId,
-        categoryName: galleryCategories.name,
-        title: galleryImages.title,
-        description: galleryImages.description,
-        imageUrl: galleryImages.imageUrl,
-        displayOrder: galleryImages.displayOrder,
-      })
-      .from(galleryImages)
-      .leftJoin(galleryCategories, eq(galleryImages.categoryId, galleryCategories.id))
-      .orderBy(galleryImages.displayOrder);
-    
-    return images;
-  } catch (error) {
-    console.error("[Database] Failed to get gallery with categories:", error);
-    return [];
-  }
-}
-
 export async function getGalleryCategories() {
   const db = await getDb();
   if (!db) return [];
