@@ -41,7 +41,7 @@ function Router() {
       
       {/* Admin routes */}
       <Route path="/login" component={Login} />
-      <Route path="/admin" component={AdminPanel} />
+      {/* <Route path="/admin" component={AdminPanel} /> */}
       <Route path="/admin-blog" component={AdminBlog} />
       <Route path="/socios" component={MembersArea} />
       <Route path={"/404"} component={NotFound} />
