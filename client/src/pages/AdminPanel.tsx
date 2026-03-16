@@ -990,7 +990,9 @@ export default function AdminPanel() {
                   galleryCategories.refetch();
                   alert("Sección creada exitosamente");
                 } catch (error) {
-                  alert("Error al crear sección");
+                  console.error("[Gallery] Error creating category:", error);
+                  const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+                  alert("Error al crear sección: " + errorMessage);
                 }
               }}
               style={{
