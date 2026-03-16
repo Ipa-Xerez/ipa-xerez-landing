@@ -76,9 +76,10 @@ export default function AdminPanel() {
   const [newGalleryCategory, setNewGalleryCategory] = useState({ name: "" });
   const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
-  const [galleryImageFile, setGalleryImageFile] = useState<File | null>(null);
-  const [galleryImagePreview, setGalleryImagePreview] = useState<string>("");
+  const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
+  const [galleryImagePreviews, setGalleryImagePreviews] = useState<string[]>([]);
   const [newGalleryImage, setNewGalleryImage] = useState({ title: "", description: "", image: "" });
+  const [uploadingGalleryImages, setUploadingGalleryImages] = useState(false);
   const [editingImageId, setEditingImageId] = useState<number | null>(null);
 
   const handleLogin = () => {
@@ -98,25 +99,6 @@ export default function AdminPanel() {
 
   const handleBackToHome = () => {
     navigate("/");
-  };
-
-  // Blog handlers
-  const handleBlogImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Check file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("La imagen es demasiado grande. Máximo 5MB.");
-        return;
-      }
-      setBlogImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Only use for preview, not for sending to server
-        setBlogImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const uploadImageToS3 = async (file: File): Promise<string> => {
@@ -160,28 +142,17 @@ export default function AdminPanel() {
       return;
     }
     try {
-      let imageUrl = newBlogArticle.image;
-      
-      // Si hay un archivo de imagen, subirlo a S3
+      let imageUrl = "";
       if (blogImageFile) {
-        console.log("[Blog] Subiendo imagen a S3...");
         imageUrl = await uploadImageToS3(blogImageFile);
-        console.log("[Blog] Imagen subida:", imageUrl);
       }
-      
-      console.log("[Blog] Enviando datos:", {
-        title: newBlogArticle.title.substring(0, 50),
-        excerptLen: newBlogArticle.excerpt.length,
-        contentLen: newBlogArticle.content.length,
-        author: newBlogArticle.author,
-        imageUrl: imageUrl,
-      });
       await createBlog.mutateAsync({
         title: cleanText(newBlogArticle.title),
         excerpt: cleanText(newBlogArticle.excerpt),
         content: cleanText(newBlogArticle.content),
         author: cleanText(newBlogArticle.author),
         image: imageUrl || "",
+        slug: newBlogArticle.title.toLowerCase().replace(/\s+/g, "-"),
       });
       setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
       setBlogImageFile(null);
@@ -189,8 +160,8 @@ export default function AdminPanel() {
       blogList.refetch();
       alert("Artículo creado exitosamente");
     } catch (error) {
-      console.error("[Blog] Error al crear artículo:", error);
-      alert("Error al crear artículo: " + (error instanceof Error ? error.message : "Error desconocido"));
+      alert("Error al crear artículo");
+      console.error(error);
     }
   };
 
@@ -355,9 +326,8 @@ export default function AdminPanel() {
       await createDocument.mutateAsync({
         title: newDocument.title,
         description: newDocument.description,
-        documentType: newDocument.documentType,
-        fileUrl: newDocument.url,
-        fileName: newDocument.url.split('/').pop() || 'documento',
+        documentType: newDocument.documentType as "private" | "public",
+        url: newDocument.url,
       });
       setNewDocument({ title: "", description: "", documentType: "private", url: "" });
       setDocumentFile(null);
@@ -382,793 +352,764 @@ export default function AdminPanel() {
     }
   };
 
-  const handleEditDocument = (doc: any) => {
-    setEditingDocId(doc.id);
-    setNewDocument({
-      title: doc.title,
-      description: doc.description || "",
-      documentType: doc.isPublic ? "public" : "private",
-      url: doc.fileUrl,
-    });
-  };
-
-  const handleSaveDocument = async () => {
-    if (!editingDocId) return;
+  // Gallery handlers
+  const handleCreateGalleryCategory = async () => {
+    if (!newGalleryCategory.name.trim()) {
+      alert("El nombre de la sección es requerido");
+      return;
+    }
     try {
-      await updateDocument.mutateAsync({
-        id: editingDocId,
-        title: newDocument.title,
-        description: newDocument.description,
-        documentType: newDocument.documentType,
-        fileUrl: newDocument.url,
-        fileName: newDocument.url.split("/").pop() || "documento",
-        isPublic: newDocument.documentType === "public" ? 1 : 0,
-      });
-      setEditingDocId(null);
-      setNewDocument({ title: "", description: "", documentType: "private", url: "" });
-      documentsList.refetch();
-      alert("Documento actualizado exitosamente");
+      await createGalleryCategory.mutateAsync({ name: newGalleryCategory.name });
+      setNewGalleryCategory({ name: "" });
+      galleryCategories.refetch();
+      alert("Sección creada exitosamente");
     } catch (error) {
-      alert("Error al actualizar documento");
+      alert("Error al crear sección");
+      console.error(error);
     }
   };
 
-  const handleCancelEditDocument = () => {
-    setEditingDocId(null);
-    setNewDocument({ title: "", description: "", documentType: "private", url: "" });
-  };
-
-  if (!authenticated) {
-    return (
-      <div style={{ padding: 40, maxWidth: 400, margin: "0 auto", marginTop: 100 }}>
-        <h2>Acceso Administrador</h2>
-        <p>Introduce el código de administrador para acceder al panel.</p>
-        <input
-          id="admin-code"
-          name="admin-code"
-          type="password"
-          placeholder="Introduce el código"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          style={{ width: "100%", padding: 10, marginTop: 10, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-          onKeyPress={(e) => e.key === "Enter" && handleLogin()}
-        />
-        <button
-          onClick={handleLogin}
-          style={{
-            marginTop: 20,
-            padding: 10,
-            width: "100%",
-            background: "#003366",
-            color: "white",
-            border: "none",
-            borderRadius: 4,
-            cursor: "pointer",
-            fontSize: 16,
-          }}
-        >
-          Entrar
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 30 }}>
-        <h1>Panel de Administración</h1>
-        <div style={{ display: "flex", gap: 10 }}>
-          <button
-            onClick={handleBackToHome}
+    <div style={{ minHeight: "100vh", background: "#f5f5f5", padding: 20 }}>
+      {!authenticated ? (
+        <div style={{
+          maxWidth: 400,
+          margin: "50px auto",
+          background: "white",
+          padding: 30,
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          textAlign: "center",
+        }}>
+          <h2>Acceso Administrador</h2>
+          <p>Introduce el código de administrador para acceder al panel.</p>
+          <input
+            type="password"
+            placeholder="Introduce el código"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && handleLogin()}
             style={{
-              padding: "8px 16px",
-              background: "#666",
-              color: "white",
-              border: "none",
+              width: "100%",
+              padding: 10,
+              marginBottom: 15,
+              border: "1px solid #ccc",
               borderRadius: 4,
-              cursor: "pointer",
-            }}
-          >
-            Volver al sitio
-          </button>
-          <button
-            onClick={handleLogout}
-            style={{
-              padding: "8px 16px",
-              background: "#ff4444",
-              color: "white",
-              border: "none",
-              borderRadius: 4,
-              cursor: "pointer",
-            }}
-          >
-            Cerrar sesión
-          </button>
-        </div>
-      </div>
-
-      <div style={{ display: "flex", gap: 20, borderBottom: "2px solid #ddd", marginBottom: 30 }}>
-        {(["blog", "socios", "documentos", "galeria"] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            style={{
-              padding: "10px 20px",
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
               fontSize: 16,
-              fontWeight: activeTab === tab ? "bold" : "normal",
-              borderBottom: activeTab === tab ? "3px solid #003366" : "none",
-              marginBottom: -2,
+              boxSizing: "border-box",
+            }}
+          />
+          <button
+            onClick={handleLogin}
+            style={{
+              width: "100%",
+              padding: 12,
+              background: "#003366",
+              color: "white",
+              border: "none",
+              borderRadius: 4,
+              fontSize: 16,
+              fontWeight: "bold",
+              cursor: "pointer",
             }}
           >
-            {tab === "blog" && "📝 Blog"}
-            {tab === "socios" && "👥 Socios"}
-            {tab === "documentos" && "📄 Documentos"}
-            {tab === "galeria" && "🖼️ Galería"}
+            Entrar
           </button>
-        ))}
-      </div>
-
-      {/* Blog Tab */}
-      {activeTab === "blog" && (
-        <div>
-          <h2>Gestión de Blog</h2>
-
-          <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
-            <h3>Crear Nuevo Artículo</h3>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="blog-title">Título:</label>
-              <input
-                id="blog-title"
-                name="blog-title"
-                type="text"
-                value={newBlogArticle.title}
-                onChange={(e) => setNewBlogArticle({ ...newBlogArticle, title: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="blog-excerpt">Extracto:</label>
-              <textarea
-                id="blog-excerpt"
-                name="blog-excerpt"
-                value={newBlogArticle.excerpt}
-                onChange={(e) => setNewBlogArticle({ ...newBlogArticle, excerpt: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 80 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="blog-content">Contenido:</label>
-              <textarea
-                id="blog-content"
-                name="blog-content"
-                value={newBlogArticle.content}
-                onChange={(e) => setNewBlogArticle({ ...newBlogArticle, content: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 150 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="blog-author">Autor (opcional):</label>
-              <input
-                id="blog-author"
-                name="blog-author"
-                type="text"
-                placeholder="Nombre del autor"
-                value={newBlogArticle.author}
-                onChange={(e) => setNewBlogArticle({ ...newBlogArticle, author: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="blog-image">Imagen del Artículo:</label>
-              <div style={{ display: "flex", gap: 10, marginTop: 5 }}>
-                <input
-                  id="blog-image"
-                  name="blog-image"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBlogImageChange}
-                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
-                />
-                <input
-                  id="blog-image-url"
-                  name="blog-image-url"
-                  type="text"
-                  placeholder="O ingresa URL"
-                  value={newBlogArticle.image}
-                  onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
-                  style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
-                />
-              </div>
-              {blogImagePreview && (
-                <img src={blogImagePreview} alt="Preview" style={{ maxWidth: "100%", maxHeight: 200, marginTop: 10, borderRadius: 4 }} />
-              )}
-              <small style={{ color: "#666", marginTop: 5, display: "block" }}>
-                Sube un archivo o ingresa una URL de imagen
-              </small>
-            </div>
-            </div>
-            <button
-              onClick={editingBlogId ? handleSaveBlog : handleCreateBlog}
-              style={{
-                padding: "10px 20px",
-                background: "#003366",
-                color: "white",
-                border: "none",
-                borderRadius: 4,
-                cursor: "pointer",
-                fontSize: 16,
-              }}
-            >
-              {editingBlogId ? "Guardar Cambios" : "Crear Artículo"}
-            </button>
-            {editingBlogId && (
+        </div>
+      ) : (
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 30 }}>
+            <h1>Panel de Administración</h1>
+            <div style={{ display: "flex", gap: 10 }}>
               <button
-                onClick={handleCancelEditBlog}
+                onClick={handleBackToHome}
                 style={{
-                  padding: "10px 20px",
-                  background: "#999",
+                  padding: "8px 16px",
+                  background: "#666",
                   color: "white",
                   border: "none",
                   borderRadius: 4,
                   cursor: "pointer",
-                  fontSize: 16,
-                  marginLeft: 10,
                 }}
               >
-                Cancelar
+                Volver al sitio
               </button>
-            )}
-          </div>
-
-          <h3>Artículos Publicados</h3>
-          {blogList.isLoading ? (
-            <p>Cargando artículos...</p>
-          ) : blogList.data && blogList.data.length > 0 ? (
-            <div style={{ display: "grid", gap: 15 }}>
-              {blogList.data.map((post: any) => (
-                <div key={post.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #003366" }}>
-                  <h4>{post.title}</h4>
-                  <p style={{ color: "#666", marginBottom: 10 }}>{post.excerpt}</p>
-                  <div style={{ display: "flex", gap: 10 }}>
-                    <button
-                      onClick={() => handleEditBlog(post)}
-                      style={{
-                        padding: "6px 12px",
-                        background: "#0066cc",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                      }}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => handleDeleteBlog(post.id)}
-                      style={{
-                        padding: "6px 12px",
-                        background: "#ff4444",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                      }}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No hay artículos publicados.</p>
-          )}
-        </div>
-      )}
-
-      {/* Socios Tab */}
-      {activeTab === "socios" && (
-        <div>
-          <h2>Gestión de Socios</h2>
-
-          <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
-            <h3>Agregar Nuevo Socio</h3>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="member-number">Número de Socio:</label>
-              <input
-                id="member-number"
-                name="member-number"
-                type="text"
-                value={newMember.memberNumber}
-                onChange={(e) => setNewMember({ ...newMember, memberNumber: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="member-name">Nombre:</label>
-              <input
-                id="member-name"
-                name="member-name"
-                type="text"
-                value={newMember.name}
-                onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="member-email">Email:</label>
-              <input
-                id="member-email"
-                name="member-email"
-                type="email"
-                value={newMember.email}
-                onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="member-phone">Teléfono:</label>
-              <input
-                id="member-phone"
-                name="member-phone"
-                type="text"
-                value={newMember.phone}
-                onChange={(e) => setNewMember({ ...newMember, phone: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <button
-              onClick={editingMemberId ? handleSaveMember : handleCreateMember}
-              style={{
-                padding: "10px 20px",
-                background: "#003366",
-                color: "white",
-                border: "none",
-                borderRadius: 4,
-                cursor: "pointer",
-                fontSize: 16,
-              }}
-            >
-              {editingMemberId ? "Guardar Cambios" : "Agregar Socio"}
-            </button>
-            {editingMemberId && (
               <button
-                onClick={handleCancelEditMember}
+                onClick={handleLogout}
                 style={{
-                  padding: "10px 20px",
-                  background: "#999",
+                  padding: "8px 16px",
+                  background: "#ff4444",
                   color: "white",
                   border: "none",
                   borderRadius: 4,
                   cursor: "pointer",
-                  fontSize: 16,
-                  marginLeft: 10,
                 }}
               >
-                Cancelar
+                Cerrar sesión
               </button>
-            )}
+            </div>
           </div>
 
-          <h3>Lista de Socios</h3>
-          {membersList.isLoading ? (
-            <p>Cargando socios...</p>
-          ) : membersList.data && membersList.data.length > 0 ? (
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", background: "white" }}>
-                <thead>
-                  <tr style={{ background: "#f0f0f0", borderBottom: "2px solid #ddd" }}>
-                    <th style={{ padding: 12, textAlign: "left" }}>Número</th>
-                    <th style={{ padding: 12, textAlign: "left" }}>Nombre Completo</th>
-                    <th style={{ padding: 12, textAlign: "left" }}>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {membersList.data.map((member: any) => (
-                    <tr key={member.id} style={{ borderBottom: "1px solid #eee" }}>
-                      <td style={{ padding: 12 }}>{member.memberNumber}</td>
-                      <td style={{ padding: 12 }}>{member.fullName}</td>
-                      <td style={{ padding: 12, display: "flex", gap: 10 }}>
-                        <button
-                          onClick={() => handleEditMember(member)}
-                          style={{
-                            padding: "6px 12px",
-                            background: "#0066cc",
-                            color: "white",
-                            border: "none",
-                            borderRadius: 4,
-                            cursor: "pointer",
-                          }}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          onClick={() => handleDeleteMember(member.id)}
-                          style={{
-                            padding: "6px 12px",
-                            background: "#ff4444",
-                            color: "white",
-                            border: "none",
-                            borderRadius: 4,
-                            cursor: "pointer",
-                          }}
-                        >
-                          Eliminar
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p>No hay socios registrados.</p>
-          )}
-        </div>
-      )}
-
-      {/* Documentos Tab */}
-      {activeTab === "documentos" && (
-        <div>
-          <h2>Gestión de Documentos</h2>
-
-          <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
-            <h3>Agregar Nuevo Documento</h3>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="doc-title">Título:</label>
-              <input
-                id="doc-title"
-                name="doc-title"
-                type="text"
-                value={newDocument.title}
-                onChange={(e) => setNewDocument({ ...newDocument, title: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="doc-description">Descripción:</label>
-              <textarea
-                id="doc-description"
-                name="doc-description"
-                value={newDocument.description}
-                onChange={(e) => setNewDocument({ ...newDocument, description: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4, minHeight: 80 }}
-              />
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="doc-type">Tipo de Documento:</label>
-              <select
-                id="doc-type"
-                name="doc-type"
-                value={newDocument.documentType}
-                onChange={(e) => setNewDocument({ ...newDocument, documentType: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              >
-                <option value="private">Privado</option>
-                <option value="public">Público</option>
-              </select>
-            </div>
-            <div style={{ marginBottom: 15 }}>
-              <label htmlFor="doc-url">URL del Documento:</label>
-              <input
-                id="doc-url"
-                name="doc-url"
-                type="text"
-                value={newDocument.url}
-                onChange={(e) => setNewDocument({ ...newDocument, url: e.target.value })}
-                style={{ width: "100%", padding: 8, marginTop: 5, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: 4 }}
-              />
-            </div>
+          {/* Tabs */}
+          <div style={{ display: "flex", gap: 10, marginBottom: 20, borderBottom: "2px solid #ddd" }}>
             <button
-              onClick={editingDocId ? handleSaveDocument : handleCreateDocument}
+              onClick={() => setActiveTab("blog")}
               style={{
                 padding: "10px 20px",
-                background: "#003366",
-                color: "white",
+                background: activeTab === "blog" ? "#003366" : "transparent",
+                color: activeTab === "blog" ? "white" : "#333",
                 border: "none",
-                borderRadius: 4,
-                cursor: "pointer",
-                fontSize: 16,
-              }}
-            >
-              {editingDocId ? "Guardar Cambios" : "Agregar Documento"}
-            </button>
-            {editingDocId && (
-              <button
-                onClick={handleCancelEditDocument}
-                style={{
-                  padding: "10px 20px",
-                  background: "#999",
-                  color: "white",
-                  border: "none",
-                  borderRadius: 4,
-                  cursor: "pointer",
-                  fontSize: 16,
-                  marginLeft: 10,
-                }}
-              >
-                Cancelar
-              </button>
-            )}
-          </div>
-
-          <h3>Documentos</h3>
-          {documentsList.isLoading ? (
-            <p>Cargando documentos...</p>
-          ) : documentsList.data && documentsList.data.length > 0 ? (
-            <div style={{ display: "grid", gap: 15 }}>
-              {documentsList.data.map((doc: any) => (
-                <div key={doc.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #003366" }}>
-                  <h4>{doc.title}</h4>
-                  <p style={{ color: "#666", marginBottom: 10 }}>{doc.description}</p>
-                  <small style={{ color: "#999" }}>Tipo: {doc.documentType}</small>
-                  <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
-                    <a
-                      href={doc.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        padding: "6px 12px",
-                        background: "#003366",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                        textDecoration: "none",
-                        display: "inline-block",
-                      }}
-                    >
-                      Ver
-                    </a>
-                    <button
-                      onClick={() => handleEditDocument(doc)}
-                      style={{
-                        padding: "6px 12px",
-                        background: "#0066cc",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                      }}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => handleDeleteDocument(doc.id)}
-                      style={{
-                        padding: "6px 12px",
-                        background: "#ff4444",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                      }}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No hay documentos registrados.</p>
-          )}
-        </div>
-      )}
-
-      {/* Gallery Tab */}
-      {activeTab === "galeria" && (
-        <div>
-          <h2>Gestión de Galería</h2>
-
-          {/* Create Category Section */}
-          <div style={{ background: "#f9f9f9", padding: 20, borderRadius: 8, marginBottom: 30 }}>
-            <h3>Crear Nueva Sección</h3>
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: "block", marginBottom: 5, fontWeight: "bold" }}>Nombre de la Sección:</label>
-              <input
-                type="text"
-                placeholder="Ej: Ruta del Rif - Actividad IPA Xerez - Septiembre 2025"
-                value={newGalleryCategory.name}
-                onChange={(e) => setNewGalleryCategory({ name: e.target.value })}
-                style={{ width: "100%", padding: 10, border: "1px solid #ccc", borderRadius: 4, boxSizing: "border-box" }}
-              />
-            </div>
-            <button
-              onClick={async () => {
-                if (!newGalleryCategory.name.trim()) {
-                  alert("El nombre de la sección es requerido");
-                  return;
-                }
-                try {
-                  await createGalleryCategory.mutateAsync({ name: newGalleryCategory.name });
-                  setNewGalleryCategory({ name: "" });
-                  galleryCategories.refetch();
-                  alert("Sección creada exitosamente");
-                } catch (error) {
-                  console.error("[Gallery] Error creating category:", error);
-                  const errorMessage = error instanceof Error ? error.message : "Error desconocido";
-                  alert("Error al crear sección: " + errorMessage);
-                }
-              }}
-              style={{
-                padding: "10px 20px",
-                background: "#003366",
-                color: "white",
-                border: "none",
-                borderRadius: 4,
+                borderRadius: "4px 4px 0 0",
                 cursor: "pointer",
                 fontSize: 14,
+                fontWeight: "bold",
               }}
             >
-              Crear Sección
+              📝 Blog
+            </button>
+            <button
+              onClick={() => setActiveTab("socios")}
+              style={{
+                padding: "10px 20px",
+                background: activeTab === "socios" ? "#003366" : "transparent",
+                color: activeTab === "socios" ? "white" : "#333",
+                border: "none",
+                borderRadius: "4px 4px 0 0",
+                cursor: "pointer",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              👥 Socios
+            </button>
+            <button
+              onClick={() => setActiveTab("documentos")}
+              style={{
+                padding: "10px 20px",
+                background: activeTab === "documentos" ? "#003366" : "transparent",
+                color: activeTab === "documentos" ? "white" : "#333",
+                border: "none",
+                borderRadius: "4px 4px 0 0",
+                cursor: "pointer",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              📄 Documentos
+            </button>
+            <button
+              onClick={() => setActiveTab("galeria")}
+              style={{
+                padding: "10px 20px",
+                background: activeTab === "galeria" ? "#003366" : "transparent",
+                color: activeTab === "galeria" ? "white" : "#333",
+                border: "none",
+                borderRadius: "4px 4px 0 0",
+                cursor: "pointer",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              🖼️ Galería
             </button>
           </div>
 
-          {/* Sections List */}
-          <div style={{ marginBottom: 30 }}>
-            <h3>Secciones Existentes</h3>
-            {galleryCategories.isLoading ? (
-              <p>Cargando secciones...</p>
-            ) : galleryCategories.data && galleryCategories.data.length > 0 ? (
-              <div style={{ display: "grid", gap: 15 }}>
-                {galleryCategories.data.map((category: any) => {
-                  const categoryImages = galleryImages.data?.filter((img: any) => img.categoryId === category.id) || [];
-                  return (
-                    <div key={category.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #d4af37" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                        <div>
-                          <h4>{category.name}</h4>
-                          <small style={{ color: "#666" }}>{categoryImages.length} imágenes</small>
-                        </div>
-                        <button
-                          onClick={() => {
-                            if (confirm("¿Estás seguro de que quieres eliminar esta sección y todas sus imágenes?")) {
-                              deleteGalleryCategory.mutate({ id: category.id }, {
-                                onSuccess: () => {
-                                  galleryCategories.refetch();
-                                  galleryImages.refetch();
-                                  alert("Sección eliminada");
-                                },
-                              });
+          {/* Blog Tab */}
+          {activeTab === "blog" && (
+            <div style={{ background: "white", padding: 20, borderRadius: 8 }}>
+              <h2>Gestión de Blog</h2>
+              {!editingBlogId ? (
+                <div style={{ marginBottom: 30 }}>
+                  <h3>🆕 Nuevo Artículo</h3>
+                  <div style={{ display: "grid", gap: 15 }}>
+                    <div>
+                      <label style={{ fontWeight: "bold" }}>Título:</label>
+                      <input
+                        type="text"
+                        value={newBlogArticle.title}
+                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, title: e.target.value })}
+                        style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontWeight: "bold" }}>Extracto:</label>
+                      <textarea
+                        value={newBlogArticle.excerpt}
+                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, excerpt: e.target.value })}
+                        style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, minHeight: 80, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontWeight: "bold" }}>Contenido:</label>
+                      <textarea
+                        value={newBlogArticle.content}
+                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, content: e.target.value })}
+                        style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, minHeight: 200, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontWeight: "bold" }}>Autor (opcional):</label>
+                      <input
+                        type="text"
+                        placeholder="Nombre del autor"
+                        value={newBlogArticle.author}
+                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, author: e.target.value })}
+                        style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontWeight: "bold" }}>Imagen del Artículo:</label>
+                      <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              setBlogImageFile(file);
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setBlogImagePreview(reader.result as string);
+                              };
+                              reader.readAsDataURL(file);
                             }
                           }}
-                          style={{
-                            padding: "6px 12px",
-                            background: "#ff4444",
-                            color: "white",
-                            border: "none",
-                            borderRadius: 4,
-                            cursor: "pointer",
-                          }}
-                        >
-                          Eliminar
-                        </button>
+                        />
+                        <input
+                          type="text"
+                          placeholder="O ingresa URL"
+                          value={newBlogArticle.image}
+                          onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
+                          style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                        />
                       </div>
+                    </div>
+                    <button
+                      onClick={handleCreateBlog}
+                      style={{
+                        padding: "10px 20px",
+                        background: "#0066cc",
+                        color: "white",
+                        border: "none",
+                        borderRadius: 4,
+                        cursor: "pointer",
+                        fontSize: 14,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Crear Artículo
+                    </button>
+                  </div>
+                </div>
+              ) : null}
 
-                      {/* Images in this category */}
-                      {categoryImages.length > 0 && (
-                        <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #ddd" }}>
-                          <small style={{ fontWeight: "bold", color: "#333" }}>Imágenes:</small>
-                          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: 10, marginTop: 10 }}>
-                            {categoryImages.map((image: any) => (
-                              <div key={image.id} style={{ position: "relative", borderRadius: 4, overflow: "hidden" }}>
-                                <img
-                                  src={image.image}
-                                  alt={image.title}
-                                  style={{ width: "100%", height: "100px", objectFit: "cover" }}
-                                />
-                                <button
-                                  onClick={() => {
-                                    if (confirm("¿Eliminar esta imagen?")) {
-                                      deleteGalleryImage.mutate({ id: image.id }, {
-                                        onSuccess: () => {
-                                          galleryImages.refetch();
-                                          alert("Imagen eliminada");
-                                        },
-                                      });
-                                    }
-                                  }}
-                                  style={{
-                                    position: "absolute",
-                                    top: 0,
-                                    right: 0,
-                                    background: "rgba(255, 68, 68, 0.9)",
-                                    color: "white",
-                                    border: "none",
-                                    borderRadius: 0,
-                                    cursor: "pointer",
-                                    padding: "4px 8px",
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  ✕
-                                </button>
-                              </div>
-                            ))}
+              {/* Blog List */}
+              <div>
+                <h3>Artículos Publicados</h3>
+                {blogList.isLoading ? (
+                  <p>Cargando artículos...</p>
+                ) : blogList.data && blogList.data.length > 0 ? (
+                  <div style={{ display: "grid", gap: 15 }}>
+                    {blogList.data.map((blog: any) => (
+                      <div key={blog.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #0066cc" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
+                          <div>
+                            <h4>{blog.title}</h4>
+                            <p style={{ color: "#666", fontSize: 14 }}>{blog.excerpt}</p>
+                            {blog.author && <small style={{ color: "#999" }}>Por: {blog.author}</small>}
+                          </div>
+                          <div style={{ display: "flex", gap: 10 }}>
+                            <button
+                              onClick={() => handleEditBlog(blog)}
+                              style={{
+                                padding: "6px 12px",
+                                background: "#0066cc",
+                                color: "white",
+                                border: "none",
+                                borderRadius: 4,
+                                cursor: "pointer",
+                                fontSize: 12,
+                              }}
+                            >
+                              Editar
+                            </button>
+                            <button
+                              onClick={() => handleDeleteBlog(blog.id)}
+                              style={{
+                                padding: "6px 12px",
+                                background: "#ff4444",
+                                color: "white",
+                                border: "none",
+                                borderRadius: 4,
+                                cursor: "pointer",
+                                fontSize: 12,
+                              }}
+                            >
+                              Eliminar
+                            </button>
                           </div>
                         </div>
-                      )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No hay artículos publicados.</p>
+                )}
+              </div>
+            </div>
+          )}
 
-                      {/* Add image to category */}
-                      <div style={{ marginTop: 15, paddingTop: 15, borderTop: "1px solid #ddd" }}>
-                        <small style={{ fontWeight: "bold", color: "#333" }}>Agregar imagen:</small>
-                        <div style={{ display: "flex", gap: 10, marginTop: 10, flexWrap: "wrap" }}>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                setGalleryImageFile(file);
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                  setGalleryImagePreview(reader.result as string);
-                                };
-                                reader.readAsDataURL(file);
-                              }
-                            }}
-                            style={{ flex: 1, minWidth: "150px" }}
-                          />
-                          <input
-                            type="text"
-                            placeholder="Título de la imagen"
-                            value={newGalleryImage.title}
-                            onChange={(e) => setNewGalleryImage({ ...newGalleryImage, title: e.target.value })}
-                            style={{ flex: 1, minWidth: "150px", padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
-                          />
+          {/* Members Tab */}
+          {activeTab === "socios" && (
+            <div style={{ background: "white", padding: 20, borderRadius: 8 }}>
+              <h2>Gestión de Socios</h2>
+              <div style={{ marginBottom: 30 }}>
+                <h3>🆕 Nuevo Socio</h3>
+                <div style={{ display: "grid", gap: 15 }}>
+                  <input
+                    type="text"
+                    placeholder="Número de socio"
+                    value={newMember.memberNumber}
+                    onChange={(e) => setNewMember({ ...newMember, memberNumber: e.target.value })}
+                    style={{ padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Nombre completo"
+                    value={newMember.name}
+                    onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+                    style={{ padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={newMember.email}
+                    onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
+                    style={{ padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Teléfono"
+                    value={newMember.phone}
+                    onChange={(e) => setNewMember({ ...newMember, phone: e.target.value })}
+                    style={{ padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                  />
+                  <button
+                    onClick={handleCreateMember}
+                    style={{
+                      padding: "10px 20px",
+                      background: "#0066cc",
+                      color: "white",
+                      border: "none",
+                      borderRadius: 4,
+                      cursor: "pointer",
+                      fontSize: 14,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Agregar Socio
+                  </button>
+                </div>
+              </div>
+
+              {/* Members List */}
+              <div>
+                <h3>Socios Registrados</h3>
+                {membersList.isLoading ? (
+                  <p>Cargando socios...</p>
+                ) : membersList.data && membersList.data.length > 0 ? (
+                  <div style={{ display: "grid", gap: 15 }}>
+                    {membersList.data.map((member: any) => (
+                      <div key={member.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #28a745" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
+                          <div>
+                            <h4>{member.fullName}</h4>
+                            <small style={{ color: "#666" }}>Socio #{member.memberNumber}</small>
+                            {member.email && <p style={{ fontSize: 12, color: "#999" }}>{member.email}</p>}
+                            {member.phone && <p style={{ fontSize: 12, color: "#999" }}>{member.phone}</p>}
+                          </div>
+                          <div style={{ display: "flex", gap: 10 }}>
+                            <button
+                              onClick={() => handleEditMember(member)}
+                              style={{
+                                padding: "6px 12px",
+                                background: "#0066cc",
+                                color: "white",
+                                border: "none",
+                                borderRadius: 4,
+                                cursor: "pointer",
+                                fontSize: 12,
+                              }}
+                            >
+                              Editar
+                            </button>
+                            <button
+                              onClick={() => handleDeleteMember(member.id)}
+                              style={{
+                                padding: "6px 12px",
+                                background: "#ff4444",
+                                color: "white",
+                                border: "none",
+                                borderRadius: 4,
+                                cursor: "pointer",
+                                fontSize: 12,
+                              }}
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No hay socios registrados.</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Documents Tab */}
+          {activeTab === "documentos" && (
+            <div style={{ background: "white", padding: 20, borderRadius: 8 }}>
+              <h2>Gestión de Documentos</h2>
+              <div style={{ marginBottom: 30 }}>
+                <h3>🆕 Nuevo Documento</h3>
+                <div style={{ display: "grid", gap: 15 }}>
+                  <input
+                    type="text"
+                    placeholder="Título"
+                    value={newDocument.title}
+                    onChange={(e) => setNewDocument({ ...newDocument, title: e.target.value })}
+                    style={{ padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                  />
+                  <textarea
+                    placeholder="Descripción"
+                    value={newDocument.description}
+                    onChange={(e) => setNewDocument({ ...newDocument, description: e.target.value })}
+                    style={{ padding: 8, border: "1px solid #ccc", borderRadius: 4, minHeight: 80 }}
+                  />
+                  <select
+                    value={newDocument.documentType}
+                    onChange={(e) => setNewDocument({ ...newDocument, documentType: e.target.value })}
+                    style={{ padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                  >
+                    <option value="private">Privado</option>
+                    <option value="public">Público</option>
+                  </select>
+                  <input
+                    type="text"
+                    placeholder="URL del documento"
+                    value={newDocument.url}
+                    onChange={(e) => setNewDocument({ ...newDocument, url: e.target.value })}
+                    style={{ padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                  />
+                  <button
+                    onClick={handleCreateDocument}
+                    style={{
+                      padding: "10px 20px",
+                      background: "#0066cc",
+                      color: "white",
+                      border: "none",
+                      borderRadius: 4,
+                      cursor: "pointer",
+                      fontSize: 14,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Agregar Documento
+                  </button>
+                </div>
+              </div>
+
+              {/* Documents List */}
+              <div>
+                <h3>Documentos</h3>
+                {documentsList.isLoading ? (
+                  <p>Cargando documentos...</p>
+                ) : documentsList.data && documentsList.data.length > 0 ? (
+                  <div style={{ display: "grid", gap: 15 }}>
+                    {documentsList.data.map((doc: any) => (
+                      <div key={doc.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #ffc107" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
+                          <div>
+                            <h4>{doc.title}</h4>
+                            <p style={{ fontSize: 12, color: "#666" }}>{doc.description}</p>
+                            <small style={{ color: "#999" }}>Tipo: {doc.documentType === "private" ? "Privado" : "Público"}</small>
+                          </div>
                           <button
-                            onClick={async () => {
-                              if (!galleryImageFile) {
-                                alert("Selecciona una imagen");
-                                return;
-                              }
-                              if (!newGalleryImage.title.trim()) {
-                                alert("Ingresa un título para la imagen");
-                                return;
-                              }
-                              try {
-                                const imageUrl = await uploadImageToS3(galleryImageFile);
-                                await createGalleryImage.mutateAsync({
-                                  categoryId: category.id,
-                                  title: newGalleryImage.title,
-                                  description: newGalleryImage.description,
-                                  image: imageUrl,
-                                });
-                                setGalleryImageFile(null);
-                                setGalleryImagePreview("");
-                                setNewGalleryImage({ title: "", description: "", image: "" });
-                                galleryImages.refetch();
-                                alert("Imagen agregada exitosamente");
-                              } catch (error) {
-                                alert("Error al agregar imagen");
-                              }
-                            }}
+                            onClick={() => handleDeleteDocument(doc.id)}
                             style={{
-                              padding: "8px 16px",
-                              background: "#0066cc",
+                              padding: "6px 12px",
+                              background: "#ff4444",
                               color: "white",
                               border: "none",
                               borderRadius: 4,
                               cursor: "pointer",
+                              fontSize: 12,
                             }}
                           >
-                            Agregar
+                            Eliminar
                           </button>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    ))}
+                  </div>
+                ) : (
+                  <p>No hay documentos.</p>
+                )}
               </div>
-            ) : (
-              <p>No hay secciones creadas. Crea una nueva sección arriba.</p>
-            )}
-          </div>
+            </div>
+          )}
+
+          {/* Gallery Tab */}
+          {activeTab === "galeria" && (
+            <div style={{ background: "white", padding: 20, borderRadius: 8 }}>
+              <h2>Gestión de Galería</h2>
+
+              {/* Create new category */}
+              <div style={{ marginBottom: 30 }}>
+                <h3>Crear Nueva Sección</h3>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <input
+                    type="text"
+                    placeholder="Ej: Ruta del Rif - Actividad IPA Xerez - Septiembre 2025"
+                    value={newGalleryCategory.name}
+                    onChange={(e) => setNewGalleryCategory({ name: e.target.value })}
+                    style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
+                  />
+                  <button
+                    onClick={handleCreateGalleryCategory}
+                    style={{
+                      padding: "8px 16px",
+                      background: "#003366",
+                      color: "white",
+                      border: "none",
+                      borderRadius: 4,
+                      cursor: "pointer",
+                      fontSize: 14,
+                    }}
+                  >
+                    Crear Sección
+                  </button>
+                </div>
+              </div>
+
+              {/* Sections List */}
+              <div style={{ marginBottom: 30 }}>
+                <h3>Secciones Existentes</h3>
+                {galleryCategories.isLoading ? (
+                  <p>Cargando secciones...</p>
+                ) : galleryCategories.data && galleryCategories.data.length > 0 ? (
+                  <div style={{ display: "grid", gap: 15 }}>
+                    {galleryCategories.data.map((category: any) => {
+                      const categoryImages = galleryImages.data?.filter((img: any) => img.categoryId === category.id) || [];
+                      return (
+                        <div key={category.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #d4af37" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                            <div>
+                              <h4>{category.name}</h4>
+                              <small style={{ color: "#666" }}>{categoryImages.length} imágenes</small>
+                            </div>
+                            <button
+                              onClick={() => {
+                                if (confirm("¿Estás seguro de que quieres eliminar esta sección y todas sus imágenes?")) {
+                                  deleteGalleryCategory.mutate({ id: category.id }, {
+                                    onSuccess: () => {
+                                      galleryCategories.refetch();
+                                      galleryImages.refetch();
+                                      alert("Sección eliminada");
+                                    },
+                                  });
+                                }
+                              }}
+                              style={{
+                                padding: "6px 12px",
+                                background: "#ff4444",
+                                color: "white",
+                                border: "none",
+                                borderRadius: 4,
+                                cursor: "pointer",
+                              }}
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+
+                          {/* Images in this category */}
+                          {categoryImages.length > 0 && (
+                            <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #ddd" }}>
+                              <small style={{ fontWeight: "bold", color: "#333" }}>Imágenes:</small>
+                              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: 10, marginTop: 10 }}>
+                                {categoryImages.map((image: any) => (
+                                  <div key={image.id} style={{ position: "relative", borderRadius: 4, overflow: "hidden" }}>
+                                    <img
+                                      src={image.image}
+                                      alt={image.title}
+                                      style={{ width: "100%", height: "100px", objectFit: "cover" }}
+                                    />
+                                    <button
+                                      onClick={() => {
+                                        if (confirm("¿Eliminar esta imagen?")) {
+                                          deleteGalleryImage.mutate({ id: image.id }, {
+                                            onSuccess: () => {
+                                              galleryImages.refetch();
+                                              alert("Imagen eliminada");
+                                            },
+                                          });
+                                        }
+                                      }}
+                                      style={{
+                                        position: "absolute",
+                                        top: 0,
+                                        right: 0,
+                                        background: "rgba(255, 68, 68, 0.9)",
+                                        color: "white",
+                                        border: "none",
+                                        borderRadius: 0,
+                                        cursor: "pointer",
+                                        padding: "4px 8px",
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Add multiple images to category */}
+                          <div style={{ marginTop: 15, paddingTop: 15, borderTop: "1px solid #ddd" }}>
+                            <small style={{ fontWeight: "bold", color: "#333" }}>Agregar imágenes:</small>
+                            <div style={{ marginTop: 10 }}>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={(e) => {
+                                  const files = Array.from(e.target.files || []);
+                                  if (files.length > 0) {
+                                    setGalleryImageFiles(files);
+                                    // Generate previews
+                                    const previews: string[] = [];
+                                    let loadedCount = 0;
+                                    files.forEach((file) => {
+                                      const reader = new FileReader();
+                                      reader.onloadend = () => {
+                                        previews.push(reader.result as string);
+                                        loadedCount++;
+                                        if (loadedCount === files.length) {
+                                          setGalleryImagePreviews(previews);
+                                        }
+                                      };
+                                      reader.readAsDataURL(file);
+                                    });
+                                  }
+                                }}
+                                style={{ marginBottom: 10, width: "100%" }}
+                              />
+                              
+                              {/* Preview selected images */}
+                              {galleryImagePreviews.length > 0 && (
+                                <div style={{ marginBottom: 15 }}>
+                                  <small style={{ fontWeight: "bold", color: "#333" }}>Imágenes seleccionadas ({galleryImagePreviews.length}):</small>
+                                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))", gap: 10, marginTop: 10 }}>
+                                    {galleryImagePreviews.map((preview, idx) => (
+                                      <div key={idx} style={{ position: "relative", borderRadius: 4, overflow: "hidden", border: "2px solid #ddd" }}>
+                                        <img
+                                          src={preview}
+                                          alt={`Preview ${idx}`}
+                                          style={{ width: "100%", height: "80px", objectFit: "cover" }}
+                                        />
+                                        <button
+                                          onClick={() => {
+                                            const newFiles = galleryImageFiles.filter((_, i) => i !== idx);
+                                            const newPreviews = galleryImagePreviews.filter((_, i) => i !== idx);
+                                            setGalleryImageFiles(newFiles);
+                                            setGalleryImagePreviews(newPreviews);
+                                          }}
+                                          style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            right: 0,
+                                            background: "rgba(255, 68, 68, 0.9)",
+                                            color: "white",
+                                            border: "none",
+                                            borderRadius: 0,
+                                            cursor: "pointer",
+                                            padding: "2px 6px",
+                                            fontSize: "12px",
+                                          }}
+                                        >
+                                          ✕
+                                        </button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              <button
+                                onClick={async () => {
+                                  if (galleryImageFiles.length === 0) {
+                                    alert("Selecciona al menos una imagen");
+                                    return;
+                                  }
+                                  setUploadingGalleryImages(true);
+                                  try {
+                                    let successCount = 0;
+                                    for (let i = 0; i < galleryImageFiles.length; i++) {
+                                      const file = galleryImageFiles[i];
+                                      const imageUrl = await uploadImageToS3(file);
+                                      // Generate automatic title from filename
+                                      const fileName = file.name.replace(/\.[^/.]+$/, "");
+                                      await createGalleryImage.mutateAsync({
+                                        categoryId: category.id,
+                                        title: fileName,
+                                        description: "",
+                                        image: imageUrl,
+                                      });
+                                      successCount++;
+                                    }
+                                    setGalleryImageFiles([]);
+                                    setGalleryImagePreviews([]);
+                                    galleryImages.refetch();
+                                    alert(`${successCount} imagen(es) agregada(s) exitosamente`);
+                                  } catch (error) {
+                                    alert("Error al agregar imágenes");
+                                    console.error(error);
+                                  } finally {
+                                    setUploadingGalleryImages(false);
+                                  }
+                                }}
+                                disabled={uploadingGalleryImages || galleryImageFiles.length === 0}
+                                style={{
+                                  padding: "10px 20px",
+                                  background: uploadingGalleryImages || galleryImageFiles.length === 0 ? "#ccc" : "#0066cc",
+                                  color: "white",
+                                  border: "none",
+                                  borderRadius: 4,
+                                  cursor: uploadingGalleryImages || galleryImageFiles.length === 0 ? "not-allowed" : "pointer",
+                                  fontSize: 14,
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                {uploadingGalleryImages ? `Subiendo... (${galleryImageFiles.length})` : `Agregar ${galleryImageFiles.length > 0 ? galleryImageFiles.length : ""} imagen(es)`}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p>No hay secciones creadas. Crea una nueva sección arriba.</p>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
