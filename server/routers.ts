@@ -526,6 +526,49 @@ export const appRouter = router({
     delete: adminProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteBenefitImage(input.id)),
+    uploadImage: adminProcedure
+      .input(z.object({
+        file: z.instanceof(File),
+        name: z.string(),
+        description: z.string().optional(),
+        position: z.number().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        // Validar tipo de archivo
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        if (!allowedTypes.includes(input.file.type)) {
+          throw new Error('Solo se permiten imágenes (JPEG, PNG, WebP, GIF)');
+        }
+
+        // Validar tamaño (máximo 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (input.file.size > maxSize) {
+          throw new Error('El archivo no puede exceder 5MB');
+        }
+
+        // Convertir File a Buffer
+        const buffer = await input.file.arrayBuffer();
+        const fileBuffer = Buffer.from(buffer);
+
+        // Generar clave única
+        const timestamp = Date.now();
+        const randomStr = Math.random().toString(36).substring(2, 8);
+        const fileName = `${input.name}-${timestamp}-${randomStr}.${input.file.name.split('.').pop()}`;
+        const fileKey = `benefit-images/${fileName}`;
+
+        // Subir a S3
+        const { url } = await storagePut(fileKey, fileBuffer, input.file.type);
+
+        // Guardar en BD
+        return db.createBenefitImage({
+          name: input.name,
+          imageUrl: url,
+          imageKey: fileKey,
+          description: input.description,
+          position: input.position,
+          uploadedBy: ctx.user?.id,
+        });
+      }),
   }),
 })
 export type AppRouter = typeof appRouter;
