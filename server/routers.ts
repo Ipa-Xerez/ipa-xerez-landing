@@ -495,16 +495,16 @@ export const appRouter = router({
   gallery: router({
     getCategories: publicProcedure.query(() => db.getGalleryCategories()),
     getImages: publicProcedure.query(() => db.getGalleryImages()),
-    createCategory: protectedProcedure
+    createCategory: publicProcedure
       .input(z.object({ name: z.string() }))
       .mutation(({ input }) => db.createGalleryCategory(input.name)),
-    updateCategory: protectedProcedure
+    updateCategory: publicProcedure
       .input(z.object({ id: z.number(), name: z.string() }))
       .mutation(({ input }) => db.updateGalleryCategory(input.id, input.name)),
-    deleteCategory: protectedProcedure
+    deleteCategory: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteGalleryCategory(input.id)),
-    createImage: protectedProcedure
+    createImage: publicProcedure
       .input(z.object({
         categoryId: z.number(),
         title: z.string(),
@@ -512,7 +512,7 @@ export const appRouter = router({
         image: z.string(),
       }))
       .mutation(({ input }) => db.createGalleryImage(input)),
-    deleteImage: protectedProcedure
+    deleteImage: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteGalleryImage(input.id)),
   }),
