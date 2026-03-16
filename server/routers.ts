@@ -8,6 +8,7 @@ import { notifyOwner } from "./_core/notification";
 import { sendEmail, generateContactConfirmationEmail } from "./_core/emailService";
 import { sendSubscriptionConfirmationEmail, sendNewsletterCampaign, generateUnsubscribeToken } from "./services/newsletterService";
 import { storagePut } from "./storage";
+import { compressImage } from "./_core/imageCompression";
 
 export const appRouter = router({
   system: systemRouter,
@@ -550,14 +551,22 @@ export const appRouter = router({
         const buffer = await input.file.arrayBuffer();
         const fileBuffer = Buffer.from(buffer);
 
+        // Comprimir imagen
+        const compressed = await compressImage(fileBuffer, {
+          quality: 80,
+          maxWidth: 1200,
+          maxHeight: 1200,
+          format: 'webp',
+        });
+
         // Generar clave única
         const timestamp = Date.now();
         const randomStr = Math.random().toString(36).substring(2, 8);
-        const fileName = `${input.name}-${timestamp}-${randomStr}.${input.file.name.split('.').pop()}`;
+        const fileName = `${input.name}-${timestamp}-${randomStr}.webp`;
         const fileKey = `benefit-images/${fileName}`;
 
         // Subir a S3
-        const { url } = await storagePut(fileKey, fileBuffer, input.file.type);
+        const { url } = await storagePut(fileKey, compressed.buffer, 'image/webp');
 
         // Guardar en BD
         return db.createBenefitImage({
