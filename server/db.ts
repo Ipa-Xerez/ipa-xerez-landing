@@ -1207,3 +1207,103 @@ export async function getMemberDownloadHistory(memberId: number) {
     throw error;
   }
 }
+
+// Gallery queries
+export async function getGalleryCategories() {
+  const db = await getDb();
+  if (!db) return [];
+  try {
+    const { galleryCategories } = await import("../drizzle/schema");
+    return await db.select().from(galleryCategories).orderBy(galleryCategories.displayOrder);
+  } catch (error) {
+    console.error("[Database] Failed to get gallery categories:", error);
+    return [];
+  }
+}
+
+export async function getGalleryImages() {
+  const db = await getDb();
+  if (!db) return [];
+  try {
+    const { galleryImages } = await import("../drizzle/schema");
+    return await db.select().from(galleryImages).orderBy(galleryImages.displayOrder);
+  } catch (error) {
+    console.error("[Database] Failed to get gallery images:", error);
+    return [];
+  }
+}
+
+export async function createGalleryCategory(name: string) {
+  const db = await getDb();
+  if (!db) return null;
+  try {
+    const { galleryCategories } = await import("../drizzle/schema");
+    const slug = name.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+    const result = await db.insert(galleryCategories).values({
+      name,
+      slug,
+    });
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to create gallery category:", error);
+    throw error;
+  }
+}
+
+export async function updateGalleryCategory(id: number, name: string) {
+  const db = await getDb();
+  if (!db) return null;
+  try {
+    const { galleryCategories } = await import("../drizzle/schema");
+    const slug = name.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+    await db.update(galleryCategories).set({ name, slug }).where(eq(galleryCategories.id, id));
+    return { id, name, slug };
+  } catch (error) {
+    console.error("[Database] Failed to update gallery category:", error);
+    throw error;
+  }
+}
+
+export async function deleteGalleryCategory(id: number) {
+  const db = await getDb();
+  if (!db) return false;
+  try {
+    const { galleryCategories } = await import("../drizzle/schema");
+    await db.delete(galleryCategories).where(eq(galleryCategories.id, id));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to delete gallery category:", error);
+    throw error;
+  }
+}
+
+export async function createGalleryImage(image: { categoryId: number; title: string; description?: string; image: string }) {
+  const db = await getDb();
+  if (!db) return null;
+  try {
+    const { galleryImages } = await import("../drizzle/schema");
+    const result = await db.insert(galleryImages).values({
+      categoryId: image.categoryId,
+      title: image.title,
+      description: image.description,
+      imageUrl: image.image,
+    });
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to create gallery image:", error);
+    throw error;
+  }
+}
+
+export async function deleteGalleryImage(id: number) {
+  const db = await getDb();
+  if (!db) return false;
+  try {
+    const { galleryImages } = await import("../drizzle/schema");
+    await db.delete(galleryImages).where(eq(galleryImages.id, id));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to delete gallery image:", error);
+    throw error;
+  }
+}

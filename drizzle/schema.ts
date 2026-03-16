@@ -278,3 +278,35 @@ export const documentDownloads = mysqlTable("document_downloads", {
 
 export type DocumentDownload = typeof documentDownloads.$inferSelect;
 export type InsertDocumentDownload = typeof documentDownloads.$inferInsert;
+
+// Gallery categories table
+export const galleryCategories = mysqlTable("gallery_categories", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  displayOrder: int("display_order").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type GalleryCategory = typeof galleryCategories.$inferSelect;
+export type InsertGalleryCategory = typeof galleryCategories.$inferInsert;
+
+// Gallery images table
+export const galleryImages = mysqlTable("gallery_images", {
+  id: int("id").autoincrement().primaryKey(),
+  categoryId: int("category_id").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  imageUrl: text("image_url").notNull(),
+  s3Key: varchar("s3_key", { length: 500 }),
+  uploadedBy: int("uploaded_by"),
+  displayOrder: int("display_order").default(0).notNull(),
+  viewCount: int("view_count").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type GalleryImage = typeof galleryImages.$inferSelect;
+export type InsertGalleryImage = typeof galleryImages.$inferInsert;
