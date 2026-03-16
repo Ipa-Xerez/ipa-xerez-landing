@@ -21,7 +21,7 @@ import Login from "./pages/Login";
 import MembersArea from "./pages/MembersArea";
 import Inscription from "./pages/Inscription";
 import Blog from "./pages/Blog";
-// import AdminPanel from "./pages/AdminPanel"; // Archivo removido
+import AdminPanel from "./pages/AdminPanel";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
