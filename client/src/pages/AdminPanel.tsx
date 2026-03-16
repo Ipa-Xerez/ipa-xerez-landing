@@ -79,7 +79,7 @@ export default function AdminPanel() {
   const [galleryImageFile, setGalleryImageFile] = useState<File | null>(null);
   const [galleryImagePreview, setGalleryImagePreview] = useState<string>("");
   const [newGalleryImage, setNewGalleryImage] = useState({ title: "", description: "", image: "" });
-  const [editingImageId, setEditingImageId] = useState<number | null>(null);}
+  const [editingImageId, setEditingImageId] = useState<number | null>(null);
 
   const handleLogin = () => {
     if (code === "31907") {
