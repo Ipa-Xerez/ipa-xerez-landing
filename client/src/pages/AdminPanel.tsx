@@ -38,14 +38,7 @@ export default function AdminPanel() {
   const deleteDocument = trpc.documents.delete.useMutation();
 
   // Blog state
-  const [newBlogArticle, setNewBlogArticle] = useState({
-    title: "",
-    excerpt: "",
-    content: "",
-    author: "",
-    image: "",
-    slug: "",
-  });
+  const [newBlogArticle, setNewBlogArticle] = useState({ title: "", excerpt: "", content: "", author: "", image: "" });
   const [blogImageFile, setBlogImageFile] = useState<File | null>(null);
   const [blogImagePreview, setBlogImagePreview] = useState<string>("");
   const [editingBlogId, setEditingBlogId] = useState<number | null>(null);
@@ -68,6 +61,8 @@ export default function AdminPanel() {
     description: "",
     documentType: "private",
     url: "",
+    fileUrl: "",
+    fileName: "",
   });
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [editingDocId, setEditingDocId] = useState<number | null>(null);
@@ -152,9 +147,9 @@ export default function AdminPanel() {
         content: cleanText(newBlogArticle.content),
         author: cleanText(newBlogArticle.author),
         image: imageUrl || "",
-        slug: newBlogArticle.title.toLowerCase().replace(/\s+/g, "-"),
+        // slug is auto-generated from title on backend
       });
-      setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
+      setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "" });
       setBlogImageFile(null);
       setBlogImagePreview("");
       blogList.refetch();
@@ -186,7 +181,7 @@ export default function AdminPanel() {
       content: blog.content,
       author: blog.author || "",
       image: blog.image || "",
-      slug: blog.slug,
+
     });
     setBlogImagePreview(blog.image || "");
   };
@@ -207,7 +202,7 @@ export default function AdminPanel() {
         image: imageUrl || "",
       });
       setEditingBlogId(null);
-      setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
+      setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "" });
       setBlogImageFile(null);
       setBlogImagePreview("");
       blogList.refetch();
@@ -219,7 +214,7 @@ export default function AdminPanel() {
 
   const handleCancelEditBlog = () => {
     setEditingBlogId(null);
-    setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "", slug: "" });
+    setNewBlogArticle({ title: "", excerpt: "", content: "", author: "", image: "" });
     setBlogImageFile(null);
     setBlogImagePreview("");
   };
@@ -327,9 +322,10 @@ export default function AdminPanel() {
         title: newDocument.title,
         description: newDocument.description,
         documentType: newDocument.documentType as "private" | "public",
-        url: newDocument.url,
+        fileUrl: newDocument.url,
+        fileName: newDocument.url.split('/').pop() || 'document',
       });
-      setNewDocument({ title: "", description: "", documentType: "private", url: "" });
+      setNewDocument({ title: "", description: "", documentType: "private", url: "", fileUrl: "", fileName: "" });
       setDocumentFile(null);
       documentsList.refetch();
       alert("Documento agregado exitosamente");
