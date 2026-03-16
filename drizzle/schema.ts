@@ -278,3 +278,21 @@ export const documentDownloads = mysqlTable("document_downloads", {
 
 export type DocumentDownload = typeof documentDownloads.$inferSelect;
 export type InsertDocumentDownload = typeof documentDownloads.$inferInsert;
+
+
+// Benefit images table for managing home page benefit section images
+export const benefitImages = mysqlTable("benefit_images", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Viajes e Intercambios", "Formación Especializada"
+  imageUrl: text("image_url").notNull(), // S3/CloudFront URL
+  imageKey: varchar("image_key", { length: 255 }).notNull(), // S3 key for reference
+  description: text("description"),
+  position: int("position").default(0).notNull(), // Order position (0, 1, 2, 3)
+  isActive: tinyint("is_active").default(1).notNull(),
+  uploadedBy: int("uploaded_by"), // User ID who uploaded
+  uploadedAt: timestamp("uploaded_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BenefitImage = typeof benefitImages.$inferSelect;
+export type InsertBenefitImage = typeof benefitImages.$inferInsert;

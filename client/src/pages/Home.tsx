@@ -22,6 +22,7 @@ const INSCRIPTION_FORM = "/INSCRIPCION.pdf";
 
 export default function Home() {
   const [, navigate] = useLocation();
+  const { data: benefitImages = [] } = trpc.benefitImages.getAll.useQuery();
 
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success">("idle");
@@ -402,34 +403,48 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h2 className="font-display text-3xl md:text-4xl text-[#003366] text-center mb-12 font-bold">Nuestros Beneficios</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
-              <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE1})` }}></div>
-              <div className="p-6">
-                <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Viajes e Intercambios</h3>
-                <p className="text-gray-600 text-sm">Explora el mundo con colegas de profesión</p>
-              </div>
-            </Card>
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
-              <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE2})` }}></div>
-              <div className="p-6">
-                <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Formación Especializada</h3>
-                <p className="text-gray-600 text-sm">Webinars y cursos sobre seguridad profesional</p>
-              </div>
-            </Card>
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
-              <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE3})` }}></div>
-              <div className="p-6">
-                <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Eventos y Cultura</h3>
-                <p className="text-gray-600 text-sm">Zambombas y visitas culturales de Jerez</p>
-              </div>
-            </Card>
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
-              <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE4})` }}></div>
-              <div className="p-6">
-                <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Beneficios Exclusivos</h3>
-                <p className="text-gray-600 text-sm">Descuentos y acceso a eventos internacionales</p>
-              </div>
-            </Card>
+            {benefitImages.length > 0 ? (
+              benefitImages.map((image) => (
+                <Card key={image.id} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
+                  <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${image.imageUrl})` }}></div>
+                  <div className="p-6">
+                    <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">{image.name}</h3>
+                    <p className="text-gray-600 text-sm">{image.description || "Descubre nuestros beneficios exclusivos"}</p>
+                  </div>
+                </Card>
+              ))
+            ) : (
+              <>
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
+                  <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE1})` }}></div>
+                  <div className="p-6">
+                    <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Viajes e Intercambios</h3>
+                    <p className="text-gray-600 text-sm">Explora el mundo con colegas de profesión</p>
+                  </div>
+                </Card>
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
+                  <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE2})` }}></div>
+                  <div className="p-6">
+                    <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Formación Especializada</h3>
+                    <p className="text-gray-600 text-sm">Webinars y cursos sobre seguridad profesional</p>
+                  </div>
+                </Card>
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
+                  <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE3})` }}></div>
+                  <div className="p-6">
+                    <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Eventos y Cultura</h3>
+                    <p className="text-gray-600 text-sm">Zambombas y visitas culturales de Jerez</p>
+                  </div>
+                </Card>
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
+                  <div className="aspect-square bg-cover bg-center" style={{ backgroundImage: `url(${SERVICE4})` }}></div>
+                  <div className="p-6">
+                    <h3 className="font-heading text-lg text-[#003366] mb-3 font-bold">Beneficios Exclusivos</h3>
+                    <p className="text-gray-600 text-sm">Descuentos y acceso a eventos internacionales</p>
+                  </div>
+                </Card>
+              </>
+            )}
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden cursor-pointer">
               <div className="aspect-square bg-gradient-to-br from-[#003366] to-[#D4AF37] flex items-center justify-center">
                 <div className="text-center text-white">
