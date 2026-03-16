@@ -1,0 +1,106 @@
+{
+  "query": "SELECT gi.id, gi.category_id, gi.title, gi.image_url FROM gallery_images gi WHERE gi.category_id IN (4, 5) ORDER BY gi.category_id, gi.display_order",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT gi.id, gi.category_id, gi.title, gi.image_url FROM gallery_images gi WHERE gi.category_id IN (4, 5) ORDER BY gi.category_id, gi.display_order",
+  "rows": [
+    {
+      "id": "52",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/bpoqdsybtCqgdqhC.jpg"
+    },
+    {
+      "id": "53",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/wZoqrndwiPfQBmuS.jpg"
+    },
+    {
+      "id": "54",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/BMxPlRTKoKlXudng.jpg"
+    },
+    {
+      "id": "55",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AUHBWPsGteykEkRa.jpg"
+    },
+    {
+      "id": "56",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/mzQJjVXiryJoyIYP.jpg"
+    },
+    {
+      "id": "57",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/wzvIhQNJqDDQxyex.jpg"
+    },
+    {
+      "id": "58",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EElvjCrseBayKcCh.jpg"
+    },
+    {
+      "id": "59",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/unoUzljliOllsehF.jpg"
+    },
+    {
+      "id": "60",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/hxFDrjQPpeFekUxj.jpg"
+    },
+    {
+      "id": "61",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/ZCOLBZLeRFLowdjr.jpg"
+    },
+    {
+      "id": "62",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/BGcYvHHyqvBaYvZe.jpg"
+    },
+    {
+      "id": "63",
+      "category_id": "4",
+      "title": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025",
+      "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/zUKhHBYVxdfIqTxn.jpg"
+    },
+    {
+      "id": "64",
+      "category_id": "5",
+      "title": "Actividad IPA Xerez-Málaga - Diciembre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251206_182636.jpg"
+    },
+    {
+      "id": "65",
+      "category_id": "5",
+      "title": "Actividad IPA Xerez-Málaga - Diciembre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251206_180716.jpg"
+    },
+    {
+      "id": "66",
+      "category_id": "5",
+      "title": "Actividad IPA Xerez-Málaga - Diciembre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251206_180721.jpg"
+    },
+    {
+      "id": "67",
+      "category_id": "5",
+      "title": "Actividad IPA Xerez-Málaga - Diciembre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251206_122144.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcategory_id\ttitle\timage_url\n52\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/bpoqdsybtCqgdqhC.jpg\n53\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/wZoqrndwiPfQBmuS.jpg\n54\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/BMxPlRTKoKlXudng.jpg\n55\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/AUHBWPsGteykEkRa.jpg\n56\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/mzQJjVXiryJoyIYP.jpg\n57\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/wzvIhQNJqDDQxyex.jpg\n58\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/EElvjCrseBayKcCh.jpg\n59\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/unoUzljliOllsehF.jpg\n60\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/hxFDrjQPpeFekUxj.jpg\n61\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/ZCOLBZLeRFLowdjr.jpg\n62\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/BGcYvHHyqvBaYvZe.jpg\n63\t4\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\thttps://files.manuscdn.com/user_upload_by_module/session_file/310419663030391939/zUKhHBYVxdfIqTxn.jpg\n64\t5\tActividad IPA Xerez-Málaga - Diciembre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251206_182636.jpg\n65\t5\tActividad IPA Xerez-Málaga - Diciembre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251206_180716.jpg\n66\t5\tActividad IPA Xerez-Málaga - Diciembre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251206_180721.jpg\n67\t5\tActividad IPA Xerez-Málaga - Diciembre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251206_122144.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 423
+}

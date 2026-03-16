@@ -1,0 +1,35 @@
+{
+  "query": "SELECT gc.id, gc.name, GROUP_CONCAT(DISTINCT gi.title SEPARATOR ' | ') as titles FROM gallery_categories gc LEFT JOIN gallery_images gi ON gc.id = gi.category_id GROUP BY gc.id, gc.name ORDER BY gc.id",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT gc.id, gc.name, GROUP_CONCAT(DISTINCT gi.title SEPARATOR ' | ') as titles FROM gallery_categories gc LEFT JOIN gallery_images gi ON gc.id = gi.category_id GROUP BY gc.id, gc.name ORDER BY gc.id",
+  "rows": [
+    {
+      "id": "3",
+      "name": "Viaje a Nueva York",
+      "titles": "Actividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025"
+    },
+    {
+      "id": "4",
+      "name": "Ruta del Rif",
+      "titles": "Xegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025"
+    },
+    {
+      "id": "5",
+      "name": "Yeguada del Hierro del Bocado y Cartuja de Jerez",
+      "titles": "Actividad IPA Xerez-Málaga - Diciembre 2025"
+    },
+    {
+      "id": "6",
+      "name": "Xegur-Arte",
+      "titles": "20250927_105157 | 20250927_120039 | 20250927_123353 | 20250927_123356 | 20250927_123406 | 20250927_134118 | 20250927_134455 | 20250927_140734 | 20250927_144426 | 20250927_144428"
+    },
+    {
+      "id": "7",
+      "name": "Actividad IPA Xerez-Málaga",
+      "titles": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\ttitles\n3\tViaje a Nueva York\tActividad IPA Xerez en la Yeguada del Hierro del Bocado y Cartuja de Jerez - Junio 2025\n4\tRuta del Rif\tXegur-Arte - Encuentro de Coleccionismo Policial - Jerez Septiembre 2025\n5\tYeguada del Hierro del Bocado y Cartuja de Jerez\tActividad IPA Xerez-Málaga - Diciembre 2025\n6\tXegur-Arte\t20250927_105157 | 20250927_120039 | 20250927_123353 | 20250927_123356 | 20250927_123406 | 20250927_134118 | 20250927_134455 | 20250927_140734 | 20250927_144426 | 20250927_144428\n7\tActividad IPA Xerez-Málaga\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 359
+}

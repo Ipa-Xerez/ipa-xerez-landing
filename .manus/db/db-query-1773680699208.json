@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO gallery_images (category_id, title, image_url, display_order) VALUES\n(5, 'Actividad IPA Xerez-Málaga - Diciembre 2025', 'https://ipa-xerez-landing.s3.amazonaws.com/20251206_182636.jpg', 1),\n(5, 'Actividad IPA Xerez-Málaga - Diciembre 2025', 'https://ipa-xerez-landing.s3.amazonaws.com/20251206_180716.jpg', 2),\n(5, 'Actividad IPA Xerez-Málaga - Diciembre 2025', 'https://ipa-xerez-landing.s3.amazonaws.com/20251206_180721.jpg', 3),\n(5, 'Actividad IPA Xerez-Málaga - Diciembre 2025', 'https://ipa-xerez-landing.s3.amazonaws.com/20251206_122144.jpg', 4)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute INSERT INTO gallery_images (category_id, title, image_url, display_order) VALUES\n(5, 'Actividad IPA Xerez-Málaga - Diciembre 2025', 'https://ipa-xerez-landing.s3.amazonaws.com/20251206_182636.jpg', 1),\n(5, 'Actividad IPA Xerez-Málaga - Diciembre 2025', 'https://ipa-xerez-landing.s3.amazonaws.com/20251206_180716.jpg', 2),\n(5, 'Actividad IPA Xerez-Málaga - Diciembre 2025', 'https://ipa-xerez-landing.s3.amazonaws.com/20251206_180721.jpg', 3),\n(5, 'Actividad IPA Xerez-Málaga - Diciembre 2025', 'https://ipa-xerez-landing.s3.amazonaws.com/20251206_122144.jpg', 4)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 367
+}
