@@ -21,7 +21,7 @@ import Login from "./pages/Login";
 import MembersArea from "./pages/MembersArea";
 import Inscription from "./pages/Inscription";
 import Blog from "./pages/Blog";
-import AdminPanel from "./pages/AdminPanel";
+// import AdminPanel from "./pages/AdminPanel"; // Archivo removido
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -41,7 +41,7 @@ function Router() {
       
       {/* Admin routes */}
       <Route path="/login" component={Login} />
-      <Route path="/admin" component={AdminPanel} />
+      {/* <Route path="/admin" component={AdminPanel} /> */}
       <Route path="/admin-blog" component={AdminBlog} />
       <Route path="/socios" component={MembersArea} />
       <Route path={"/404"} component={NotFound} />
