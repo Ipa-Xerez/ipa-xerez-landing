@@ -127,6 +127,20 @@
       "when": 1773483246165,
       "tag": "0017_clammy_leopardon",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1773654686961,
+      "tag": "0018_flashy_blue_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1773660386559,
+      "tag": "0019_smiling_maddog",
+      "breakpoints": true
     }
   ]
 }
