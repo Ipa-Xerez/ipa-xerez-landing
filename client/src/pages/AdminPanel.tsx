@@ -514,74 +514,79 @@ export default function AdminPanel() {
           {activeTab === "blog" && (
             <div style={{ background: "white", padding: 20, borderRadius: 8 }}>
               <h2>Gestión de Blog</h2>
-              {!editingBlogId ? (
-                <div style={{ marginBottom: 30 }}>
-                  <h3>🆕 Nuevo Artículo</h3>
-                  <div style={{ display: "grid", gap: 15 }}>
-                    <div>
-                      <label style={{ fontWeight: "bold" }}>Título:</label>
+              <div style={{ marginBottom: 30 }}>
+                <h3>{editingBlogId ? "📝 Editar Artículo" : "🆕 Nuevo Artículo"}</h3>
+                <div style={{ display: "grid", gap: 15 }}>
+                  <div>
+                    <label style={{ fontWeight: "bold" }}>Título:</label>
+                    <input
+                      type="text"
+                      value={newBlogArticle.title}
+                      onChange={(e) => setNewBlogArticle({ ...newBlogArticle, title: e.target.value })}
+                      style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, boxSizing: "border-box" }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontWeight: "bold" }}>Extracto:</label>
+                    <textarea
+                      value={newBlogArticle.excerpt}
+                      onChange={(e) => setNewBlogArticle({ ...newBlogArticle, excerpt: e.target.value })}
+                      style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, minHeight: 80, boxSizing: "border-box" }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontWeight: "bold" }}>Contenido:</label>
+                    <textarea
+                      value={newBlogArticle.content}
+                      onChange={(e) => setNewBlogArticle({ ...newBlogArticle, content: e.target.value })}
+                      style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, minHeight: 200, boxSizing: "border-box" }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontWeight: "bold" }}>Autor (opcional):</label>
+                    <input
+                      type="text"
+                      placeholder="Nombre del autor"
+                      value={newBlogArticle.author}
+                      onChange={(e) => setNewBlogArticle({ ...newBlogArticle, author: e.target.value })}
+                      style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, boxSizing: "border-box" }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontWeight: "bold" }}>Imagen del Artículo:</label>
+                    <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setBlogImageFile(file);
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setBlogImagePreview(reader.result as string);
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
                       <input
                         type="text"
-                        value={newBlogArticle.title}
-                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, title: e.target.value })}
-                        style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, boxSizing: "border-box" }}
+                        placeholder="O ingresa URL"
+                        value={newBlogArticle.image}
+                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
+                        style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
                       />
                     </div>
-                    <div>
-                      <label style={{ fontWeight: "bold" }}>Extracto:</label>
-                      <textarea
-                        value={newBlogArticle.excerpt}
-                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, excerpt: e.target.value })}
-                        style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, minHeight: 80, boxSizing: "border-box" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontWeight: "bold" }}>Contenido:</label>
-                      <textarea
-                        value={newBlogArticle.content}
-                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, content: e.target.value })}
-                        style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, minHeight: 200, boxSizing: "border-box" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontWeight: "bold" }}>Autor (opcional):</label>
-                      <input
-                        type="text"
-                        placeholder="Nombre del autor"
-                        value={newBlogArticle.author}
-                        onChange={(e) => setNewBlogArticle({ ...newBlogArticle, author: e.target.value })}
-                        style={{ width: "100%", padding: 8, border: "1px solid #ccc", borderRadius: 4, boxSizing: "border-box" }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontWeight: "bold" }}>Imagen del Artículo:</label>
-                      <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              setBlogImageFile(file);
-                              const reader = new FileReader();
-                              reader.onloadend = () => {
-                                setBlogImagePreview(reader.result as string);
-                              };
-                              reader.readAsDataURL(file);
-                            }
-                          }}
-                        />
-                        <input
-                          type="text"
-                          placeholder="O ingresa URL"
-                          value={newBlogArticle.image}
-                          onChange={(e) => setNewBlogArticle({ ...newBlogArticle, image: e.target.value })}
-                          style={{ flex: 1, padding: 8, border: "1px solid #ccc", borderRadius: 4 }}
-                        />
+                    {blogImagePreview && (
+                      <div style={{ marginTop: 10 }}>
+                        <img src={blogImagePreview} alt="Preview" style={{ maxWidth: 200, borderRadius: 4 }} />
                       </div>
-                    </div>
+                    )}
+                  </div>
+                  <div style={{ display: "flex", gap: 10 }}>
                     <button
-                      onClick={handleCreateBlog}
+                      onClick={editingBlogId ? handleSaveBlog : handleCreateBlog}
                       style={{
                         padding: "10px 20px",
                         background: "#0066cc",
@@ -593,11 +598,28 @@ export default function AdminPanel() {
                         fontWeight: "bold",
                       }}
                     >
-                      Crear Artículo
+                      {editingBlogId ? "Guardar Cambios" : "Crear Artículo"}
                     </button>
+                    {editingBlogId && (
+                      <button
+                        onClick={handleCancelEditBlog}
+                        style={{
+                          padding: "10px 20px",
+                          background: "#666",
+                          color: "white",
+                          border: "none",
+                          borderRadius: 4,
+                          cursor: "pointer",
+                          fontSize: 14,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Cancelar
+                      </button>
+                    )}
                   </div>
                 </div>
-              ) : null}
+              </div>
 
               {/* Blog List */}
               <div>

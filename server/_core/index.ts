@@ -92,12 +92,11 @@ async function startServer() {
         return res.status(400).json({ error: "No file provided" });
       }
 
-      // For now, return a placeholder URL
-      // In production, this would upload to S3
-      const filename = `${Date.now()}-${req.file.originalname}`;
-      const url = `https://images.example.com/${filename}`;
+      const { storagePut } = await import("../storage");
+      const filename = `uploads/${Date.now()}-${req.file.originalname}`;
+      const { url } = await storagePut(filename, req.file.buffer, req.file.mimetype);
 
-      console.log("[Upload] File uploaded:", filename);
+      console.log("[Upload] File uploaded to storage:", filename);
       res.json({ url });
     } catch (error) {
       console.error("[Upload] Error:", error);
