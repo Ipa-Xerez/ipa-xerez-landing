@@ -1080,6 +1080,8 @@ export default function AdminPanel() {
                                   try {
                                     let successCount = 0;
                                     let errorCount = 0;
+                                    // Capture categoryId in a local variable to avoid closure issues
+                                    const currentCategoryId = category.id;
                                     for (let i = 0; i < galleryImageFiles.length; i++) {
                                       const file = galleryImageFiles[i];
                                       try {
@@ -1087,7 +1089,7 @@ export default function AdminPanel() {
                                         // Generate automatic title from filename
                                         const fileName = file.name.replace(/\.[^/.]+$/, "");
                                         await createGalleryImage.mutateAsync({
-                                          categoryId: categoryId,
+                                          categoryId: currentCategoryId,
                                           title: fileName,
                                           description: "",
                                           image: imageUrl,

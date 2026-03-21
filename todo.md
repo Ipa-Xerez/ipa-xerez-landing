@@ -250,3 +250,18 @@
 - [ ] 8. Blog mejorado: categorías, búsqueda, comentarios
 - [ ] 9. Directorio de socios con búsqueda
 - [ ] 10. Sistema de membresía con niveles de acceso
+
+
+## Gallery System Implementation (En Progreso)
+
+- [x] Crear tablas de base de datos (gallery_categories, gallery_images)
+- [x] Crear 5 categorías de galería (Nueva York, Ruta del Rif, Yeguada, Xegur-Arte, Zambomba)
+- [x] Corregir bug de categoryId en AdminPanel.tsx (closure issue)
+- [x] Reorganizar 76 imágenes existentes (34 Nueva York, 42 Ruta del Rif)
+- [ ] Usuario sube imágenes a Yeguada desde AdminPanel
+- [ ] Usuario sube imágenes a Xegur-Arte desde AdminPanel
+- [ ] Usuario sube imágenes a Zambomba desde AdminPanel
+- [ ] Verificar distribución final de imágenes en base de datos
+- [ ] Sincronizar Gallery.tsx para leer dinámicamente de base de datos
+- [ ] Guardar checkpoint final
+- [ ] Publicar cambios en producción (ipaxerez.manus.space)
