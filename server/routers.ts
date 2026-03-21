@@ -419,6 +419,25 @@ export const appRouter = router({
     delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteBlogPost(input.id)),
+    uploadImage: publicProcedure
+      .input(z.object({
+        file: z.instanceof(File),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const buffer = await input.file.arrayBuffer();
+          const fileName = `blog-${Date.now()}-${input.file.name}`;
+          const result = await storagePut(
+            `blog-images/${fileName}`,
+            Buffer.from(buffer),
+            input.file.type
+          );
+          return { url: result.url };
+        } catch (error) {
+          console.error('[Blog] Image upload error:', error);
+          throw error;
+        }
+      }),
   }),
 
   members: router({
