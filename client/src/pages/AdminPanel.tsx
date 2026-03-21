@@ -1087,7 +1087,7 @@ export default function AdminPanel() {
                                         // Generate automatic title from filename
                                         const fileName = file.name.replace(/\.[^/.]+$/, "");
                                         await createGalleryImage.mutateAsync({
-                                          categoryId: category.id,
+                                          categoryId: categoryId,
                                           title: fileName,
                                           description: "",
                                           image: imageUrl,
