@@ -1,0 +1,60 @@
+{
+  "query": "SELECT id, title, image_url FROM gallery_images LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT id, title, image_url FROM gallery_images LIMIT 10",
+  "rows": [
+    {
+      "id": "78",
+      "title": "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251011_095840~2.jpg"
+    },
+    {
+      "id": "79",
+      "title": "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251011_102657(1).jpg"
+    },
+    {
+      "id": "80",
+      "title": "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251010_104741.jpg"
+    },
+    {
+      "id": "81",
+      "title": "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251010_103523.jpg"
+    },
+    {
+      "id": "82",
+      "title": "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251010_125254.jpg"
+    },
+    {
+      "id": "83",
+      "title": "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251008_150017.jpg"
+    },
+    {
+      "id": "84",
+      "title": "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251008_150027(0).jpg"
+    },
+    {
+      "id": "85",
+      "title": "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/IMG-20250913-WA0033.jpg"
+    },
+    {
+      "id": "86",
+      "title": "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/IMG-20250915-WA0054.jpg"
+    },
+    {
+      "id": "87",
+      "title": "Ruta del Rif - Actividad IPA Xerez - Septiembre 2025",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/IMG-20250913-WA0013.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\timage_url\n78\tViaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251011_095840~2.jpg\n79\tViaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251011_102657(1).jpg\n80\tViaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251010_104741.jpg\n81\tViaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251010_103523.jpg\n82\tViaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251010_125254.jpg\n83\tViaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251008_150017.jpg\n84\tViaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/20251008_150027(0).jpg\n85\tRuta del Rif - Actividad IPA Xerez - Septiembre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/IMG-20250913-WA0033.jpg\n86\tRuta del Rif - Actividad IPA Xerez - Septiembre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/IMG-20250915-WA0054.jpg\n87\tRuta del Rif - Actividad IPA Xerez - Septiembre 2025\thttps://ipa-xerez-landing.s3.amazonaws.com/IMG-20250913-WA0013.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 354
+}
