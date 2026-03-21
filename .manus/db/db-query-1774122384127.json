@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE gallery_images SET category_id = 3 WHERE id >= 30088 AND id <= 30121; UPDATE gallery_images SET category_id = 4 WHERE id > 30121;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute UPDATE gallery_images SET category_id = 3 WHERE id >= 30088 AND id <= 30121; UPDATE gallery_images SET category_id = 4 WHERE id > 30121;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 429
+}
