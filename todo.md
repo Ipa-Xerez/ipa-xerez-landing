@@ -256,9 +256,10 @@
 
 - [x] Crear tablas de base de datos (gallery_categories, gallery_images)
 - [x] Crear 5 categorías de galería (Nueva York, Ruta del Rif, Yeguada, Xegur-Arte, Zambomba)
-- [x] Corregir bug de categoryId en AdminPanel.tsx (closure issue)
+- [x] Corregir bug de categoryId en AdminPanel.tsx (primera corrección - closure issue)
+- [x] Corregir bug de categoryId en onClick (segunda corrección - captura en el momento del clic)
 - [x] Reorganizar 76 imágenes existentes (34 Nueva York, 42 Ruta del Rif)
-- [ ] Usuario sube imágenes a Yeguada desde AdminPanel
+- [ ] Usuario sube imágenes a Yeguada desde AdminPanel (reintentar con corrección)
 - [ ] Usuario sube imágenes a Xegur-Arte desde AdminPanel
 - [ ] Usuario sube imágenes a Zambomba desde AdminPanel
 - [ ] Verificar distribución final de imágenes en base de datos
