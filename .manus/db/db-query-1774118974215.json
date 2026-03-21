@@ -1,0 +1,23 @@
+{
+  "query": "SELECT * FROM gallery_images LIMIT 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT * FROM gallery_images LIMIT 1",
+  "rows": [
+    {
+      "id": "78",
+      "category_id": "3",
+      "title": "Viaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025",
+      "description": "NULL",
+      "image_url": "https://ipa-xerez-landing.s3.amazonaws.com/20251011_095840~2.jpg",
+      "s3_key": "NULL",
+      "uploaded_by": "NULL",
+      "display_order": "1",
+      "view_count": "0",
+      "createdAt": "2026-03-16 17:04:19",
+      "updatedAt": "2026-03-16 17:04:19"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcategory_id\ttitle\tdescription\timage_url\ts3_key\tuploaded_by\tdisplay_order\tview_count\tcreatedAt\tupdatedAt\n78\t3\tViaje a Nueva York - Día de la Hispanidad, IPA Madrid Octubre 2025\tNULL\thttps://ipa-xerez-landing.s3.amazonaws.com/20251011_095840~2.jpg\tNULL\tNULL\t1\t0\t2026-03-16 17:04:19\t2026-03-16 17:04:19\n",
+  "stderr": "",
+  "execution_time_ms": 349
+}
