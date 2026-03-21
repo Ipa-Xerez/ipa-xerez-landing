@@ -1,0 +1,35 @@
+{
+  "query": "SELECT gc.id, gc.name, COUNT(gi.id) as image_count FROM gallery_categories gc LEFT JOIN gallery_images gi ON gc.id = gi.category_id GROUP BY gc.id, gc.name ORDER BY gc.id",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT gc.id, gc.name, COUNT(gi.id) as image_count FROM gallery_categories gc LEFT JOIN gallery_images gi ON gc.id = gi.category_id GROUP BY gc.id, gc.name ORDER BY gc.id",
+  "rows": [
+    {
+      "id": "3",
+      "name": "Viaje a Nueva York",
+      "image_count": "65"
+    },
+    {
+      "id": "4",
+      "name": "Ruta del Rif",
+      "image_count": "22"
+    },
+    {
+      "id": "5",
+      "name": "Yeguada del Hierro del Bocado y Cartuja de Jerez",
+      "image_count": "6"
+    },
+    {
+      "id": "6",
+      "name": "Xegur-Arte",
+      "image_count": "12"
+    },
+    {
+      "id": "7",
+      "name": "Zambomba IPA Xerez-Málaga 2025",
+      "image_count": "4"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\timage_count\n3\tViaje a Nueva York\t65\n4\tRuta del Rif\t22\n5\tYeguada del Hierro del Bocado y Cartuja de Jerez\t6\n6\tXegur-Arte\t12\n7\tZambomba IPA Xerez-Málaga 2025\t4\n",
+  "stderr": "",
+  "execution_time_ms": 384
+}

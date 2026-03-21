@@ -1,0 +1,26 @@
+{
+  "query": "SELECT category_id, COUNT(*) as count FROM gallery_images GROUP BY category_id",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user reQhEQm8VKDhmxs.root --database TPXNrRKBQNE8qaxNyKenmM --execute SELECT category_id, COUNT(*) as count FROM gallery_images GROUP BY category_id",
+  "rows": [
+    {
+      "category_id": "5",
+      "count": "13"
+    },
+    {
+      "category_id": "3",
+      "count": "59"
+    },
+    {
+      "category_id": "7",
+      "count": "4"
+    },
+    {
+      "category_id": "6",
+      "count": "12"
+    }
+  ],
+  "messages": [],
+  "stdout": "category_id\tcount\n5\t13\n3\t59\n7\t4\n6\t12\n",
+  "stderr": "",
+  "execution_time_ms": 368
+}

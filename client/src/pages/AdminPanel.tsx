@@ -921,7 +921,8 @@ export default function AdminPanel() {
                 ) : galleryCategories.data && galleryCategories.data.length > 0 ? (
                   <div style={{ display: "grid", gap: 15 }}>
                     {galleryCategories.data.map((category: any) => {
-                      const categoryImages = galleryImages.data?.filter((img: any) => img.categoryId === category.id) || [];
+                      const categoryId = category.id;
+                      const categoryImages = galleryImages.data?.filter((img: any) => img.categoryId === categoryId) || [];
                       return (
                         <div key={category.id} style={{ background: "#f9f9f9", padding: 15, borderRadius: 8, borderLeft: "4px solid #d4af37" }}>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
@@ -1078,23 +1079,33 @@ export default function AdminPanel() {
                                   setUploadingGalleryImages(true);
                                   try {
                                     let successCount = 0;
+                                    let errorCount = 0;
                                     for (let i = 0; i < galleryImageFiles.length; i++) {
                                       const file = galleryImageFiles[i];
-                                      const imageUrl = await uploadImageToS3(file);
-                                      // Generate automatic title from filename
-                                      const fileName = file.name.replace(/\.[^/.]+$/, "");
-                                      await createGalleryImage.mutateAsync({
-                                        categoryId: category.id,
-                                        title: fileName,
-                                        description: "",
-                                        image: imageUrl,
-                                      });
-                                      successCount++;
+                                      try {
+                                        const imageUrl = await uploadImageToS3(file);
+                                        // Generate automatic title from filename
+                                        const fileName = file.name.replace(/\.[^/.]+$/, "");
+                                        await createGalleryImage.mutateAsync({
+                                          categoryId: category.id,
+                                          title: fileName,
+                                          description: "",
+                                          image: imageUrl,
+                                        });
+                                        successCount++;
+                                      } catch (itemError) {
+                                        console.error(`Error al subir ${file.name}:`, itemError);
+                                        errorCount++;
+                                      }
                                     }
                                     setGalleryImageFiles([]);
                                     setGalleryImagePreviews([]);
                                     galleryImages.refetch();
-                                    alert(`${successCount} imagen(es) agregada(s) exitosamente`);
+                                    if (errorCount > 0) {
+                                      alert(`${successCount} imagen(es) agregada(s), ${errorCount} error(es)`);
+                                    } else {
+                                      alert(`${successCount} imagen(es) agregada(s) exitosamente`);
+                                    }
                                   } catch (error) {
                                     alert("Error al agregar imágenes");
                                     console.error(error);
