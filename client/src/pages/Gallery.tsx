@@ -170,10 +170,7 @@ export default function Gallery() {
                       </div>
                     </div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-heading text-lg text-[#003366] font-semibold mb-2">{image.title}</h3>
-                    <p className="text-gray-600 text-sm line-clamp-2">{image.description}</p>
-                  </div>
+
                 </div>
               ))}
             </div>
@@ -236,11 +233,7 @@ export default function Gallery() {
               </button>
             </div>
 
-            {/* Info */}
-            <div className="mt-4 bg-white rounded-lg p-6">
-              <h2 className="font-heading text-2xl text-[#003366] mb-2 font-bold">{selectedImage.title}</h2>
-              <p className="text-gray-700 text-lg">{selectedImage.description}</p>
-            </div>
+
           </div>
         </div>
       )}
