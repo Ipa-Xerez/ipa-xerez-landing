@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "../lib/trpc";
 
 export default function AdminBlog() {
@@ -101,6 +102,9 @@ export default function AdminBlog() {
   if (!authenticated) {
     return (
       <div style={{ padding: 40, maxWidth: 400, margin: "0 auto" }}>
+        <div style={{ marginBottom: 20 }}>
+          <a href="/" style={{ color: "#003366", textDecoration: "none", fontSize: 14 }}>← Volver al inicio</a>
+        </div>
         <h2>Acceso Administrador</h2>
         <input
           type="password"
@@ -122,6 +126,26 @@ export default function AdminBlog() {
 
   return (
     <div style={{ padding: 40, maxWidth: 900, margin: "0 auto" }}>
+      {/* Barra de navegación */}
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 24,
+        padding: "12px 20px",
+        background: "#003366",
+        borderRadius: 8,
+        color: "white",
+      }}>
+        <a href="/" style={{ color: "white", textDecoration: "none", fontWeight: "bold", fontSize: 15 }}>← Volver al inicio</a>
+        <span style={{ fontWeight: "bold", fontSize: 16 }}>📝 Panel del Blog</span>
+        <button
+          onClick={() => { setAuthenticated(false); setCode(""); }}
+          style={{ background: "rgba(255,255,255,0.2)", color: "white", border: "1px solid rgba(255,255,255,0.4)", padding: "6px 14px", borderRadius: 4, cursor: "pointer", fontSize: 14 }}
+        >
+          Cerrar sesión
+        </button>
+      </div>
       <h1>Panel del Blog</h1>
 
       <h2 style={{ marginTop: 20, color: editingId ? "#b45309" : "#003366" }}>
