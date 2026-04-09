@@ -661,7 +661,7 @@ export async function getFeaturedBlogPosts() {
     const posts = await db
       .select()
       .from(blogPosts)
-      .where(and(eq(blogPosts.isPublished, 1), eq(blogPosts.featured, 1)))
+      .where(sql`${blogPosts.isPublished} = 1 AND ${blogPosts.featured} = 1`)
       .orderBy(blogPosts.featuredOrder);
     return posts;
   } catch (error) {
