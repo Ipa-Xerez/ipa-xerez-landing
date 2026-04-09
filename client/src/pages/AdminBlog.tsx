@@ -13,7 +13,6 @@ export default function AdminBlog() {
   const createArticle = trpc.blog.create.useMutation();
   const updateArticle = trpc.blog.update.useMutation();
   const deleteArticle = trpc.blog.delete.useMutation();
-  const uploadBlogImage = trpc.blog.uploadImage.useMutation();
 
   const emptyArticle = {
     title: "",
@@ -82,26 +81,29 @@ export default function AdminBlog() {
 
     setUploading(true);
     try {
-      // Convertir a base64
-      const base64 = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
+      // Mostrar preview inmediatamente
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
 
-      setImagePreview(base64);
-
-      const result = await uploadBlogImage.mutateAsync({
-        base64,
-        mimeType: file.type,
-        fileName: file.name,
+      // Subir via endpoint HTTP multipart (sin límite de tamaño)
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await fetch("/api/upload-image", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
       });
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({ error: response.statusText }));
+        throw new Error(err.error || "Error del servidor");
+      }
+      const result = await response.json();
       setNewArticle((prev) => ({ ...prev, image: result.url }));
       alert("Imagen subida exitosamente");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error al subir imagen:", error);
-      alert("Error al subir imagen");
+      alert("Error al subir imagen: " + (error?.message || error));
     } finally {
       setUploading(false);
     }
