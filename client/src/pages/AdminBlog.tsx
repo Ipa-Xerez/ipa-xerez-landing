@@ -82,13 +82,21 @@ export default function AdminBlog() {
 
     setUploading(true);
     try {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      // Convertir a base64
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
 
-      const result = await uploadBlogImage.mutateAsync({ file });
+      setImagePreview(base64);
+
+      const result = await uploadBlogImage.mutateAsync({
+        base64,
+        mimeType: file.type,
+        fileName: file.name,
+      });
       setNewArticle((prev) => ({ ...prev, image: result.url }));
       alert("Imagen subida exitosamente");
     } catch (error) {

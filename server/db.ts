@@ -528,6 +528,8 @@ export async function createBlogPost(data: any) {
       category: data.category || null,
       tags: data.tags ? JSON.stringify(data.tags) : null,
       isPublished: data.isPublished ?? 1,
+      featured: data.featured ?? 0,
+      featuredOrder: data.featuredOrder ?? 0,
       publishedAt: data.publishedAt || new Date(),
     };
     
@@ -561,6 +563,8 @@ export async function updateBlogPost(id: number, data: any) {
     if (data.category !== undefined) updateData.category = data.category;
     if (data.tags) updateData.tags = JSON.stringify(data.tags);
     if (data.isPublished !== undefined) updateData.isPublished = data.isPublished;
+    if (data.featured !== undefined) updateData.featured = data.featured;
+    if (data.featuredOrder !== undefined) updateData.featuredOrder = data.featuredOrder;
     if (data.publishedAt) updateData.publishedAt = data.publishedAt;
 
     const result = await db.update(blogPosts).set(updateData).where(eq(blogPosts.id, id));
