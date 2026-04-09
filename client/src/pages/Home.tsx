@@ -205,6 +205,9 @@ export default function Home() {
               <Button className="bg-white/20 text-white hover:bg-white/30 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 border-2 border-white backdrop-blur-sm" onClick={() => navigate('/socios')}>
                 <LogIn className="w-5 h-5" /> Acceso Socios
               </Button>
+              <Button className="bg-blue-800/70 text-white hover:bg-blue-900/90 text-base md:text-lg px-8 md:px-10 py-6 md:py-7 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 border-2 border-blue-300 backdrop-blur-sm" onClick={() => document.getElementById('actualidad')?.scrollIntoView({ behavior: 'smooth' })}>
+                📰 Actualidad
+              </Button>
             </div>
           </div>
         </div>
@@ -484,7 +487,7 @@ export default function Home() {
 
       {/* ACTUALIDAD IPA XEREZ - Noticias Destacadas */}
       {featuredPostsQuery.data && featuredPostsQuery.data.length > 0 && (
-        <section className="py-16 md:py-20 bg-white border-t border-gray-200">
+        <section id="actualidad" className="py-16 md:py-20 bg-white border-t border-gray-200">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="font-display text-3xl md:text-4xl text-[#003366] font-bold mb-3">ACTUALIDAD IPA XEREZ</h2>
