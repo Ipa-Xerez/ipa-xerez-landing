@@ -148,6 +148,13 @@
       "when": 1773673161426,
       "tag": "0020_supreme_callisto",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1775762372491,
+      "tag": "0021_lucky_hannibal_king",
+      "breakpoints": true
     }
   ]
 }

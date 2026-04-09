@@ -266,3 +266,12 @@
 - [ ] Sincronizar Gallery.tsx para leer dinámicamente de base de datos
 - [ ] Guardar checkpoint final
 - [ ] Publicar cambios en producción (ipaxerez.manus.space)
+
+
+## Migración BD Producción - Featured Blog Posts
+- [ ] Verificar si columnas featured/featuredOrder ya existen en BD producción
+- [ ] Aplicar ALTER TABLE blog_posts ADD featured tinyint NOT NULL DEFAULT 0
+- [ ] Aplicar ALTER TABLE blog_posts ADD featuredOrder int NOT NULL DEFAULT 0
+- [ ] Verificar que AdminBlog muestra campos "Mostrar en portada" y "Orden en portada"
+- [ ] Probar marcar noticia como destacada y verificar en home
+- [ ] Limpiar datos de prueba si es necesario

@@ -649,6 +649,23 @@ export async function getRecentBlogPosts(limit: number = 5) {
   }
 }
 
+export async function getFeaturedBlogPosts() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  try {
+    const posts = await db
+      .select()
+      .from(blogPosts)
+      .where(and(eq(blogPosts.isPublished, 1), eq(blogPosts.featured, 1)))
+      .orderBy(blogPosts.featuredOrder);
+    return posts;
+  } catch (error) {
+    console.error("[Blog] Error getting featured posts:", error);
+    throw error;
+  }
+}
+
 export async function searchBlogPosts(query: string) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

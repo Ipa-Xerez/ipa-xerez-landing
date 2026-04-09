@@ -31,6 +31,7 @@ export default function Home() {
   const [nextEvent, setNextEvent] = useState<any>(null);
   const [loadingEvent, setLoadingEvent] = useState(true);
   const nextEventQuery = trpc.events.getNext.useQuery();
+  const featuredPostsQuery = trpc.blog.getFeatured.useQuery();
 
   useEffect(() => {
     if (nextEventQuery.data) {
@@ -480,6 +481,48 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ACTUALIDAD IPA XEREZ - Noticias Destacadas */}
+      {featuredPostsQuery.data && featuredPostsQuery.data.length > 0 && (
+        <section className="py-16 md:py-20 bg-white border-t border-gray-200">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="font-display text-3xl md:text-4xl text-[#003366] font-bold mb-3">ACTUALIDAD IPA XEREZ</h2>
+              <div className="w-24 h-1 bg-[#D4AF37] mx-auto"></div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredPostsQuery.data.map((post) => (
+                <div
+                  key={post.id}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300"
+                  onClick={() => navigate(`/blog/${post.slug}`)}
+                >
+                  {post.image && (
+                    <div className="h-48 overflow-hidden">
+                      <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h3 className="font-heading text-xl text-[#003366] font-bold mb-3 line-clamp-2">{post.title}</h3>
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-4">{post.excerpt}</p>
+                    <span className="text-[#D4AF37] font-semibold text-sm hover:text-[#C4991F] flex items-center gap-1">
+                      Leer más <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-10">
+              <button
+                onClick={() => navigate('/blog')}
+                className="bg-[#003366] text-white px-8 py-3 rounded-lg hover:bg-[#002244] transition-colors font-semibold"
+              >
+                Ver todas las noticias
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Próximos Eventos con Carrusel */}
       <section id="eventos" className="py-16 md:py-20 bg-white border-t border-gray-200">

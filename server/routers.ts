@@ -361,6 +361,7 @@ export const appRouter = router({
 
   blog: router({
     list: publicProcedure.query(() => db.getBlogPosts()),
+    getFeatured: publicProcedure.query(() => db.getFeaturedBlogPosts()),
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(({ input }) => db.getBlogPostById(input.id)),
@@ -376,6 +377,8 @@ export const appRouter = router({
         image: z.string().optional(),
         category: z.string().optional(),
         tags: z.string().optional(),
+        featured: z.number().optional(),
+        featuredOrder: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
         try {
@@ -392,6 +395,8 @@ export const appRouter = router({
             category: input.category || null,
             tags: input.tags || null,
             isPublished: 1,
+            featured: input.featured ?? 0,
+            featuredOrder: input.featuredOrder ?? 0,
             publishedAt: new Date(),
           });
           console.log('[Blog] Router create success');
@@ -411,6 +416,8 @@ export const appRouter = router({
         image: z.string().optional(),
         category: z.string().optional(),
         tags: z.string().optional(),
+        featured: z.number().optional(),
+        featuredOrder: z.number().optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;

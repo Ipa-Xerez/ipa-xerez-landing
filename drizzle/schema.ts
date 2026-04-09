@@ -175,6 +175,8 @@ export const blogPosts = mysqlTable("blog_posts", {
   category: varchar("category", { length: 100 }),
   tags: text("tags"), // JSON array of tags
   isPublished: tinyint("isPublished").default(1).notNull(),
+  featured: tinyint("featured").default(0).notNull(),
+  featuredOrder: int("featuredOrder").default(0).notNull(),
   publishedAt: timestamp("publishedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
